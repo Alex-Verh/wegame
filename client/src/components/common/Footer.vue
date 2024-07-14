@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  
-  <h1>HELLO DURAK</h1>
-
+    <p>Footer</p>
 </template>
+
+<style scoped></style>
