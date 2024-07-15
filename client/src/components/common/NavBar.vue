@@ -48,13 +48,13 @@ import { RouterLink } from 'vue-router'
 <style scoped>
 
 .navigation {
-    background-color: #201F30;
     color: #B9B8B8;
-    font-size: 14px;
+    background-color: #201F30;
+    font-size: 16px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);
 }
 
-.navigation .col-2, .navigation .col-7 {
+.navigation .col-2,.navigation .col-7 {
     padding: 0 !important;
 }
 
@@ -83,7 +83,8 @@ import { RouterLink } from 'vue-router'
 }
 
 .links_row_accent .link {
-    margin-left: 25px;
+    margin-left: 35px;
+    color: #5c5c5c;
 }
 
 .link {

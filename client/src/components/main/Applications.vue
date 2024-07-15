@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <section>
+    <section class="section">
         <div class="section_title">Applications - Find One</div>
         <div class="search_bar">
             <div class="search_bar_row">
@@ -32,4 +32,15 @@
     </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.games_section {
+    margin-top: 120px;
+}
+
+.section_title {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+</style>
