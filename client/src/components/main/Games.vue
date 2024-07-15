@@ -58,6 +58,10 @@
   cursor: pointer;
 }
 
+.game:hover {
+    box-shadow: 0 0 10px #fea100a5; /* Optional: add a shadow */
+}
+
 .game_image {
   width: 100%; /* Ensure the image takes up the full width of the column */
   transition: transform 0.3s ease; /* Smooth transition for image */
