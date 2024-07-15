@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 
 <template>
     <nav class="navigation">
+        <b-container fluid>
             <b-row>
                 <b-col cols="3">
                     <div class="logo d-flex align-items-center justify-content-center">
@@ -40,6 +41,7 @@ import { RouterLink } from 'vue-router'
                     </div>
                 </b-col>
             </b-row>
+        </b-container>
     </nav>
 </template>
 
@@ -48,7 +50,7 @@ import { RouterLink } from 'vue-router'
 .navigation {
     background-color: #201F30;
     color: #B9B8B8;
-    font-size: 16px;
+    font-size: 14px;
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);
 }
 
@@ -72,10 +74,6 @@ import { RouterLink } from 'vue-router'
     margin-left: 10px;
 }
 
-.accent {
-    color: #FE9F00;
-}
-
 .links_row, .links_row_accent {
     padding: 20px;
 }
@@ -94,24 +92,10 @@ import { RouterLink } from 'vue-router'
 
 .link:hover {
     color: #FE9F00;
-    }
+}
 
 .language_dropdown {
     margin-left: auto;
     margin-right: 0;
 }
-
-.button, .button_accent {
-    font-weight: 700;
-    text-align: center;
-    padding: 20px 0;
-    cursor: pointer;
-}
-
-.button_accent {
-    background-color: #FE9F00;
-    color: #000;
-}
-
-
 </style>

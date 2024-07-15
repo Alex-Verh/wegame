@@ -5,9 +5,14 @@ import Applications from '../components/main/Applications.vue'
 </script>
 
 <template>
-  <main>
-    <Header />
-    <Games />
-    <Applications />
+  <main class="main">
+    <b-container>
+      <Header />
+      <Games />
+      <Applications />
+    </b-container>
   </main>
 </template>
+
+<style scoped>
+</style>

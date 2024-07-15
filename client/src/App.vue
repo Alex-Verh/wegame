@@ -10,4 +10,5 @@ import NavBar from "./components/common/NavBar.vue"
   <Footer />
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

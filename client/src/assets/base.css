@@ -1,0 +1,19 @@
+body {
+    background-color: #14131E;
+}
+
+.accent {
+    color: #FE9F00;
+}
+
+.button, .button_accent {
+    font-weight: 700;
+    text-align: center;
+    padding: 20px 0;
+    cursor: pointer;
+}
+
+.button_accent {
+    background-color: #FE9F00;
+    color: #000;
+}
