@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router'
             <b-row>
                 <b-col cols="3">
                     <div class="logo d-flex align-items-center justify-content-center">
-                        <img src="../../assets/logo.png" alt="Logo" class="logo_icon">
+                        <img src="../assets/logo.png" alt="Logo" class="logo_icon">
                         <div class="logo_text">
                             WE<span class="accent">GAME</span>
                         </div>
@@ -46,7 +46,6 @@ import { RouterLink } from 'vue-router'
 </template>
 
 <style scoped>
-
 .navigation {
     color: #B9B8B8;
     background-color: #201F30;
@@ -54,7 +53,8 @@ import { RouterLink } from 'vue-router'
     box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);
 }
 
-.navigation .col-2,.navigation .col-7 {
+.navigation .col-2,
+.navigation .col-7 {
     padding: 0 !important;
 }
 
@@ -74,7 +74,8 @@ import { RouterLink } from 'vue-router'
     margin-left: 10px;
 }
 
-.links_row, .links_row_accent {
+.links_row,
+.links_row_accent {
     padding: 20px;
 }
 

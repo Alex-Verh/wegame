@@ -1,5 +1,5 @@
 <script setup>
-import SearchBar from '../global/SearchBar.vue'
+import SearchBar from './SearchBar.vue'
 </script>
 
 <template>
@@ -130,5 +130,4 @@ import SearchBar from '../global/SearchBar.vue'
     font-size: 20px;
     height: 100%;
 }
-
 </style>

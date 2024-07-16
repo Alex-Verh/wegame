@@ -1,18 +1,19 @@
 <script setup>
-import Header from '../components/main/Header.vue'
-import Games from '../components/main/Games.vue'
-import Applications from '../components/main/Applications.vue'
+import Header from '../components/Header.vue'
+import Games from '../components/Games.vue'
+import Applications from '../components/Applications.vue'
 </script>
 
 <template>
   <main class="main">
     <b-container>
-      <Header />
+      <Header
+        text='Find new <span class="accent">friends</span> and make game <span class="accent">parties</span> easily and fast now.'
+        image="/src/assets/main_image.jpg" />
       <Games />
       <Applications />
     </b-container>
   </main>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
