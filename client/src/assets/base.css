@@ -1,6 +1,10 @@
+@import "./fonts/fonts.css";
+
+
 body {
     background-color: #14131E;
     cursor: url('cursor.svg'), auto;
+    font-family: "Jura", sans-serif;
 }
 
 /* Scroll */

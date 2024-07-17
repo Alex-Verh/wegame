@@ -45,7 +45,7 @@ defineProps(['text', "image", "showStatistics"])
 }
 
 .header_text {
-    font-size: 64px;
+    font-size: 58px;
     color: #fff;
 }
 
