@@ -1,5 +1,37 @@
 body {
     background-color: #14131E;
+    cursor: url('cursor.svg'), auto;
+}
+
+/* Scroll */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #14131E; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #201F30; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #FE9F00;
+}
+
+/* Selection color */
+::-moz-selection { /* Code for Firefox */
+    color: #000;
+    background: #FE9F00;
+  }
+  
+::selection {
+    color: #000;
+    background: #FE9F00;
 }
 
 .accent {
@@ -10,7 +42,7 @@ body {
     font-weight: 700;
     text-align: center;
     padding: 20px 0;
-    cursor: pointer;
+    cursor: url('cursor-pointer.svg'), pointer;
 }
 
 .button_accent {
@@ -31,4 +63,20 @@ body {
     color: #fff;
     font-size: 32px;
     font-weight: 700;
+}
+
+.logo {
+    height: 100%;
+    margin: 0 auto;
+}
+
+.logo_icon {
+    height: 60px;
+}
+
+.logo_text {
+    color: #fff;
+    font-size: 48px;
+    display: inline-block;
+    margin-left: 10px;
 }

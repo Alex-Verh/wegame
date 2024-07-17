@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router'
             <b-row>
                 <b-col cols="3">
                     <div class="logo d-flex align-items-center justify-content-center">
-                        <img src="../assets/logo.png" alt="Logo" class="logo_icon">
+                        <img src="../../assets/logo.png" alt="Logo" class="logo_icon">
                         <div class="logo_text">
                             WE<span class="accent">GAME</span>
                         </div>
@@ -58,22 +58,6 @@ import { RouterLink } from 'vue-router'
     padding: 0 !important;
 }
 
-.logo {
-    height: 100%;
-    margin: 0 auto;
-}
-
-.logo_icon {
-    height: 60px;
-}
-
-.logo_text {
-    color: #fff;
-    font-size: 48px;
-    display: inline-block;
-    margin-left: 10px;
-}
-
 .links_row,
 .links_row_accent {
     padding: 20px;
@@ -89,7 +73,7 @@ import { RouterLink } from 'vue-router'
 }
 
 .link {
-    cursor: pointer;
+    cursor: url('../../assets/cursor-pointer.svg'), pointer;
 }
 
 .link:hover {

@@ -1,7 +1,7 @@
 <script setup>
-import Header from '../components/Header.vue'
-import Games from '../components/Games.vue'
-import Applications from '../components/Applications.vue'
+import Header from '../components/sections/HeaderSection.vue'
+import Games from '../components/sections/GamesSection.vue'
+import Applications from '../components/sections/ApplicationsSection.vue'
 </script>
 
 <template>

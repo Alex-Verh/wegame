@@ -48,7 +48,7 @@
     border-radius: 5px; /* Optional: rounded corners */
     padding: 10px; /* Add some padding */
     width: 100%; /* Optional: make it full width */
-    cursor: pointer;
+    cursor: url('../../assets/cursor-pointer.svg'), pointer;
 }
 
 .search_field  {

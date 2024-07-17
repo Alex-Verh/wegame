@@ -1,6 +1,6 @@
 <script setup>
-import Header from '../components/Header.vue'
-import Parties from '../components/Parties.vue'
+import Header from '../components/sections/HeaderSection.vue'
+import Parties from '../components/sections/PartiesSection.vue'
 </script>
 
 <template>
