@@ -31,5 +31,6 @@ import Party from '../PartyComponent.vue'
 <style scoped>
 .parties {
     margin-top: 40px;
+    margin-bottom: 100px;
 }
 </style>

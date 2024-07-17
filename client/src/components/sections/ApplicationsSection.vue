@@ -25,5 +25,6 @@ import ApplicationComponent from '../ApplicationComponent.vue'
 
 .applications {
     margin-top: 40px;
+    margin-bottom: 100px;
 }
 </style>
