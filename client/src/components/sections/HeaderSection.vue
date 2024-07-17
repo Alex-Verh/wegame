@@ -15,20 +15,26 @@ defineProps(['text', "image", "showStatistics"])
             </b-col>
         </b-row>
         <div class="statistics" v-if="showStatistics">
-            <div class="statistics_item">
-                <div class="item_value">551</div>
-                <div class="item_text">parties</div>
-            </div>
-            <div class="statistics_item">
-                <div class="item_value">132</div>
-                <div class="item_text">games</div>
-            </div>
-
-            <div class="statistics_item">
-                <div class="item_value">1232</div>
-                <div class="item_text">players</div>
-            </div>
-
+            <b-row>
+                <b-col cols="4" class="d-flex align-items-center justify-content-center">
+                    <div class="statistics_item">
+                        <div class="item_value">551</div>
+                        <div class="item_text">parties</div>
+                    </div>
+                </b-col>
+                <b-col cols="4" class="d-flex align-items-center justify-content-center">
+                    <div class="statistics_item">
+                        <div class="item_value">132</div>
+                        <div class="item_text">games</div>
+                    </div>
+                </b-col>
+                <b-col cols="4" class="d-flex align-items-center justify-content-center">
+                    <div class="statistics_item">
+                        <div class="item_value">1232</div>
+                        <div class="item_text">players</div>
+                    </div>
+                </b-col>
+            </b-row>
         </div>
     </header>
 </template>
@@ -45,5 +51,24 @@ defineProps(['text', "image", "showStatistics"])
 
 .header_image {
     width: 80%;
+}
+
+.statistics {
+    margin-top: 100px;
+}
+
+.statistics_item {
+    font-weight: 700;
+}
+
+.item_value {
+    color: #fff;
+    font-size: 96px;
+}
+
+.item_text {
+    text-align: center;
+    color: #FE9F00;
+    font-size: 24px;
 }
 </style>

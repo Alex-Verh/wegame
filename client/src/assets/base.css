@@ -48,6 +48,7 @@ body {
 .button_accent {
     background-color: #FE9F00;
     color: #000;
+    transition: all 0.3s ease-in;
 }
 
 .button_accent:hover {
