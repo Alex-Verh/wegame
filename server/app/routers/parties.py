@@ -16,6 +16,9 @@ fake_parties = {
 async def read_parties():
     return fake_parties
 
+@router.post("/")
+async def create_party(party: None):
+    return party
 
 @router.get("/{party_id}")
 async def read_party(party_id: str):
@@ -25,3 +28,18 @@ async def read_party(party_id: str):
         "title": fake_parties[party_id]["title"],
         "party_id": party_id,
     }
+
+@router.patch("/{party_id}")
+async def read_party(party_id: str, party: None):
+    if party_id not in fake_parties:
+        raise HTTPException(status_code=404, detail="Party not found")
+    return {
+        "title": fake_parties[party_id]["title"],
+        "party_id": party_id,
+    }
+
+@router.delete("/{party_id}")
+async def read_party(party_id: str):
+    if party_id not in fake_parties:
+        raise HTTPException(status_code=404, detail="Party not found")
+    return 

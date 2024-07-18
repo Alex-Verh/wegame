@@ -16,6 +16,9 @@ fake_applications = {
 async def read_applications():
     return fake_applications
 
+@router.post("/")
+async def create_application(application: None):
+    return application
 
 @router.get("/{application_id}")
 async def read_application(application_id: str):
@@ -26,13 +29,17 @@ async def read_application(application_id: str):
         "application_id": application_id,
     }
 
-
-@router.put(
-    "/{application_id}",
-)
-async def update_application(application_id: str):
+@router.patch("/{application_id}")
+async def update_application(application_id: str, application: None):
     if application_id != "app1":
         raise HTTPException(
             status_code=403, detail="You can only update the application: app1"
         )
     return {"application_id": application_id, "title": "Updated application"}
+
+
+@router.delete("/{application_id}")
+async def delete_application(application_id: str):
+    if application_id not in fake_applications:
+        raise HTTPException(status_code=404, detail="Application not found")
+    return

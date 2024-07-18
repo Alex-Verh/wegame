@@ -31,3 +31,6 @@
 /client/*.sw?
 
 /client/*.tsbuildinfo
+
+/server/app/__pycache__
+/server/app/routers/__pycache__
