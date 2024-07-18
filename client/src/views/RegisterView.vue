@@ -1,5 +1,6 @@
 <script setup>
 import SignForm from '../components/SignForm.vue'
+
 </script>
 
 <template>
@@ -18,6 +19,10 @@ import SignForm from '../components/SignForm.vue'
 </template>
 
 <style scoped>
+.row {
+    margin-inline: 0px !important;  
+}
+
 .form_image {
     width: 100%;
 }

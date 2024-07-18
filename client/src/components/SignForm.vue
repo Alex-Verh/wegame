@@ -1,5 +1,23 @@
 <script setup>
 defineProps(["title"])
+
+const userObj = {
+    username: "",
+    email_address: "",
+    password: ""
+}
+
+const signIn = () => {
+    console.log("Sign In")
+    console.log(userObj)
+}
+
+const signGoogle = () => {
+    console.log("Sign Google")
+    console.log(userObj)
+}
+
+
 </script>
 
 <template>
@@ -8,21 +26,21 @@ defineProps(["title"])
             <div class="form_title" v-html="title"></div>
             <div class="form_fields">
                 <div class="form_field">
-                    <label for="" class="form_label">Username</label>
-                    <input type="text" name="" class="form_input" id="">
+                    <label for="username" class="form_label">Username</label>
+                    <input type="text" v-model="userObj.username" name="username" class="form_input" id="username">
                 </div>
                 <div class="form_field">
-                    <label for="" class="form_label">Email</label>
-                    <input type="text" name="" class="form_input" id="">
+                    <label for="email_address" class="form_label">Email</label>
+                    <input type="email" v-model="userObj.email_address" name="email_address" class="form_input" id="email_address">
                 </div>
                 <div class="form_field">
-                    <label for="" class="form_label">Password</label>
-                    <input type="text" name="" class="form_input" id="">
+                    <label for="password" class="form_label">Password</label>
+                    <input type="password" v-model="userObj.password" name="password" class="form_input" id="password">
                 </div>
             </div>
             <div class="form_buttons d-flex justify-content-between">
-                <div class="button_accent form_button">Sign Up</div>
-                <div class="button_accent form_button">Google Account</div>
+                <div class="button_accent form_button" v-on:click="signIn()">Sign Up</div>
+                <div class="button_accent form_button" v-on:click="signGoogle()">Google Account</div>
             </div>
             <div class="form_switch">Switch to Sign In</div>
         </form>
