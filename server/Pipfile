@@ -12,4 +12,4 @@ fastapi = "*"
 python_version = "3.10"
 
 [scripts]
-dev = "cd src && fastapi dev main.py"
+dev = "cd app && fastapi dev main.py"
