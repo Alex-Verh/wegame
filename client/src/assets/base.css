@@ -85,3 +85,11 @@ body {
     display: inline-block;
     margin-left: 10px;
 }
+
+.no-scroll {
+    overflow: hidden;
+}
+
+.none {
+    display: none;
+}

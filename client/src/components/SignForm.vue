@@ -1,4 +1,8 @@
 <script setup>
+import PopUp from './PopUpComponent.vue';
+import { ref } from 'vue';
+
+
 defineProps(["title"])
 
 const userObj = {
@@ -17,11 +21,17 @@ const signGoogle = () => {
     console.log(userObj)
 }
 
+const showPopup = ref(false); 
 
 </script>
 
 <template>
     <section>
+        <PopUp :visible="showPopup" @close="showPopup = false">
+            <h2>This is the content inside the popup</h2>
+            <p>Here is some more content.</p>
+        </PopUp>
+
         <form action="" class="form">
             <div class="form_title" v-html="title"></div>
             <div class="form_fields">
@@ -41,6 +51,7 @@ const signGoogle = () => {
             <div class="form_buttons d-flex justify-content-between">
                 <div class="button_accent form_button" v-on:click="signIn()">Sign Up</div>
                 <div class="button_accent form_button" v-on:click="signGoogle()">Google Account</div>
+                <div class="button_accent form_button" @click="showPopup = true">Show PopUp</div>
             </div>
             <div class="form_switch">Switch to Sign In</div>
         </form>
