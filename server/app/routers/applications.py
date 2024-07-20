@@ -6,40 +6,26 @@ router = APIRouter(
 )
 
 
-fake_applications = {
-    "app1": {"title": "Application for CSGO"},
-    "app2": {"title": "I find a friend for Rust"},
-}
-
-
 @router.get("/")
 async def read_applications():
-    return fake_applications
+    pass
 
-@router.post("/")
-async def create_application(application: None):
-    return application
 
 @router.get("/{application_id}")
 async def read_application(application_id: str):
-    if application_id not in fake_applications:
-        raise HTTPException(status_code=404, detail="Application not found")
-    return {
-        "title": fake_applications[application_id]["title"],
-        "application_id": application_id,
-    }
+    pass
+
+
+@router.post("/")
+async def create_application(application: None):
+    pass
+
 
 @router.patch("/{application_id}")
 async def update_application(application_id: str, application: None):
-    if application_id != "app1":
-        raise HTTPException(
-            status_code=403, detail="You can only update the application: app1"
-        )
-    return {"application_id": application_id, "title": "Updated application"}
+    pass
 
 
 @router.delete("/{application_id}")
 async def delete_application(application_id: str):
-    if application_id not in fake_applications:
-        raise HTTPException(status_code=404, detail="Application not found")
-    return
+    pass

@@ -6,40 +6,26 @@ router = APIRouter(
 )
 
 
-fake_parties = {
-    "party1": {"title": "First party"},
-    "party2": {"title": "Second party"},
-}
-
-
 @router.get("/")
 async def read_parties():
-    return fake_parties
+    pass
 
-@router.post("/")
-async def create_party(party: None):
-    return party
 
 @router.get("/{party_id}")
 async def read_party(party_id: str):
-    if party_id not in fake_parties:
-        raise HTTPException(status_code=404, detail="Party not found")
-    return {
-        "title": fake_parties[party_id]["title"],
-        "party_id": party_id,
-    }
+    pass
+
+
+@router.post("/")
+async def create_party(party: None):
+    pass
+
 
 @router.patch("/{party_id}")
-async def read_party(party_id: str, party: None):
-    if party_id not in fake_parties:
-        raise HTTPException(status_code=404, detail="Party not found")
-    return {
-        "title": fake_parties[party_id]["title"],
-        "party_id": party_id,
-    }
+async def update_party(party_id: str, party: None):
+    pass
+
 
 @router.delete("/{party_id}")
-async def read_party(party_id: str):
-    if party_id not in fake_parties:
-        raise HTTPException(status_code=404, detail="Party not found")
-    return 
+async def delete_party(party_id: str):
+    pass

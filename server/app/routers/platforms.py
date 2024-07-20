@@ -6,28 +6,21 @@ router = APIRouter(
 )
 
 
-fake_platforms = ["XBOX", "Steam", "Epic Games", "Origin"]
-
-
 @router.get("/")
 async def read_platforms():
-    return fake_platforms
+    pass
 
-@router.post("/")
-async def create_platform(platform: None):
-    return platform
 
 @router.get("/{platform_id}")
 async def read_platform(platform_id: str):
-    if platform_id not in fake_platforms:
-        raise HTTPException(status_code=404, detail="Platform not found")
-    return {
-        "title": fake_platforms[platform_id]["title"],
-        "platform_id": platform_id,
-    }
+    pass
+
+
+@router.post("/")
+async def create_platform(platform: None):
+    pass
+
 
 @router.delete("/{platform_id}")
-async def delete_game(platform_id: str):
-    if platform_id not in fake_platforms:
-        raise HTTPException(status_code=404, detail="Platform not found")
-    return 
+async def delete_platform(platform_id: str):
+    pass
