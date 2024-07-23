@@ -7,6 +7,8 @@ name = "pypi"
 fastapi = "*"
 sqlalchemy = "*"
 pydantic-settings = "*"
+alembic = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
@@ -14,4 +16,5 @@ pydantic-settings = "*"
 python_version = "3"
 
 [scripts]
-dev = "cd app && fastapi dev main.py"
+dev = "fastapi dev"
+migrate = "alembic upgrade head"
