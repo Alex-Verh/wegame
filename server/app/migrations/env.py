@@ -12,9 +12,8 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from app.settings import Settings
+from app.settings import settings
 
-settings = Settings(_env_file="app/.env", _env_file_encoding="utf-8")
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
 # add your model's MetaData object here

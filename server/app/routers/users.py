@@ -1,4 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+
+from .. import crud
+from ..dependencies import CurrentUserDep, DatabaseDep
+from ..schemas import User, UserCreate
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -9,8 +13,8 @@ async def read_users():
 
 
 @router.get("/me")
-async def read_user_me():
-    pass
+def read_user_me(current_user: CurrentUserDep) -> User:
+    return current_user
 
 
 @router.get("/{username}")
@@ -19,8 +23,16 @@ async def read_user(username: str):
 
 
 @router.post("/")
-async def create_user(user: None):
-    pass
+async def create_user(db: DatabaseDep, user_data: UserCreate) -> User:
+    user = crud.get_user_by_email(db, user_data.email)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this email already exists.",
+        )
+
+    user = crud.create_user(db, user_data)
+    return user
 
 
 @router.patch("/{username}")
@@ -60,4 +72,9 @@ async def create_user_platform(user_platform: None):
 
 @router.delete("/{username}/platforms/{platform_id}")
 async def delete_user_platform(platform_id: str):
+    pass
+
+
+@router.get("/{username}/parties")
+async def read_user_parties(username: str):
     pass

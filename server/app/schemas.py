@@ -6,7 +6,7 @@ class Language(BaseModel):
     title: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Platform(BaseModel):
@@ -15,7 +15,7 @@ class Platform(BaseModel):
     url: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Game(BaseModel):
@@ -26,7 +26,7 @@ class Game(BaseModel):
     ranking: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserBase(BaseModel):
@@ -48,7 +48,7 @@ class User(UserBase):
     platforms: list[Platform] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ApplicationBase(BaseModel):
@@ -69,7 +69,7 @@ class Application(ApplicationBase):
     platform: Platform
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PartyBase(BaseModel):
@@ -90,4 +90,18 @@ class Party(PartyBase):
     platform: Platform
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    user_id: int | None = None
+
+
+class UserInDB(UserBase):
+    id: int
+    hashed_password: str

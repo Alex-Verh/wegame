@@ -9,6 +9,8 @@ sqlalchemy = "*"
 pydantic-settings = "*"
 alembic = "*"
 python-dotenv = "*"
+pyjwt = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 
