@@ -20,3 +20,4 @@ python_version = "3"
 [scripts]
 dev = "fastapi dev"
 migrate = "alembic upgrade head"
+rev = "alembic revision --autogenerate"
