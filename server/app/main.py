@@ -1,24 +1,16 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 
-from .routers import (
-    applications,
-    games,
-    languages,
-    parties,
-    partymembers,
-    platforms,
-    users,
-)
+from .routers import applications, auth, common, parties, users
 
 app = FastAPI()
 
-app.include_router(users.router)
-app.include_router(applications.router)
-app.include_router(games.router)
-app.include_router(parties.router)
-app.include_router(platforms.router)
-app.include_router(languages.router)
-app.include_router(partymembers.router)
+app_router = APIRouter(prefix="/api")
+app_router.include_router(auth.router)
+app_router.include_router(users.router)
+app_router.include_router(applications.router)
+app_router.include_router(parties.router)
+app_router.include_router(common.router)
+app.include_router(app_router)
 
 
 @app.get("/")

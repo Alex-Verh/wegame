@@ -7,6 +7,10 @@ name = "pypi"
 fastapi = "*"
 sqlalchemy = "*"
 pydantic-settings = "*"
+alembic = "*"
+python-dotenv = "*"
+pyjwt = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 
@@ -14,4 +18,6 @@ pydantic-settings = "*"
 python_version = "3"
 
 [scripts]
-dev = "cd app && fastapi dev main.py"
+dev = "fastapi dev"
+migrate = "alembic upgrade head"
+rev = "alembic revision --autogenerate"
