@@ -64,6 +64,6 @@ export default {
     right: 10px;
     width: 15px;
     height: 15px;
-    cursor: url('../assets/cursor-pointer.svg'), pointer;
+    cursor: url('../../assets/cursor-pointer.svg'), pointer;
 }
 </style>
