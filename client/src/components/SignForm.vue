@@ -1,5 +1,5 @@
 <script setup>
-import PopUp from './PopUpComponent.vue';
+import ProfilePop from './popups/ProfilePopUp.vue';
 import { ref } from 'vue';
 
 
@@ -22,16 +22,12 @@ const signGoogle = () => {
 }
 
 const showPopup = ref(false); 
-
 </script>
 
 <template>
     <section>
-        <PopUp :visible="showPopup" @close="showPopup = false">
-            <h2>This is the content inside the popup</h2>
-            <p>Here is some more content.</p>
-        </PopUp>
-
+        <ProfilePop :showPopup="showPopup" @close="showPopup = false" />
+        
         <form action="" class="form">
             <div class="form_title" v-html="title"></div>
             <div class="form_fields">

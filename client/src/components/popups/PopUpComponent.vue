@@ -27,7 +27,7 @@ export default {
 <template>
 <div class="popup_overlay" v-if="visible" @click.self="close">
     <div class="popup">
-    <img class="popup_close" src="../assets/close.svg" alt="Close PopUp" @click.self="close" />
+    <img class="popup_close" src="../../assets/close.svg" alt="Close PopUp" @click.self="close" />
     <slot></slot>
     </div>
 </div>
@@ -55,8 +55,8 @@ export default {
     color: #fff;
     padding: 25px 35px;
     position: relative;
+    width: 80%;
 }
-
 
 .popup_close {
     position: absolute;
