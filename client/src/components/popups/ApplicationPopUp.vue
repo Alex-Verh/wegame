@@ -11,12 +11,10 @@ defineProps(["showPopup"])
 <template>
     <PopUp :visible="showPopup">
     <b-container>
-        <div class="partypop_title">Create Party</div>
-        <label for="party_name" class="partypop_subtitle">Party Name</label>
-        <textarea name="party_name" id="party_name" class="partypop_field"></textarea>
-        <label for="party_description" class="partypop_subtitle">Party Description</label>
-        <textarea name="party_description" id="party_description" class="partypop_field"></textarea>
-        <label for="" class="partypop_subtitle">Select application game</label>
+        <div class="applicationpop_title">Create Application</div>
+        <label for="application_description" class="applicationpop_subtitle">Write an application message</label>
+        <textarea name="application_description" id="application_description" class="applicationpop_field"></textarea>
+        <label for="" class="applicationpop_subtitle">Select application game</label>
         <div class="pop_section d-flex flex-row">
             <Game class="game_pop"/>
             <Game class="game_pop"/>
@@ -25,32 +23,31 @@ defineProps(["showPopup"])
             <Game class="game_pop"/>
             <Game class="game_pop"/>
         </div>
-        <div class="partypop_buttons d-flex justify-content-center">
+        <div class="applicationpop_buttons d-flex justify-content-center">
             <div class="button_accent">Save Changes</div>
-            <div class="button_accent">See Members</div>
-            <div class="button_accent">Delete Party</div>
+            <div class="button_accent">Delete application</div>
         </div>
     </b-container>
     </PopUp>
 </template>
 
 <style scoped>
-.partypop {
+.applicationpop {
     width: 1000px;
 }
 
-.partypop_title {
+.applicationpop_title {
     text-align: center;
     font-size: 34px;
 }
 
-.partypop_subtitle {
+.applicationpop_subtitle {
     font-size: 18px;
     margin: 20px 0;
     display: block;
 }
 
-.partypop_field {
+.applicationpop_field {
     background: none;
     border: 1px solid #444259;
     width: 100%;
@@ -58,9 +55,6 @@ defineProps(["showPopup"])
     resize: none;
     font-size: 20px;
     padding: 10px;
-}
-
-.partypop_field:last-of-type {
     height: 100px;
 }
 
@@ -80,11 +74,11 @@ defineProps(["showPopup"])
     margin-inline-end: 0px;
 }
 
-.partypop_buttons {
+.applicationpop_buttons {
     margin-top: 20px;
 }
 
-.partypop_buttons .button_accent {
+.applicationpop_buttons .button_accent {
     width: 175px;
     margin-inline: 5px;
 }

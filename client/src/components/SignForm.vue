@@ -1,6 +1,5 @@
 <script setup>
-import ProfilePop from './popups/ProfilePopUp.vue';
-import PartyPop from './popups/PartyPopUp.vue'
+import PartyPop from './popups/ApplicationPopUp.vue'
 import { ref } from 'vue';
 
 
