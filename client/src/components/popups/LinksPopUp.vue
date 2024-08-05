@@ -8,24 +8,24 @@ defineProps(["showPopup"])
 </script>
 
 <template>
-    <PopUp :visible="showPopup" :width="500" class="linkpop">
+    <PopUp :visible="showPopup" :width="500" class="links">
     <b-container>
-        <div class="linkpop_title">User Links</div>
+        <div class="links_title">User Links</div>
 
-        <label for="steam_url" class="linkpop_subtitle">Steam Profile</label>
-        <input type="text" name="steam_url" id="steam_url" class="linkpop_field" />
+        <label for="steam_url" class="links_subtitle">Steam Profile</label>
+        <input type="text" name="steam_url" id="steam_url" class="links_field" />
 
-        <label for="epic_url" class="linkpop_subtitle">Epic Games</label>
-        <input type="text" name="epic_url" id="epic_url" class="linkpop_field" />
+        <label for="epic_url" class="links_subtitle">Epic Games</label>
+        <input type="text" name="epic_url" id="epic_url" class="links_field" />
 
-        <label for="origin_url" class="linkpop_subtitle">Origin Profile</label>
-        <input type="text" name="origin_url" id="origin_url" class="linkpop_field" />
+        <label for="origin_url" class="links_subtitle">Origin Profile</label>
+        <input type="text" name="origin_url" id="origin_url" class="links_field" />
 
-        <label for="xbox_url" class="linkpop_subtitle">Xbox Profile</label>
-        <input type="text" name="xbox_url" id="xbox_url" class="linkpop_field" />
+        <label for="xbox_url" class="links_subtitle">Xbox Profile</label>
+        <input type="text" name="xbox_url" id="xbox_url" class="links_field" />
 
-        <label for="playstation_url" class="linkpop_subtitle">Playstation Profile</label>
-        <input type="text" name="playstation_url" id="playstation_url" class="linkpop_field" />
+        <label for="playstation_url" class="links_subtitle">Playstation Profile</label>
+        <input type="text" name="playstation_url" id="playstation_url" class="links_field" />
 
         <div class="button_accent">Save Changes</div>
     </b-container>
@@ -34,18 +34,18 @@ defineProps(["showPopup"])
 
 <style scoped>
 
-.linkpop_title {
+.links_title {
     text-align: center;
     font-size: 28px;
 }
 
-.linkpop_subtitle {
+.links_subtitle {
     font-size: 18px;
     margin: 15px 0;
     display: block;
 }
 
-.linkpop_field {
+.links_field {
     background: none;
     border: 1px solid #444259;
     width: 100%;
@@ -56,7 +56,7 @@ defineProps(["showPopup"])
     padding: 10px;
 }
 
-.linkpop .button_accent {
+.links .button_accent {
     width: 175px;
     margin: 15px auto;
 }

@@ -8,13 +8,13 @@ defineProps(["showPopup"])
 </script>
 
 <template>
-    <PopUp :visible="showPopup" :width="700" class="memberspop">
+    <PopUp :visible="showPopup" :width="700" class="members">
     <b-container>
-        <div class="memberspop_title">Party Members</div>
+        <div class="members_title">Party Members</div>
 
-        <div class="memberspop_section">
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+        <div class="members_section">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -23,8 +23,8 @@ defineProps(["showPopup"])
                 </div>
             </div>
 
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -33,8 +33,8 @@ defineProps(["showPopup"])
                 </div>
             </div>
 
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -43,8 +43,8 @@ defineProps(["showPopup"])
                 </div>
             </div>
 
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -53,8 +53,8 @@ defineProps(["showPopup"])
                 </div>
             </div>
 
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -63,8 +63,8 @@ defineProps(["showPopup"])
                 </div>
             </div>
 
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -73,8 +73,8 @@ defineProps(["showPopup"])
                 </div>
             </div>
 
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -83,8 +83,8 @@ defineProps(["showPopup"])
                 </div>
             </div>
 
-            <div class="memberspop_member d-flex align-items-center justify-content-between">
-                <span class="memberspop_name">
+            <div class="members_member d-flex align-items-center justify-content-between">
+                <span class="members_name">
                     @alllexlelfef
                 </span>
                 <div>
@@ -102,48 +102,48 @@ defineProps(["showPopup"])
 
 <style scoped>
 
-.memberspop_title {
+.members_title {
     text-align: center;
     font-size: 28px;
     margin-bottom: 30px;
 }
 
-.memberspop_section {
+.members_section {
     height: 300px;
     overflow-y: auto;
     margin-bottom: 30px;
 }
 
-.memberspop_member {
+.members_member {
     border: 1px solid #444259;
     padding:  0 0 0 15px;
     margin-bottom: 20px;
 }
 
-.memberspop_member:last-of-type {
+.members_member:last-of-type {
     margin-bottom: 0px;
 }
 
-.memberspop_name {
+.members_name {
     font-size: 26px;
     color: #FE9F00;
 }
 
-.memberspop_member .button_accent {
+.members_member .button_accent {
     margin: 0 auto 0 0!important;
-    display: inline-block;
+    display: inline-flex;
     width: 100px !important;
 }
 
-.memberspop_member .button_accent:first-of-type {
+.members_member .button_accent:first-of-type {
     background-color: #fff;
 }
 
-.memberspop_member .button_accent:last-of-type {
+.members_member .button_accent:last-of-type {
     background-color: #CF1E1E;
 }
 
-.memberspop .button_accent {
+.members .button_accent {
     width: 175px;
     margin: 15px auto;
 }

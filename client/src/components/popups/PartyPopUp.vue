@@ -11,12 +11,12 @@ defineProps(["showPopup"])
 <template>
     <PopUp :visible="showPopup">
     <b-container>
-        <div class="partypop_title">Create Party</div>
-        <label for="party_name" class="partypop_subtitle">Party Name</label>
-        <textarea name="party_name" id="party_name" class="partypop_field"></textarea>
-        <label for="party_description" class="partypop_subtitle">Party Description</label>
-        <textarea name="party_description" id="party_description" class="partypop_field"></textarea>
-        <label for="" class="partypop_subtitle">Select application game</label>
+        <div class="party_title">Create Party</div>
+        <label for="party_name" class="party_subtitle">Party Name</label>
+        <textarea name="party_name" id="party_name" class="party_field"></textarea>
+        <label for="party_description" class="party_subtitle">Party Description</label>
+        <textarea name="party_description" id="party_description" class="party_field"></textarea>
+        <label for="" class="party_subtitle">Select application game</label>
         <div class="pop_section d-flex flex-row">
             <Game class="game_pop"/>
             <Game class="game_pop"/>
@@ -25,7 +25,7 @@ defineProps(["showPopup"])
             <Game class="game_pop"/>
             <Game class="game_pop"/>
         </div>
-        <div class="partypop_buttons d-flex justify-content-center">
+        <div class="party_buttons d-flex justify-content-center">
             <div class="button_accent">Save Changes</div>
             <div class="button_accent">See Members</div>
             <div class="button_accent">Delete Party</div>
@@ -35,22 +35,22 @@ defineProps(["showPopup"])
 </template>
 
 <style scoped>
-.partypop {
+.party {
     width: 1000px;
 }
 
-.partypop_title {
+.party_title {
     text-align: center;
     font-size: 34px;
 }
 
-.partypop_subtitle {
+.party_subtitle {
     font-size: 18px;
     margin: 20px 0;
     display: block;
 }
 
-.partypop_field {
+.party_field {
     background: none;
     border: 1px solid #444259;
     width: 100%;
@@ -58,9 +58,10 @@ defineProps(["showPopup"])
     resize: none;
     font-size: 20px;
     padding: 10px;
+    outline: none;
 }
 
-.partypop_field:last-of-type {
+.party_field:last-of-type {
     height: 100px;
 }
 
@@ -73,18 +74,19 @@ defineProps(["showPopup"])
 .game_pop {
     margin-inline-end: 25px;
     flex-shrink: 0;
-    width: 20%;
+    height: 130px;
+    font-size: 12px !important;
 }
 
 .game_pop:last-of-type {
     margin-inline-end: 0px;
 }
 
-.partypop_buttons {
+.party_buttons {
     margin-top: 20px;
 }
 
-.partypop_buttons .button_accent {
+.party_buttons .button_accent {
     width: 175px;
     margin-inline: 5px;
 }

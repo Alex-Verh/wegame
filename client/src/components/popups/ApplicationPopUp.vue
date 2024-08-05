@@ -11,10 +11,10 @@ defineProps(["showPopup"])
 <template>
     <PopUp :visible="showPopup">
     <b-container>
-        <div class="applicationpop_title">Create Application</div>
-        <label for="application_description" class="applicationpop_subtitle">Write an application message</label>
-        <textarea name="application_description" id="application_description" class="applicationpop_field"></textarea>
-        <label for="" class="applicationpop_subtitle">Select application game</label>
+        <div class="application_title">Create Application</div>
+        <label for="application_description" class="application_subtitle">Write an application message</label>
+        <textarea name="application_description" id="application_description" class="application_field"></textarea>
+        <label for="" class="application_subtitle">Select application game</label>
         <div class="pop_section d-flex flex-row">
             <Game class="game_pop"/>
             <Game class="game_pop"/>
@@ -23,7 +23,7 @@ defineProps(["showPopup"])
             <Game class="game_pop"/>
             <Game class="game_pop"/>
         </div>
-        <div class="applicationpop_buttons d-flex justify-content-center">
+        <div class="application_buttons d-flex justify-content-center">
             <div class="button_accent">Save Changes</div>
             <div class="button_accent">Delete application</div>
         </div>
@@ -32,22 +32,22 @@ defineProps(["showPopup"])
 </template>
 
 <style scoped>
-.applicationpop {
+.application {
     width: 1000px;
 }
 
-.applicationpop_title {
+.application_title {
     text-align: center;
     font-size: 34px;
 }
 
-.applicationpop_subtitle {
+.application_subtitle {
     font-size: 18px;
     margin: 20px 0;
     display: block;
 }
 
-.applicationpop_field {
+.application_field {
     background: none;
     border: 1px solid #444259;
     width: 100%;
@@ -67,18 +67,19 @@ defineProps(["showPopup"])
 .game_pop {
     margin-inline-end: 25px;
     flex-shrink: 0;
-    width: 20%;
+    height: 130px !important;
+    font-size: 12px !important;
 }
 
 .game_pop:last-of-type {
     margin-inline-end: 0px;
 }
 
-.applicationpop_buttons {
+.application_buttons {
     margin-top: 20px;
 }
 
-.applicationpop_buttons .button_accent {
+.application_buttons .button_accent {
     width: 175px;
     margin-inline: 5px;
 }

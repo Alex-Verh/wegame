@@ -1,5 +1,5 @@
 <script setup>
-import PartyPop from './popups/LanguagesPopUp.vue'
+import Pop from './popups/ProfilePopUp.vue'
 import { ref } from 'vue';
 
 
@@ -26,7 +26,7 @@ const showPopup = ref(false);
 
 <template>
     <section>
-        <PartyPop :showPopup="showPopup" @close="showPopup = false" />
+        <Pop :showPopup="showPopup" @close="showPopup = false" />
         
         <form action="" class="form">
             <div class="form_title" v-html="title"></div>

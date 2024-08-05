@@ -10,12 +10,12 @@ defineProps(["showPopup"])
 <template>
     <PopUp :visible="showPopup" :width="700" class="languagespop">
     <b-container>
-        <div class="title">Select Languages</div>
+        <div class="languages_title">Select Languages</div>
 
         <div class="languages_section">
 
-            <div class="search d-flex align-items-center justify-content-between">
-                <input class="languages_input" type="text" name="search" id="earch" placeholder="Search language" />
+            <div class="languages_field d-flex align-items-center justify-content-between">
+                <input class="languages_input" type="text" name="language_search" id="language_search" placeholder="Search language" />
                 <div class="button_accent">Search</div>
             </div>
 
@@ -42,7 +42,7 @@ defineProps(["showPopup"])
 
             <div class="button_accent">Save Languages</div>
 
-            <div class="age d-flex align-items-center justify-content-between">
+            <div class="languages_field d-flex align-items-center justify-content-between">
                 <input class="languages_input" type="text" name="user_age" id="user_age" placeholder="Enter your age number" />
                 <div class="button_accent">Enter</div>
             </div>  
@@ -54,18 +54,18 @@ defineProps(["showPopup"])
 
 <style scoped>
 
-.title {
+.languages_title {
     text-align: center;
     font-size: 28px;
     margin-bottom: 30px;
 }
 
-.search, .age {
+.languages_field {
     height: 55px;
     margin-bottom: 15px;
 }
 
-.search .button_accent, .age .button_accent {
+.languages_field .button_accent {
     background-color: #fff !important;
     height: 100%;
     margin: 0 !important;

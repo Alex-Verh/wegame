@@ -23,6 +23,7 @@
 
 .game_image {
   width: 100%; /* Ensure the image takes up the full width of the column */
+  height: 100%;
   transition: transform 0.3s ease; /* Smooth transition for image */
 }
 
