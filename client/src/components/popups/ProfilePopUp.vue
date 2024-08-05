@@ -83,7 +83,6 @@ defineProps(["showPopup"])
                     </div>
                 </b-container>
                 </div>
-
             </b-col>
         </b-row>
     </b-container>
@@ -183,10 +182,4 @@ defineProps(["showPopup"])
     background: #201F30;
 }
 
-/* Selection color */
-::-moz-selection { /* Code for Firefox */
-    color: #000;
-    background: #201F30;
-  }
-  
 </style>
