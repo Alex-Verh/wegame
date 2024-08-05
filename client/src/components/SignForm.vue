@@ -1,5 +1,5 @@
 <script setup>
-import PartyPop from './popups/ApplicationPopUp.vue'
+import PartyPop from './popups/LanguagesPopUp.vue'
 import { ref } from 'vue';
 
 
