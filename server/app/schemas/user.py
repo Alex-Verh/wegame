@@ -10,6 +10,10 @@ class UserBase(BaseModel):
     profile_pic: str | None = None
 
 
+class UserUpdate(UserBase):
+    password: str | None
+
+
 class UserCreate(UserBase):
     password: str
     language_ids: list[int] = []

@@ -5,28 +5,93 @@ from .security import get_password_hash
 
 
 def get_user(db: Session, user_id: int) -> models.User | None:
-    return db.query(models.User).filter(models.User.id == user_id).first()
+    return db.query(models.User).get(user_id)
+
+
+def get_users(db: Session, skip: int = 0, limit: int = 100) -> list[models.User]:
+    return db.query(models.User).offset(skip).limit(limit).all()
 
 
 def get_user_by_email(db: Session, email: str) -> models.User | None:
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-# def get_users(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.User).offset(skip).limit(limit).all()
-
-
 def create_user(db: Session, user: schemas.UserCreate) -> models.User:
     db_user = models.User(**user.model_dump(exclude=("language_ids", "platform_ids")))
     db_user.password = get_password_hash(user.password)
+    for language_id in user.language_ids:
+        db_language = models.UserLanguage(user_id=user.id, language_id=language_id)
+        db.add(db_language)
+    for platform_id in user.platform_ids:
+        db_platform = models.UserPlatform(user_id=user.id, platform_id=platform_id)
+        db.add(db_platform)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
+def update_user(
+    db: Session, db_user: models.User, user: schemas.UserUpdate
+) -> models.User:
+    user_data = user.model_dump(exclude_unset=True)
+    if "password" in user_data:
+        user_data["password"] = get_password_hash(user_data["password"])
+
+    for key, value in user_data.items():
+        setattr(db_user, key, value)
+
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def delete_user(db: Session, user_id: int) -> bool:
+    res = db.query(models.User).filter(models.User.id == user_id).delete()
+    db.commit()
+    return res
+
+
+def get_user_languages(db: Session, user_id: int) -> list[models.Language]:
+    return (
+        db.query(models.Language)
+        .join(models.UserLanguage)
+        .filter(models.UserLanguage.user_id == user_id)
+        .all()
+    )
+
+
+def create_user_language(
+    db: Session, user_id: int, language_id: int
+) -> models.UserLanguage:
+    db_user_language = models.UserLanguage(user_id=user_id, language_id=language_id)
+    db.add(db_user_language)
+    db.commit()
+    db.refresh(db_user_language)
+    return db_user_language
+
+
+def delete_user_language(db: Session, user_id: int, language_id: int) -> bool:
+    res = (
+        db.query(models.UserLanguage)
+        .filter(models.UserLanguage.user_id == user_id)
+        .filter(models.UserLanguage.language_id == language_id)
+        .delete()
+    )
+    db.commit()
+    return res
+
+def get_user_platforms(db: Session, user_id: int) -> list[models.Platform]:
+    return (
+        db.query(models.Platform)
+        .join(models.UserPlatform)
+        .filter(models.UserPlatform.user_id == user_id)
+        .all()
+    )
+    
+
 def get_game(db: Session, game_id: int) -> models.Game | None:
-    return db.query(models.Game).filter(models.Game.id == game_id).first()
+    return db.query(models.Game).get(game_id)
 
 
 def get_games(db: Session, skip: int = 0, limit: int = 100) -> list[models.Game]:
@@ -48,7 +113,7 @@ def delete_game(db: Session, game_id: int) -> bool:
 
 
 def get_language(db: Session, language_id: int) -> models.Language | None:
-    return db.query(models.Language).filter(models.Language.id == language_id).first()
+    return db.query(models.Language).get(language_id)
 
 
 def get_languages(

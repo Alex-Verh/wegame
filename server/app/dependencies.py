@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from . import crud
 from .database import SessionLocal
+from .models import User as DbUser
 from .schemas import ClientInfo, TokenPayload, User
 from .security import read_token
 
@@ -27,7 +28,7 @@ def get_db() -> Generator[Session, None, None]:
 DatabaseDep = Annotated[Session, Depends(get_db)]
 
 
-async def get_current_user(db: DatabaseDep, token: TokenDep):
+def get_current_user(db: DatabaseDep, token: TokenDep) -> DbUser:
 
     try:
         token_payload = TokenPayload(**read_token(token))

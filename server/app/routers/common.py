@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from .. import crud
 from ..dependencies import DatabaseDep, get_current_superuser
 from ..schemas import (
+    DeletionResponse,
     Game,
     GameCreate,
     Language,
@@ -35,8 +36,8 @@ def create_game(db: DatabaseDep, game: GameCreate) -> Game:
 
 
 @router.delete("/games/{game_id}", dependencies=[Depends(get_current_superuser)])
-def delete_game(db: DatabaseDep, game_id: int):
-    return {"deleted items": crud.delete_game(db, game_id)}
+def delete_game(db: DatabaseDep, game_id: int) -> DeletionResponse:
+    return DeletionResponse(deleted_items=crud.delete_game(db, game_id))
 
 
 @router.get("/languages")
@@ -62,8 +63,8 @@ def create_language(db: DatabaseDep, language: LanguageCreate) -> Language:
 @router.delete(
     "/languages/{language_id}", dependencies=[Depends(get_current_superuser)]
 )
-async def delete_language(db: DatabaseDep, language_id: int):
-    return {"deleted items": crud.delete_language(db, language_id)}
+def delete_language(db: DatabaseDep, language_id: int) -> DeletionResponse:
+    return DeletionResponse(deleted_items=crud.delete_language(db, language_id))
 
 
 @router.get("/platforms")
@@ -82,12 +83,12 @@ def read_platform(db: DatabaseDep, platform_id: int) -> Platform:
 
 
 @router.post("/platforms", dependencies=[Depends(get_current_superuser)])
-async def create_platform(db: DatabaseDep, platform: PlatformCreate) -> Platform:
+def create_platform(db: DatabaseDep, platform: PlatformCreate) -> Platform:
     return crud.create_platform(db, platform)
 
 
 @router.delete(
     "/platforms/{platform_id}", dependencies=[Depends(get_current_superuser)]
 )
-async def delete_platform(db: DatabaseDep, platform_id: int):
-    return {"deleted items": crud.delete_platform(db, platform_id)}
+def delete_platform(db: DatabaseDep, platform_id: int) -> DeletionResponse:
+    return DeletionResponse(deleted_items=crud.delete_platform(db, platform_id))
