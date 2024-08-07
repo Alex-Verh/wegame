@@ -14,6 +14,7 @@
   overflow: hidden; /* Hide overflow to ensure neat appearance */
   border: 1px solid #FE9F00;
   cursor: url('../assets/cursor-pointer.svg'), pointer;
+  font-size: 18px;
 }
 
 .game:hover {
@@ -22,6 +23,7 @@
 
 .game_image {
   width: 100%; /* Ensure the image takes up the full width of the column */
+  height: 100%;
   transition: transform 0.3s ease; /* Smooth transition for image */
 }
 
@@ -35,7 +37,6 @@
   left: 50%; /* Center horizontally */
   transform: translateX(-50%); /* Centering adjustment */
   opacity: 0; /* Start hidden */
-  font-size: 18px;
   transition: opacity 0.3s ease; /* Smooth transition for opacity */
   color: #fff;
 }

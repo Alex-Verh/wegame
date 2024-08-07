@@ -44,8 +44,11 @@ body {
 
 .button, .button_accent {
     font-weight: 700;
+    height: 64px;
+    display: flex;
+    align-items: center;
     text-align: center;
-    padding: 20px 0;
+    justify-content: center;
     cursor: url('cursor-pointer.svg'), pointer;
 }
 
