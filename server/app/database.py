@@ -8,3 +8,9 @@ engine = create_engine(settings.DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
+from .applications import models
+from .auth import models
+from .common import models
+from .parties import models
+from .users import models

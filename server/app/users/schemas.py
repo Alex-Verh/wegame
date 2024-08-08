@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .common import Language, Platform
+from ..common.schemas import Language, Platform
 
 
 class UserBase(BaseModel):

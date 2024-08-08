@@ -1,47 +1,28 @@
-from datetime import timedelta
 from typing import Annotated
 
-from fastapi import APIRouter, Cookie, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
 from fastapi.security import OAuth2PasswordRequestForm
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
-from sqlalchemy.orm import Session
 
-from .. import crud
-from ..dependencies import ClientInfoDep, CurrentUserDep, DatabaseDep
-from ..schemas import AuthSession, Token, TokenPayload
-from ..security import create_token, read_token, verify_password
+from ..dependencies import DatabaseDep
+from ..security import read_token
 from ..settings import settings
+from . import crud
+from .dependencies import ClientInfoDep, CurrentUserIdDep
+from .schemas import AuthSession, Token, TokenPayload
+from .sso import google
+from .utils import authenticate_user, create_tokens
 
 router = APIRouter(
     prefix="/auth",
     tags=["Auth"],
 )
+router.include_router(google.router)
 
 
-def authenticate_user(db: Session, email: str, password: str):
-    user = crud.get_user_by_email(db, email)
-    if not user:
-        return False
-    if not verify_password(password, user.password):
-        return False
-    return user
-
-
-def create_tokens(user_id: int) -> dict[str, Token]:
-    access_token = create_token(
-        data={"sub": user_id},
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
-    )
-    refresh_token = create_token(
-        {"sub": user_id},
-        expires_delta=timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
-    )
-    return {"access": access_token, "refresh": refresh_token}
-
-
-@router.post("/token")
-def get_tokens(
+@router.post("/login")
+def login(
     db: DatabaseDep,
     client_info: ClientInfoDep,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
@@ -81,16 +62,16 @@ def get_tokens(
     return Token(access_token=tokens["access"], token_type="bearer")
 
 
-@router.delete("/token")
-def delete_tokens(
+@router.get("/logout")
+def logout(
     db: DatabaseDep,
-    current_user: CurrentUserDep,
+    current_user_id: CurrentUserIdDep,
     client_info: ClientInfoDep,
     response: Response,
 ) -> dict[str, str]:
 
     if not crud.delete_auth_session(
-        db, user_id=current_user.id, **client_info.model_dump()
+        db, user_id=current_user_id, **client_info.model_dump()
     ):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -101,10 +82,10 @@ def delete_tokens(
     return {"message": "Successfully logged out"}
 
 
-@router.patch("/token")
-def update_tokens(
+@router.get("/refresh")
+def refresh(
     db: DatabaseDep, refresh_token: Annotated[str, Cookie()], response: Response
-):
+) -> Token:
     try:
         token_data = TokenPayload(**read_token(refresh_token))
     except (InvalidTokenError, ValidationError):

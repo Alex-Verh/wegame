@@ -1,6 +1,10 @@
 from fastapi import APIRouter, FastAPI
 
-from .routers import applications, auth, common, parties, users
+from .applications import router as applications
+from .auth import router as auth
+from .common import router as common
+from .parties import router as parties
+from .users import router as users
 
 app = FastAPI()
 

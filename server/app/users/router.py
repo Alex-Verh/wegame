@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from .. import crud
-from ..dependencies import CurrentUserDep, DatabaseDep, get_current_superuser
-from ..schemas import DeletionResponse, User, UserCreate, UserUpdate
+from ..dependencies import DatabaseDep
+from ..schemas import DeletionResponse
+from . import crud
+from .dependencies import CurrentUserDep, get_current_superuser
+from .schemas import User, UserCreate, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["Users"])
 

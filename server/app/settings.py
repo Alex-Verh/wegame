@@ -1,15 +1,20 @@
-from secrets import token_urlsafe
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    HOST: str = "http://localhost:8000"
+
     DATABASE_URL: str = ""
-    # SECRET_KEY: str = token_urlsafe(32)
-    SECRET_KEY: str = "dfh3746alkvduy37eqpsdja"
+    SECRET_KEY: str = "dfh3746alkvduy37eqpsdds19832lasdc91lsja03avnbkja"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
+
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    GOOGLE_CALLBACK_URL: str = f"{HOST}/api/auth/google/callback"
+    STEAM_CLIENT_ID: str = ""
+    STEAM_CLIENT_SECRET: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

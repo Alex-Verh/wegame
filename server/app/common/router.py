@@ -1,20 +1,55 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
+from lib.crud_router import CRUDRouter
 
-from .. import crud
-from ..dependencies import DatabaseDep, get_current_superuser
-from ..schemas import (
-    DeletionResponse,
-    Game,
-    GameCreate,
-    Language,
-    LanguageCreate,
-    Platform,
-    PlatformCreate,
-)
+from ..dependencies import get_db
+from ..users.dependencies import get_current_superuser
+from . import models, schemas
 
 router = APIRouter(tags=["Common"])
+games = CRUDRouter(
+    schema=schemas.Game,
+    create_schema=schemas.GameCreate,
+    db_model=models.Game,
+    db=get_db,
+    prefix="games",
+    tags=["Common"],
+    create_route=[Depends(get_current_superuser)],
+    update_route=[Depends(get_current_superuser)],
+    delete_one_route=[Depends(get_current_superuser)],
+    delete_all_route=[Depends(get_current_superuser)],
+)
+router.include_router(games)
+
+languages = CRUDRouter(
+    schema=schemas.Language,
+    create_schema=schemas.LanguageCreate,
+    db_model=models.Language,
+    db=get_db,
+    prefix="languages",
+    tags=["Common"],
+    create_route=[Depends(get_current_superuser)],
+    update_route=[Depends(get_current_superuser)],
+    delete_one_route=[Depends(get_current_superuser)],
+    delete_all_route=[Depends(get_current_superuser)],
+)
+router.include_router(languages)
+
+platforms = CRUDRouter(
+    schema=schemas.Platform,
+    create_schema=schemas.PlatformCreate,
+    db_model=models.Platform,
+    db=get_db,
+    prefix="platforms",
+    tags=["Common"],
+    create_route=[Depends(get_current_superuser)],
+    update_route=[Depends(get_current_superuser)],
+    delete_one_route=[Depends(get_current_superuser)],
+    delete_all_route=[Depends(get_current_superuser)],
+)
+router.include_router(platforms)
 
 
+"""
 @router.get("/games")
 def read_games(db: DatabaseDep) -> list[Game]:
     return crud.get_games(db)
@@ -92,3 +127,4 @@ def create_platform(db: DatabaseDep, platform: PlatformCreate) -> Platform:
 )
 def delete_platform(db: DatabaseDep, platform_id: int) -> DeletionResponse:
     return DeletionResponse(deleted_items=crud.delete_platform(db, platform_id))
+"""

@@ -36,7 +36,3 @@ class Platform(PlatformCreate):
 
     class Config:
         from_attributes = True
-
-
-class DeletionResponse(BaseModel):
-    deleted_items: int

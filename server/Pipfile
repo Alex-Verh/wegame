@@ -11,6 +11,7 @@ alembic = "*"
 python-dotenv = "*"
 pyjwt = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
+fastapi-sso = "*"
 
 [dev-packages]
 
