@@ -13,8 +13,9 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str = ""
     GOOGLE_CLIENT_SECRET: str = ""
     GOOGLE_CALLBACK_URL: str = f"{HOST}/api/auth/google/callback"
-    STEAM_CLIENT_ID: str = ""
-    STEAM_CLIENT_SECRET: str = ""
+    DISCORD_CLIENT_ID: str = ""
+    DISCORD_CLIENT_SECRET: str = ""
+    DISCORD_CALLBACK_URL: str = f"{HOST}/api/auth/discord/callback"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

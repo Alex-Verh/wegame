@@ -6,19 +6,20 @@ from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 
 from ..dependencies import DatabaseDep
-from ..security import read_token
 from ..settings import settings
 from . import crud
 from .dependencies import ClientInfoDep, CurrentUserIdDep
-from .schemas import AuthSession, Token, TokenPayload
-from .sso import google
-from .utils import authenticate_user, create_tokens
+from .schemas import Token, TokenPayload
+from .security import read_token
+from .sso import discord, google
+from .utils import authenticate_user, authorize_user, create_tokens
 
 router = APIRouter(
     prefix="/auth",
     tags=["Auth"],
 )
 router.include_router(google.router)
+router.include_router(discord.router)
 
 
 @router.post("/login")
@@ -36,30 +37,7 @@ def login(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    tokens = create_tokens(user.id)
-
-    auth_session = crud.get_auth_session(
-        db, user_id=user.id, **client_info.model_dump()
-    )
-    if auth_session:
-        crud.update_auth_session(db, auth_session, tokens["refresh"])
-    else:
-        crud.create_auth_session(
-            db,
-            AuthSession(
-                user_id=user.id,
-                refresh_token=tokens["refresh"],
-                **client_info.model_dump()
-            ),
-        )
-
-    response.set_cookie(
-        key="refresh_token",
-        value=tokens["refresh"],
-        max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
-        httponly=True,
-    )
-    return Token(access_token=tokens["access"], token_type="bearer")
+    return authorize_user(db, user.id, client_info, response)
 
 
 @router.get("/logout")

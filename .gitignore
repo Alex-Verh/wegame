@@ -33,3 +33,7 @@
 /client/*.tsbuildinfo
 
 **/__pycache__
+
+**/.env
+
+/server/.env

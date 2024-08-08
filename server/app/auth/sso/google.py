@@ -5,10 +5,8 @@ from ...dependencies import DatabaseDep
 from ...settings import settings
 from ...users.crud import create_user, get_user_by_email
 from ...users.schemas import UserCreate
-from .. import crud
 from ..dependencies import ClientInfoDep
-from ..schemas import AuthSession, Token
-from ..utils import create_tokens
+from ..utils import authorize_user
 
 google_sso = GoogleSSO(
     settings.GOOGLE_CLIENT_ID,
@@ -48,27 +46,4 @@ async def google_callback(
                 password="",
             ),
         )
-    tokens = create_tokens(db_user.id)
-
-    auth_session = crud.get_auth_session(
-        db, user_id=db_user.id, **client_info.model_dump()
-    )
-    if auth_session:
-        crud.update_auth_session(db, auth_session, tokens["refresh"])
-    else:
-        crud.create_auth_session(
-            db,
-            AuthSession(
-                user_id=db_user.id,
-                refresh_token=tokens["refresh"],
-                **client_info.model_dump()
-            ),
-        )
-
-    response.set_cookie(
-        key="refresh_token",
-        value=tokens["refresh"],
-        max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60,
-        httponly=True,
-    )
-    return Token(access_token=tokens["access"], token_type="bearer")
+    return authorize_user(db, db_user.id, client_info, response)

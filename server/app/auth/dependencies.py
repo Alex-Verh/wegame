@@ -5,8 +5,8 @@ from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 
-from ..security import read_token
 from .schemas import ClientInfo, TokenPayload
+from .security import read_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/token")
 
