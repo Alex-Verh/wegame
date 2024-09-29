@@ -12,7 +12,8 @@
             "args": [
                 "dev",
             ],
-            "jinja": true
+            "jinja": true,
+            "justMyCode": false
         }
     ]
 }

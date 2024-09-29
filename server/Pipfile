@@ -10,8 +10,9 @@ pydantic-settings = "*"
 alembic = "*"
 python-dotenv = "*"
 pyjwt = "*"
-passlib = {extras = ["bcrypt"], version = "*"}
 fastapi-sso = "*"
+passlib = "*"
+bcrypt = "*"
 
 [dev-packages]
 

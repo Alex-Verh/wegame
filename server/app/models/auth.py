@@ -1,6 +1,5 @@
+from app.models.base import Base
 from sqlalchemy import Column, ForeignKey, Integer, String
-
-from ..database import Base
 
 
 class AuthSession(Base):

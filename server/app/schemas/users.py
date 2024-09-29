@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
-from ..common.schemas import Language, Platform
+from app.schemas.languages import Language
+from app.schemas.platforms import Platform
 
 
 class UserBase(BaseModel):
@@ -10,8 +11,12 @@ class UserBase(BaseModel):
     profile_pic: str | None = None
 
 
-class UserUpdate(UserBase):
-    password: str | None
+class UserUpdate(BaseModel):
+    password: str | None = None
+    nickname: str | None = None
+    email: str | None = None
+    age: int | None = None
+    profile_pic: str | None = None
 
 
 class UserCreate(UserBase):

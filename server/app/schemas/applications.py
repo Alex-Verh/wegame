@@ -1,7 +1,7 @@
+from app.schemas.games import Game
+from app.schemas.platforms import Platform
+from app.schemas.users import User
 from pydantic import BaseModel
-
-from ..common.schemas import Game, Platform
-from ..users.schemas import User
 
 
 class ApplicationBase(BaseModel):
