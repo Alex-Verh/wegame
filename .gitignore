@@ -1,39 +1,25 @@
-/server/Pipfile.lock
-/client/package-lock.json
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+package-lock.json
+# Node dependencies
+node_modules
 
 # Logs
-/client/logs
-/client/*.log
-/client/npm-debug.log*
-/client/yarn-debug.log*
-/client/yarn-error.log*
-/client/pnpm-debug.log*
-/client/lerna-debug.log*
+logs
+*.log
 
-/client/node_modules
-/client/.DS_Store
-/client/dist
-/client/dist-ssr
-/client/coverage
-/client/*.local
+# Misc
+.DS_Store
+.fleet
+.idea
 
-/client/cypress/videos/
-/client/cypress/screenshots/
-
-# Editor directories and files
-/client/.vscode
-/client/!.vscode/extensions.json
-/client/.idea
-/client/*.suo
-/client/*.ntvs*
-/client/*.njsproj
-/client/*.sln
-/client/*.sw?
-
-/client/*.tsbuildinfo
-
-**/__pycache__
-
-**/.env
-
-/server/.env
+# Local env files
+.env
+.env.*
+!.env.example
