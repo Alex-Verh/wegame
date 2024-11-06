@@ -1,16 +1,26 @@
-<script setup>
-
-defineProps({
-    title: String,
-    submitButtonText: String,
-    fields: Array,
-    onSubmit: Function,
-    switchText: String,
-    switchLink: String,
+<script lang="ts" setup>
+const { fields } = defineProps({
+    type: String,
+    typeSwitchText: String,
+    typeSwitchLink: String,
+    fields: Object,
 });
 
+const emit = defineEmits(["submit"]);
 
-const showPopup = ref(false); 
+const onSubmit = (event: Event) => {
+    const formData = new FormData(event.target as HTMLFormElement);
+    for (const fieldName in fields) {
+        const validator = fields[fieldName].validator;
+        if (validator && !validator(formData.get(fieldName))) {
+            console.log(`Field ${fieldName} is invalid`);
+            return;
+        }
+    }
+    emit('submit', formData);
+
+}
+
 </script>
 
 <template>
@@ -21,24 +31,26 @@ const showPopup = ref(false);
             </b-col>
             <b-col cols="4">
                 <section>
-                    <ProfilePopUp :showPopup="showPopup" @close="showPopup = false" />
-
-                    <form action="" class="form" @submit.prevent="onSubmit($event)">
-                        <div class="form_title" v-html="title"></div>
+                    <form action="" class="form" @submit.prevent="onSubmit">
+                        <div class="form_title">
+                            <span class='form_name accent'>{{ type }}</span> to continue your journey with us
+                        </div>
                         <div class="form_fields">
-                            <div v-for="field in fields" class="form_field">
-                                <label :for="field.name" class="form_label">{{ field.label }}</label>
-                                <input :type="field.type" :name="field.name" class="form_input" :id="field.name">
+                            <div v-for="(field, name) in fields" :key="name" class="form_field">
+                                <label :for="name" class="form_label">{{ field.label }}</label>
+                                <input :type="field.type" :name="name" class="form_input" :id="name">
                             </div>
                         </div>
                         <div class="form_buttons d-flex justify-content-between">
                             <button type="submit" class="button_accent form_button">
-                                {{ submitButtonText }}
+                                {{ type }}
                             </button>
-                            <button class="button_accent form_button">Google Account</button>
-                            <button class="button_accent form_button" @click="showPopup = true">Show PopUp</button>
+                            <div class="button_accent form_button">
+                                <NuxtLink to="/api/auth/google">Google Account</NuxtLink>
+                            </div>
                         </div>
-                        <div class="form_switch">Switch to <NuxtLink :to="switchLink">{{ switchText }}</NuxtLink>
+                        <div class="form_switch">Switch to <NuxtLink :to="typeSwitchLink">{{ typeSwitchText }}
+                            </NuxtLink>
                         </div>
                     </form>
                 </section>

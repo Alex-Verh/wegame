@@ -1,5 +1,10 @@
+<script lang="ts" setup>
+</script>
+
 <template>
   <NavBar />
-  <NuxtPage />
+  <main>
+    <NuxtPage />
+  </main>
   <FootBar />
 </template>

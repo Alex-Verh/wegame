@@ -1,5 +1,3 @@
-import { userAlreadyExistsError } from "../utils/errors";
-
 export default defineEventHandler(async (event) => {
   const db = useDrizzle();
   const { nickname, email, password } = await readValidatedBody(
@@ -13,7 +11,7 @@ export default defineEventHandler(async (event) => {
 
   const hashedPassword = await hashPassword(password);
 
-  const user = await db
+  const [user] = await db
     .insert(tables.users)
     .values({
       nickname,
@@ -25,11 +23,11 @@ export default defineEventHandler(async (event) => {
     .returning()
     .onConflictDoNothing();
 
-  if (user.length !== 1) {
+  if (!user) {
     throw userAlreadyExistsError;
   }
   await setUserSession(event, {
-    userId: user[0].id,
+    user: { id: user.id },
     loggedInAt: Date.now(),
   });
   setResponseStatus(event, 201);

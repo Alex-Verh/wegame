@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
   const db = useDrizzle();
-
   const { email, password } = await readValidatedBody(
     event,
     z.object({
@@ -22,7 +21,7 @@ export default defineEventHandler(async (event) => {
   }
 
   await setUserSession(event, {
-    userId: user.id,
+    user: { id: user.id },
     loggedInAt: Date.now(),
   });
 

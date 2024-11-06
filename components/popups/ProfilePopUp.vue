@@ -1,16 +1,25 @@
 <script setup>
 defineProps(["showPopup"])
+const emit = defineEmits(["close"]);
+
+const { clear } = useUserSession()
+const logout = async () => {
+    await clear();
+    emit("close");
+    navigateTo("/");
+}
 </script>
 
 <template>
-    <PopUp :visible="showPopup" class="profile">
+    <PopUp :visible="showPopup" @close="$emit('close')" class="profile">
         <b-container>
             <b-row class="g-5">
                 <b-col cols="3">
                     <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
                     <p class="profile_username accent">xxx_destroyer_x89</p>
-                    <div class="button_accent button_pop">Edit Links</div>
-                    <div class="button_accent button_pop">Edit Details</div>
+                    <button class="button_accent button_pop">Edit Links</button>
+                    <button class="button_accent button_pop">Edit Details</button>
+                    <button @click="logout" class="button_accent button_pop">Logout</button>
                 </b-col>
                 <b-col cols="9">
                     <div class="profile_games">

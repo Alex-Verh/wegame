@@ -1,30 +1,27 @@
-<script>
-export default {
-  name: 'PopupWrapper',
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    width: {
-      type: Number,
-      default: 1000,
-    }
+<script setup>
+const { visible } = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
   },
-  watch: {
-    visible(val) {
-      if (val) {
-        document.body.classList.add('no-scroll');
-      } else {
-        document.body.classList.remove('no-scroll');
-      }
-    }
-  },
-  methods: {
-    close() {
-      this.$emit('close');
-    }
+  width: {
+    type: Number,
+    default: 1000,
   }
+})
+
+const emit = defineEmits(['close']);
+
+watchEffect(() => {
+  if (!document) return;
+  if (visible) {
+    document.body.classList.add('no-scroll');
+  } else {
+    document.body.classList.remove('no-scroll');
+  }
+})
+const close = () => {
+  emit('close');
 }
 </script>
 

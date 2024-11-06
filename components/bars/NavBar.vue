@@ -1,17 +1,24 @@
+<script setup lang="ts">
+const { loggedIn } = useUserSession()
+const showPopup = ref(false);
+</script>
+
 <template>
     <nav class="navigation">
+        <ProfilePopUp :showPopup @close="showPopup = false" />
         <b-container fluid>
             <b-row>
                 <b-col cols="3">
                     <div class="logo d-flex align-items-center justify-content-center">
                         <img src="/images/logo.png" alt="Logo" class="logo_icon">
                         <div class="logo_text">
-                            WE<span class="accent">GAME</span>
+                            <NuxtLink to="/">
+                                WE<span class="accent">GAME</span>
+                            </NuxtLink>
                         </div>
                     </div>
                 </b-col>
                 <b-col cols="7">
-                    <!-- TODO: add <RouterLink to="/"></RouterLink> to links -->
                     <div class="links">
                         <div class="links_row_accent d-flex justify-content-left">
                             <div class="link">Terms and Conditions</div>
@@ -32,9 +39,11 @@
                 </b-col>
                 <b-col cols="2">
                     <div class="buttons">
-                        <div class="button">See Messages</div>
-                        <NuxtLink to="/signin">"<div class="button_accent">Enter Account</div>
+                        <button class="button">See Messages
+                        </button>
+                        <NuxtLink v-if="!loggedIn" to="/sign-in">"<div class="button_accent">Enter Account</div>
                         </NuxtLink>
+                        <button v-else @click="showPopup = true" class="button_accent">Enter Account</button>
                     </div>
                 </b-col>
             </b-row>
