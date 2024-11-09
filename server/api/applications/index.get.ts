@@ -5,6 +5,9 @@ export default defineEventHandler(async (event) => {
       userId: z.coerce.number().optional(),
       gameId: z.coerce.number().optional(),
       platformId: z.coerce.number().optional(),
+      limit: z.coerce.number().default(15),
+      offset: z.coerce.number().default(0),
+      search: z.string().optional(),
     }).parse
   );
   const db = useDrizzle();

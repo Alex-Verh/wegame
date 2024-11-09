@@ -1,9 +1,9 @@
 <script setup>
-defineProps(["showPopup"])
+const { visible, close } = usePartyMembersPopup()
 </script>
 
 <template>
-    <Popup :visible="showPopup" :width="700" class="members">
+    <Popup :visible @close="close" :width="700" class="members">
         <b-container>
             <div class="members_title">Party Members</div>
 

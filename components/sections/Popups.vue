@@ -1,8 +1,8 @@
 <template>
-    <ApplicationPopup />
-    <LanguagesPopup />
-    <LinksPopup />
-    <MembersPopup />
-    <PartyPopup />
+    <NewApplicationPopup />
+    <UserDetailsPopup />
+    <UserLinksPopup />
+    <PartyMembersPopup />
+    <NewPartyPopup />
     <ProfilePopup />
 </template>

@@ -6,7 +6,7 @@ export const tables = schema;
 export function useDrizzle() {
   const db = drizzle(useRuntimeConfig().databaseUrl, {
     schema,
-    logger: true,
+    // logger: true,
   });
   return db;
 }

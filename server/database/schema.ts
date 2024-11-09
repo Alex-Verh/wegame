@@ -5,13 +5,14 @@ import {
   boolean,
   serial,
   primaryKey,
+  index,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const platforms = pgTable("platforms", {
   id: serial().primaryKey(),
   title: varchar().notNull().unique(),
-  url: varchar().notNull(),
+  urlPattern: varchar("url_pattern").notNull(),
 });
 
 export const languages = pgTable("languages", {
@@ -22,16 +23,15 @@ export const languages = pgTable("languages", {
 export const games = pgTable("games", {
   id: serial().primaryKey(),
   title: varchar().notNull().unique(),
-  photo: varchar(),
-  icon: varchar(),
-  ranking: varchar(),
+  image: varchar().notNull(),
+  icon: varchar().notNull(),
 });
 
 export const users = pgTable("users", {
   id: serial().primaryKey(),
   nickname: varchar().notNull(),
   email: varchar().unique().notNull(),
-  password: varchar().notNull(),
+  password: varchar(),
   age: integer(),
   profilePic: varchar("profile_pic"),
   isActive: boolean("is_active").default(false).notNull(),
@@ -46,14 +46,23 @@ export const usersRelations = relations(users, ({ many }) => ({
   platforms: many(userPlatforms),
 }));
 
-export const applications = pgTable("applications", {
-  id: serial().primaryKey(),
-  authorId: integer("author_id").references(() => users.id),
-  gameId: integer("game_id").references(() => games.id),
-  title: varchar().notNull(),
-  platformId: integer("platform_id").references(() => platforms.id),
-  ranking: varchar(),
-});
+export const applications = pgTable(
+  "applications",
+  {
+    id: serial().primaryKey(),
+    authorId: integer("author_id").references(() => users.id),
+    gameId: integer("game_id").references(() => games.id),
+    text: varchar().notNull(),
+    platformId: integer("platform_id").references(() => platforms.id),
+    ranking: varchar(),
+  },
+  (table) => ({
+    searchIndex: index("applications_search_index").using(
+      "gin",
+      sql`to_tsvector('english', ${table.text})`
+    ),
+  })
+);
 
 export const applicationsRelations = relations(applications, ({ one }) => ({
   author: one(users, {
@@ -70,13 +79,29 @@ export const applicationsRelations = relations(applications, ({ one }) => ({
   }),
 }));
 
-export const parties = pgTable("parties", {
-  id: serial().primaryKey(),
-  leaderId: integer("leader_id").references(() => users.id),
-  gameId: integer("game_id").references(() => games.id),
-  ageRange: varchar("age_range"),
-  platformId: integer("platform_id").references(() => platforms.id),
-});
+export const parties = pgTable(
+  "parties",
+  {
+    id: serial().primaryKey(),
+    leaderId: integer("leader_id").references(() => users.id),
+    gameId: integer("game_id").references(() => games.id),
+    title: varchar().notNull(),
+    description: varchar(),
+    minAge: integer("min_range"),
+    maxAge: integer("max_range"),
+    membersLimit: integer("members_limit"),
+    platformId: integer("platform_id").references(() => platforms.id),
+  },
+  (table) => ({
+    searchIndex: index("parties_search_index").using(
+      "gin",
+      sql`(
+        setweight(to_tsvector('english', ${table.title}), 'A') ||
+        setweight(to_tsvector('english', ${table.description}), 'B')
+    )`
+    ),
+  })
+);
 
 export const partiesRelations = relations(parties, ({ one, many }) => ({
   leader: one(users, {
@@ -125,6 +150,7 @@ export const userPlatforms = pgTable(
     platformId: integer("platform_id")
       .notNull()
       .references(() => platforms.id),
+    link: varchar().notNull(),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.platformId] }),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { loggedIn } = useUserSession()
-const applicationPopup = useApplicationPopup()
+const newApplicationPopup = useNewApplicationPopup()
 const profilePopup = useProfilePopup()
 </script>
 
@@ -29,10 +29,12 @@ const profilePopup = useProfilePopup()
                             </div>
                         </div>
                         <div class="links_row d-flex justify-content-around">
-                            <button class="link"><img src="" alt="" class="link_icon">Find Friend Quickly</button>
-                            <button @click="applicationPopup.open" class="link"><img src="" alt=""
+                            <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend
+                                Quickly</NuxtLink>
+                            <button @click="newApplicationPopup.open" class="link"><img src="" alt=""
                                     class="link_icon">Create Your Application</button>
-                            <button class="link"><img src="" alt="" class="link_icon">Join A Party</button>
+                            <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party
+                            </NuxtLink>
                         </div>
                     </div>
                 </b-col>

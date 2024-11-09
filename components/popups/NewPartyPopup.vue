@@ -1,9 +1,10 @@
 <script setup>
-defineProps(["showPopup"])
+const { visible, close } = useNewPartyPopup()
+const { data: games } = useFetch('/api/games')
 </script>
 
 <template>
-    <Popup :visible="showPopup">
+    <Popup :visible @close="close">
         <b-container>
             <div class="party_title">Create Party</div>
             <label for="party_name" class="party_subtitle">Party Name</label>
@@ -12,12 +13,7 @@ defineProps(["showPopup"])
             <textarea name="party_description" id="party_description" class="party_field"></textarea>
             <label for="" class="party_subtitle">Select application game</label>
             <div class="pop_section d-flex flex-row">
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
+                <Game v-for="game in games" :title="game.title" :image="game.image" class="game_pop" />
             </div>
             <div class="party_buttons d-flex justify-content-center">
                 <div class="button_accent">Save Changes</div>

@@ -1,6 +1,6 @@
 {
-  "id": "631b3c5c-bc5f-49ec-9aaa-3237479c1a5a",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "41e353c5-8aff-487a-b903-6a2a3f033346",
+  "prevId": "631b3c5c-bc5f-49ec-9aaa-3237479c1a5a",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -482,6 +482,12 @@
         "platform_id": {
           "name": "platform_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "link": {
+          "name": "link",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         }

@@ -4,12 +4,12 @@ export default defineEventHandler(async (event) => {
     z.object({ id: z.coerce.number() }).parse
   );
 
-  // const { user } = await getUserSession(event);
-
   const db = useDrizzle();
   const dbUser = await db.query.users.findFirst({
     columns: {
       password: false,
+      email: false,
+      isSuperuser: false,
     },
     where: (users, { eq }) => eq(users.id, id),
     with: {
@@ -29,5 +29,6 @@ export default defineEventHandler(async (event) => {
       own_parties: true,
     },
   });
+  if (!dbUser) throw userNotFoundError;
   return dbUser;
 });

@@ -1,16 +1,14 @@
 <script setup lang="ts">
+const loading = ref(false);
+const userData = inject("userData");
+
+const { clear } = useUserSession()
 
 const { visible, close } = useProfilePopup()
-
-const loading = ref(false);
-const userData = ref({});
-const { user, clear } = useUserSession()
-const applicationPopup = useApplicationPopup()
-
-watchEffect(async () => {
-    userData.value = await $fetch(`/api/users/${user.value.id}`);
-})
-
+const newApplicationPopup = useNewApplicationPopup()
+const newPartyPopup = useNewPartyPopup()
+const userDetailsPopup = useUserDetailsPopup()
+const userLinksPopup = useUserLinksPopup()
 
 const logout = async () => {
     loading.value = true;
@@ -22,14 +20,14 @@ const logout = async () => {
 </script>
 
 <template>
-    <Popup :visible @close="close" class="profile">
+    <Popup :visible @close="close" :style="{ zIndex: 800 }" class="profile">
         <b-container>
             <b-row class="g-5">
                 <b-col cols="3">
                     <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
                     <p class="profile_username accent">{{ userData?.nickname }}</p>
-                    <button class="button_accent button_pop">Edit Links</button>
-                    <button class="button_accent button_pop">Edit Details</button>
+                    <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Links</button>
+                    <button @click="userDetailsPopup.open" class="button_accent button_pop">Edit Details</button>
                     <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
                         }}</button>
                 </b-col>
@@ -44,7 +42,7 @@ const logout = async () => {
                                 </b-col>
                             </b-row>
 
-                            <div class="profile_subtitle">Applications - <span @click="close(); applicationPopup.open()"
+                            <div class="profile_subtitle">Applications - <span @click="newApplicationPopup.open"
                                     class="profile_createapp">Create
                                     New</span></div>
                             <div class="profile_section d-flex flex-row">
@@ -55,7 +53,9 @@ const logout = async () => {
                                 </div>
                             </div>
 
-                            <div class="profile_subtitle">Parties</div>
+                            <div class="profile_subtitle">Parties - <span @click="newPartyPopup.open"
+                                    class="profile_createapp">Create
+                                    New</span></div>
                             <div class="profile_section d-flex flex-row">
                                 <div v-for="party in userData?.own_parties" class="profile_box">
                                     <div class="profile_party_title accent">Juicy Bastards</div>

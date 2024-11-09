@@ -11,7 +11,7 @@ const { data: games } = useFetch('/api/games')
         <div class="games">
             <b-row class="g-5">
                 <b-col v-for="game in games" cols="4" class="d-flex justify-content-center">
-                    <Game :title="game.title" :image="game.photo" />
+                    <Game :title="game.title" :image="game.image" />
                 </b-col>
             </b-row>
         </div>

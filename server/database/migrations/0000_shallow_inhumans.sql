@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS "applications" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"author_id" integer,
 	"game_id" integer,
-	"title" varchar NOT NULL,
+	"text" varchar NOT NULL,
 	"platform_id" integer,
 	"ranking" varchar
 );
@@ -10,9 +10,8 @@ CREATE TABLE IF NOT EXISTS "applications" (
 CREATE TABLE IF NOT EXISTS "games" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" varchar NOT NULL,
-	"photo" varchar,
-	"icon" varchar,
-	"ranking" varchar,
+	"image" varchar NOT NULL,
+	"icon" varchar NOT NULL,
 	CONSTRAINT "games_title_unique" UNIQUE("title")
 );
 --> statement-breakpoint
@@ -26,7 +25,11 @@ CREATE TABLE IF NOT EXISTS "parties" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"leader_id" integer,
 	"game_id" integer,
-	"age_range" varchar,
+	"title" varchar NOT NULL,
+	"description" varchar,
+	"min_range" integer,
+	"max_range" integer,
+	"members_limit" integer,
 	"platform_id" integer
 );
 --> statement-breakpoint
@@ -39,7 +42,7 @@ CREATE TABLE IF NOT EXISTS "party_members" (
 CREATE TABLE IF NOT EXISTS "platforms" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" varchar NOT NULL,
-	"url" varchar NOT NULL,
+	"url_pattern" varchar NOT NULL,
 	CONSTRAINT "platforms_title_unique" UNIQUE("title")
 );
 --> statement-breakpoint
@@ -59,7 +62,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"nickname" varchar NOT NULL,
 	"email" varchar NOT NULL,
-	"password" varchar NOT NULL,
+	"password" varchar,
 	"age" integer,
 	"profile_pic" varchar,
 	"is_active" boolean DEFAULT false NOT NULL,
@@ -138,3 +141,9 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "applications_search_index" ON "applications" USING gin (to_tsvector('english', "text"));--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "parties_search_index" ON "parties" USING gin ((
+        setweight(to_tsvector('english', "title"), 'A') ||
+        setweight(to_tsvector('english', "description"), 'B')
+    ));

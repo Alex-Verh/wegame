@@ -1,9 +1,16 @@
 <script setup>
-defineProps(["showPopup"])
+const userData = inject("userData");
+
+const selectedLanguages = computed(() =>
+    userData.value.languages ? userData.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
+)
+const { visible, close } = useUserDetailsPopup()
+const { data: languages } = useFetch('/api/languages')
+
 </script>
 
 <template>
-    <Popup :visible="showPopup" :width="700" class="languagespop">
+    <Popup :visible @close="close" :width="700" class="languagespop">
         <b-container>
             <div class="languages_title">Select Languages</div>
 
@@ -16,28 +23,15 @@ defineProps(["showPopup"])
                 </div>
 
                 <b-row class="g-1">
-                    <b-col cols="6">
-                        <div class="language">English</div>
-                    </b-col>
-                    <b-col cols="6">
-                        <div class="language">Russian</div>
-                    </b-col>
-                    <b-col cols="6">
-                        <div class="language">Ivrish</div>
-                    </b-col>
-                    <b-col cols="6">
-                        <div class="language">Huivrish</div>
-                    </b-col>
-                    <b-col cols="6">
-                        <div class="language language_selected">Latin</div>
-                    </b-col>
-                    <b-col cols="6">
-                        <div class="language">Bomboclat</div>
+                    <b-col v-for="language in languages" cols="6">
+                        <div :class="{ language_selected: selectedLanguages[language.id] }" class="language">{{
+                            language.title }}
+                        </div>
                     </b-col>
                 </b-row>
 
                 <div class="button_accent">Save Languages</div>
-
+                <div class="languages_title">Enter your age</div>
                 <div class="languages_field d-flex align-items-center justify-content-between">
                     <input class="languages_input" type="text" name="user_age" id="user_age"
                         placeholder="Enter your age number" />

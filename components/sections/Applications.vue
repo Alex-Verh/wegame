@@ -2,11 +2,9 @@
 </script>
 
 <template>
-    <section class="section">
+    <section class="section" id="applications">
         <div class="section_title">Applications - Find One</div>
-
         <SearchBar />
-
         <div class="applications">
             <Application />
             <Application />

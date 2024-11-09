@@ -1,7 +1,7 @@
 <script setup>
 
-const { visible, close } = useApplicationPopup()
-
+const { visible, close } = useNewApplicationPopup()
+const { data: games } = useFetch('/api/games')
 </script>
 
 <template>
@@ -12,12 +12,7 @@ const { visible, close } = useApplicationPopup()
             <textarea name="application_description" id="application_description" class="application_field"></textarea>
             <label for="" class="application_subtitle">Select application game</label>
             <div class="pop_section d-flex flex-row">
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
-                <Game class="game_pop" />
+                <Game v-for="game in games" :title="game.title" :image="game.image" class="game_pop" />
             </div>
             <div class="application_buttons d-flex justify-content-center">
                 <div class="button_accent">Save Changes</div>
