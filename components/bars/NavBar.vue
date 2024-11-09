@@ -1,29 +1,27 @@
 <script setup lang="ts">
 const { loggedIn } = useUserSession()
-const showPopup = ref(false);
+const applicationPopup = useApplicationPopup()
+const profilePopup = useProfilePopup()
 </script>
 
 <template>
     <nav class="navigation">
-        <ProfilePopUp :showPopup @close="showPopup = false" />
         <b-container fluid>
             <b-row>
                 <b-col cols="3">
                     <div class="logo d-flex align-items-center justify-content-center">
                         <img src="/images/logo.png" alt="Logo" class="logo_icon">
-                        <div class="logo_text">
-                            <NuxtLink to="/">
-                                WE<span class="accent">GAME</span>
-                            </NuxtLink>
-                        </div>
+                        <NuxtLink to="/" class="logo_text">
+                            WE<span class="accent">GAME</span>
+                        </NuxtLink>
                     </div>
                 </b-col>
                 <b-col cols="7">
                     <div class="links">
                         <div class="links_row_accent d-flex justify-content-left">
-                            <div class="link">Terms and Conditions</div>
-                            <div class="link">Support</div>
-                            <div class="link">FAQ</div>
+                            <NuxtLink to="/" class="link">Terms and Conditions</NuxtLink>
+                            <NuxtLink to="/" class="link">Support</NuxtLink>
+                            <NuxtLink to="/" class="link">FAQ</NuxtLink>
                             <div class="language_dropdown">
                                 <!-- <img src="" alt="" class="language_icon"> -->
                                 <div class="language_text">English (US)</div>
@@ -31,9 +29,10 @@ const showPopup = ref(false);
                             </div>
                         </div>
                         <div class="links_row d-flex justify-content-around">
-                            <div class="link"><img src="" alt="" class="link_icon">Find Friend Quickly</div>
-                            <div class="link"><img src="" alt="" class="link_icon">Create Your Application</div>
-                            <div class="link"><img src="" alt="" class="link_icon">Join A Party</div>
+                            <button class="link"><img src="" alt="" class="link_icon">Find Friend Quickly</button>
+                            <button @click="applicationPopup.open" class="link"><img src="" alt=""
+                                    class="link_icon">Create Your Application</button>
+                            <button class="link"><img src="" alt="" class="link_icon">Join A Party</button>
                         </div>
                     </div>
                 </b-col>
@@ -41,9 +40,9 @@ const showPopup = ref(false);
                     <div class="buttons">
                         <button class="button">See Messages
                         </button>
-                        <NuxtLink v-if="!loggedIn" to="/sign-in">"<div class="button_accent">Enter Account</div>
+                        <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">Enter Account
                         </NuxtLink>
-                        <button v-else @click="showPopup = true" class="button_accent">Enter Account</button>
+                        <button v-else @click="profilePopup.open" class="button_accent">View Profile</button>
                     </div>
                 </b-col>
             </b-row>
@@ -79,6 +78,11 @@ const showPopup = ref(false);
 }
 
 .link {
+    display: block;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    color: inherit;
     cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
 }
 

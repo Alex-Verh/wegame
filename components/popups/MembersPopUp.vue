@@ -3,7 +3,7 @@ defineProps(["showPopup"])
 </script>
 
 <template>
-    <PopUp :visible="showPopup" :width="700" class="members">
+    <Popup :visible="showPopup" :width="700" class="members">
         <b-container>
             <div class="members_title">Party Members</div>
 
@@ -92,7 +92,7 @@ defineProps(["showPopup"])
 
             <div class="button_accent">Kick All</div>
         </b-container>
-    </PopUp>
+    </Popup>
 </template>
 
 <style scoped>

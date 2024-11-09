@@ -1,14 +1,26 @@
 <script lang="ts" setup>
-const { fields } = defineProps({
+const { fields, submitUrl } = defineProps({
     type: String,
     typeSwitchText: String,
     typeSwitchLink: String,
+    submitUrl: String,
     fields: Object,
 });
 
 const emit = defineEmits(["submit"]);
 
-const onSubmit = (event: Event) => {
+const loading = ref(false);
+const error = ref("");
+
+
+const { fetch, loggedIn } = useUserSession()
+
+watchEffect(() => {
+    if (loggedIn.value) {
+        navigateTo("/")
+    }
+})
+const onSubmit = async (event: Event) => {
     const formData = new FormData(event.target as HTMLFormElement);
     for (const fieldName in fields) {
         const validator = fields[fieldName].validator;
@@ -17,8 +29,26 @@ const onSubmit = (event: Event) => {
             return;
         }
     }
-    emit('submit', formData);
-
+    try {
+        loading.value = true;
+        const body: { [key: string]: any } = {}
+        for (const [key, value] of formData) {
+            body[key] = value
+        }
+        await $fetch(submitUrl as string, {
+            method: 'POST',
+            body,
+        });
+        await fetch();
+        console.log('User signed up successfully')
+    }
+    catch (err) {
+        if (err instanceof Error)
+            error.value = err.message
+    }
+    finally {
+        loading.value = false;
+    }
 }
 
 </script>
@@ -38,20 +68,20 @@ const onSubmit = (event: Event) => {
                         <div class="form_fields">
                             <div v-for="(field, name) in fields" :key="name" class="form_field">
                                 <label :for="name" class="form_label">{{ field.label }}</label>
-                                <input :type="field.type" :name="name" class="form_input" :id="name">
+                                <input :type="field.type" :name="name" :id="name" class="form_input">
                             </div>
                         </div>
                         <div class="form_buttons d-flex justify-content-between">
-                            <button type="submit" class="button_accent form_button">
-                                {{ type }}
+                            <button :disabled="loading" type="submit" class="button_accent form_button">
+                                {{ loading ? 'Loading...' : type }}
                             </button>
-                            <div class="button_accent form_button">
-                                <NuxtLink to="/api/auth/google">Google Account</NuxtLink>
-                            </div>
-                        </div>
-                        <div class="form_switch">Switch to <NuxtLink :to="typeSwitchLink">{{ typeSwitchText }}
+                            <NuxtLink to="/api/auth/google" class="button_accent form_button">
+                                Google Account
                             </NuxtLink>
                         </div>
+                        <NuxtLink :to="typeSwitchLink" class="form_switch">Switch to {{ typeSwitchText }}
+                        </NuxtLink>
+                        <div>{{ error }}</div>
                     </form>
                 </section>
             </b-col>
@@ -90,6 +120,7 @@ const onSubmit = (event: Event) => {
 }
 
 .form_switch {
+    display: block;
     text-align: center;
     color: #FE9F00;
     text-decoration: underline;

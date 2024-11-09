@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
     <footer class="footer">
         <b-container>
@@ -6,10 +9,10 @@
                     <div>
                         <div class="link_column_header">Website Links</div>
                         <div class="links">
-                            <div class="link">Home Page</div>
-                            <div class="link">Parties & Lobbies</div>
-                            <div class="link">Registration</div>
-                            <div class="link">Support & FAQ</div>
+                            <NuxtLink to="/" class="link">Home Page</NuxtLink>
+                            <NuxtLink to="/parties" class="link">Parties & Lobbies</NuxtLink>
+                            <NuxtLink to="/sign-up" class="link">Registration</NuxtLink>
+                            <NuxtLink to="/" class="link">Support & FAQ</NuxtLink>
                         </div>
                     </div>
                 </b-col>
@@ -17,9 +20,9 @@
                     <div>
                         <div class="link_column_header">About Us</div>
                         <div class="links">
-                            <div class="link">Instagram</div>
-                            <div class="link">Steam</div>
-                            <div class="link">GitHub</div>
+                            <a href="#" class="link">Instagram</a>
+                            <a href="#" class="link">Steam</a>
+                            <a href="#" class="link">GitHub</a>
                         </div>
                     </div>
                 </b-col>
@@ -27,8 +30,8 @@
                     <div>
                         <div class="link_column_header">Other Projects</div>
                         <div class="links">
-                            <div class="link">Flashy</div>
-                            <div class="link">Coworkers</div>
+                            <a href="#" class="link">Flashy</a>
+                            <a href="#" class="link">Coworkers</a>
                         </div>
                     </div>
                 </b-col>
@@ -36,8 +39,8 @@
                     <div>
                         <div class="link_column_header">Language</div>
                         <div class="links">
-                            <div class="link">Русский</div>
-                            <div class="link">English</div>
+                            <button class="link">Русский</button>
+                            <button class="link">English</button>
                         </div>
                     </div>
                 </b-col>
@@ -58,9 +61,9 @@
                     <b-col cols="3">
                         <div class="logo d-flex align-items-center justify-content-center">
                             <img src="/images/logo.png" alt="Logo" class="logo_icon">
-                            <div class="logo_text">
+                            <NuxtLink to="/" class="logo_text">
                                 WE<span class="accent">GAME</span>
-                            </div>
+                            </NuxtLink>
                         </div>
                     </b-col>
                 </b-row>
@@ -93,6 +96,11 @@
 }
 
 .link {
+    display: block;
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    color: inherit;
     margin-bottom: 10px;
 }
 

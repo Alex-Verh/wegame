@@ -1,4 +1,6 @@
 <script setup>
+
+const { data: games } = useFetch('/api/games')
 </script>
 
 <template>
@@ -8,28 +10,8 @@
         </div>
         <div class="games">
             <b-row class="g-5">
-                <b-col cols="4" class="d-flex justify-content-center">
-                    <Game />
-                </b-col>
-
-                <b-col cols="4" class="d-flex justify-content-center">
-                    <Game />
-                </b-col>
-
-                <b-col cols="4" class="d-flex justify-content-center">
-                    <Game />
-                </b-col>
-
-                <b-col cols="4" class="d-flex justify-content-center">
-                    <Game />
-                </b-col>
-
-                <b-col cols="4" class="d-flex justify-content-center">
-                    <Game />
-                </b-col>
-
-                <b-col cols="4" class="d-flex justify-content-center">
-                    <Game />
+                <b-col v-for="game in games" cols="4" class="d-flex justify-content-center">
+                    <Game :title="game.title" :image="game.photo" />
                 </b-col>
             </b-row>
         </div>

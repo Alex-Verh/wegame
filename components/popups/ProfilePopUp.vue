@@ -1,25 +1,37 @@
-<script setup>
-defineProps(["showPopup"])
-const emit = defineEmits(["close"]);
+<script setup lang="ts">
 
-const { clear } = useUserSession()
+const { visible, close } = useProfilePopup()
+
+const loading = ref(false);
+const userData = ref({});
+const { user, clear } = useUserSession()
+const applicationPopup = useApplicationPopup()
+
+watchEffect(async () => {
+    userData.value = await $fetch(`/api/users/${user.value.id}`);
+})
+
+
 const logout = async () => {
+    loading.value = true;
     await clear();
-    emit("close");
-    navigateTo("/");
+    loading.value = false;
+    close();
+    navigateTo("/sign-in");
 }
 </script>
 
 <template>
-    <PopUp :visible="showPopup" @close="$emit('close')" class="profile">
+    <Popup :visible @close="close" class="profile">
         <b-container>
             <b-row class="g-5">
                 <b-col cols="3">
                     <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
-                    <p class="profile_username accent">xxx_destroyer_x89</p>
+                    <p class="profile_username accent">{{ userData?.nickname }}</p>
                     <button class="button_accent button_pop">Edit Links</button>
                     <button class="button_accent button_pop">Edit Details</button>
-                    <button @click="logout" class="button_accent button_pop">Logout</button>
+                    <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
+                        }}</button>
                 </b-col>
                 <b-col cols="9">
                     <div class="profile_games">
@@ -27,66 +39,28 @@ const logout = async () => {
                             <div class="profile_subtitle">Games</div>
                             <b-row class="g-3">
                                 <b-col cols="3">
-                                    <Game class="profile_game" />
+                                    <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg"
+                                        class="profile_game" />
                                 </b-col>
-                                <b-col cols="3">
-                                    <Game class="profile_game" />
-                                </b-col>
-                                <b-col cols="3">
-                                    <Game class="profile_game" />
-                                </b-col>
-                                <b-col cols="3">
-                                    <Game class="profile_game" />
-                                </b-col>
-
                             </b-row>
 
-                            <div class="profile_subtitle">Applications - <span class="profile_createapp">Create
+                            <div class="profile_subtitle">Applications - <span @click="close(); applicationPopup.open()"
+                                    class="profile_createapp">Create
                                     New</span></div>
                             <div class="profile_section d-flex flex-row">
-                                <div class="profile_box d-inline-flex align-items-center">
-                                    Looking for a cool CS 2 player, preferably higher than gold nova 1 and know russian.
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                </div>
-                                <div class="profile_box d-inline-flex align-items-center">
-                                    Looking for a cool CS 2 player, preferably higher than gold nova 1 and know russian.
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                </div>
-                                <div class="profile_box d-inline-flex align-items-center">
-                                    Looking for a cool CS 2 player, preferably higher than gold nova 1 and know russian.
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                </div>
-                                <div class="profile_box d-inline-flex align-items-center">
-                                    Looking for a cool CS 2 player, preferably higher than gold nova 1 and know russian.
+                                <div v-for="application in userData?.applications"
+                                    class="profile_box d-inline-flex align-items-center">
+                                    {{ application.title }}
                                     <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                                 </div>
                             </div>
 
                             <div class="profile_subtitle">Parties</div>
                             <div class="profile_section d-flex flex-row">
-                                <div class="profile_box">
+                                <div v-for="party in userData?.own_parties" class="profile_box">
                                     <div class="profile_party_title accent">Juicy Bastards</div>
                                     <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                    <div>Looking for a cool CS 2 player, preferably higher than gold nova 1 and know
-                                        russian.</div>
-                                </div>
-                                <div class="profile_box">
-                                    <div class="profile_party_title accent">Juicy Bastards</div>
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                    <div>Looking for a cool CS 2 player, preferably higher than gold nova 1 and know
-                                        russian.</div>
-                                </div>
-                                <div class="profile_box">
-                                    <div class="profile_party_title accent">Juicy Bastards</div>
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                    <div>Looking for a cool CS 2 player, preferably higher than gold nova 1 and know
-                                        russian.</div>
-                                </div>
-                                <div class="profile_box">
-                                    <div class="profile_party_title accent">Juicy Bastards</div>
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                    <div>Looking for a cool CS 2 player, preferably higher than gold nova 1 and know
-                                        russian.</div>
+                                    <div>{{ party.title }}</div>
                                 </div>
                             </div>
                         </b-container>
@@ -94,7 +68,7 @@ const logout = async () => {
                 </b-col>
             </b-row>
         </b-container>
-    </PopUp>
+    </Popup>
 </template>
 
 <style scoped>

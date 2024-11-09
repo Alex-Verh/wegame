@@ -25,7 +25,13 @@ export default defineOAuthGoogleEventHandler({
         .returning();
     }
     await setUserSession(event, {
-      user: { id: dbUser.id },
+      user: {
+        id: dbUser.id,
+        email: dbUser.email,
+        profilePic: dbUser.profilePic,
+        nickname: dbUser.nickname,
+        age: dbUser.age,
+      },
       loggedInAt: Date.now(),
     });
     return sendRedirect(event, "/");

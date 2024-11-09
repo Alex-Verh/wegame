@@ -3,7 +3,7 @@ defineProps(["showPopup"])
 </script>
 
 <template>
-    <PopUp :visible="showPopup">
+    <Popup :visible="showPopup">
         <b-container>
             <div class="party_title">Create Party</div>
             <label for="party_name" class="party_subtitle">Party Name</label>
@@ -25,7 +25,7 @@ defineProps(["showPopup"])
                 <div class="button_accent">Delete Party</div>
             </div>
         </b-container>
-    </PopUp>
+    </Popup>
 </template>
 
 <style scoped>

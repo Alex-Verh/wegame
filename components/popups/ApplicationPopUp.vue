@@ -1,9 +1,11 @@
 <script setup>
-defineProps(["showPopup"])
+
+const { visible, close } = useApplicationPopup()
+
 </script>
 
 <template>
-    <PopUp :visible="showPopup">
+    <Popup :visible @close="close">
         <b-container>
             <div class="application_title">Create Application</div>
             <label for="application_description" class="application_subtitle">Write an application message</label>
@@ -22,7 +24,7 @@ defineProps(["showPopup"])
                 <div class="button_accent">Delete application</div>
             </div>
         </b-container>
-    </PopUp>
+    </Popup>
 </template>
 
 <style scoped>

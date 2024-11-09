@@ -2,6 +2,7 @@
 </script>
 
 <template>
+  <Popups />
   <NavBar />
   <main>
     <NuxtPage />

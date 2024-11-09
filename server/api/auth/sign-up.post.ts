@@ -27,7 +27,13 @@ export default defineEventHandler(async (event) => {
     throw userAlreadyExistsError;
   }
   await setUserSession(event, {
-    user: { id: user.id },
+    user: {
+      id: user.id,
+      email: user.email,
+      nickname: user.nickname,
+      age: user.age,
+      profilePic: user.profilePic,
+    },
     loggedInAt: Date.now(),
   });
   setResponseStatus(event, 201);

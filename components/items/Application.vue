@@ -1,4 +1,5 @@
 <script setup>
+defineProps(["title", "author"])
 </script>
 
 <template>

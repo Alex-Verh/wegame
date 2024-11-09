@@ -1,10 +1,11 @@
 <script setup>
+defineProps(['title', 'image'])
 </script>
 
 <template>
   <div class="game">
-    <img src="/images/csgo.jpg" alt="GameName" class="game_image">
-    <div class="game_title">Counter Strike 2</div>
+    <img :src="image" alt="GameName" class="game_image">
+    <div class="game_title">{{ title }}</div>
   </div>
 </template>
 

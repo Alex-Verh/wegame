@@ -2,36 +2,10 @@
 definePageMeta({
     middleware: "unauthorized"
 })
-
-const { fetch, loggedIn } = useUserSession()
-
-watchEffect(() => {
-    if (loggedIn.value) {
-        navigateTo("/")
-    }
-})
-
-const signIn = async (formData: FormData) => {
-
-    await $fetch('/api/auth/sign-in', {
-        method: 'POST',
-        body: {
-            email: formData.get('email'),
-            password: formData.get('password'),
-        },
-    }).then(() => {
-        fetch()
-        console.log('User logged in successfully')
-
-    }).catch((err) => {
-        console.log(err)
-    })
-}
-
 </script>
 
 <template>
-    <AuthForm type="Sign In" typeSwitchText="Sign Up" typeSwitchLink="/sign-up" :fields="{
+    <AuthForm type="Sign In" submitUrl="/api/auth/sign-in" typeSwitchText="Sign Up" typeSwitchLink="/sign-up" :fields="{
         email: {
             type: 'email',
             label: 'Email',
@@ -42,7 +16,7 @@ const signIn = async (formData: FormData) => {
             label: 'Password',
             validator: (value: String) => !!value
         },
-    }" @submit="signIn" />
+    }" />
 </template>
 
 <style scoped></style>

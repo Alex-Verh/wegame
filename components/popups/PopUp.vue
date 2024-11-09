@@ -26,9 +26,9 @@ const close = () => {
 </script>
 
 <template>
-  <div class="popup_overlay" v-if="visible" @click.self="close">
+  <div class="popup_overlay" v-show="visible" @click.self="close">
     <div class="popup" :style="{ width: width + 'px' }">
-      <img class="popup_close" src="~/assets/icons/close.svg" alt="Close PopUp" @click.self="close" />
+      <img class="popup_close" src="~/assets/icons/close.svg" alt="Close Popup" @click.self="close" />
       <slot></slot>
     </div>
   </div>

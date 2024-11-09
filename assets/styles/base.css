@@ -47,10 +47,15 @@ body {
 .button_accent {
     font-weight: 700;
     height: 64px;
+    width: 100%;
+    color: inherit;
     display: flex;
     align-items: center;
     text-align: center;
     justify-content: center;
+    background-color: inherit;
+    text-decoration: none;
+    border: none;
     cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
 }
 
@@ -88,6 +93,7 @@ body {
     color: #fff;
     font-size: 48px;
     display: inline-block;
+    text-decoration: none;
     margin-left: 10px;
 }
 
