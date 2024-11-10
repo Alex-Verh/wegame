@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const db = useDrizzle();
 
   const application = await db.query.applications.findFirst({
-    where: (applications, { eq }) => eq(applications.id, id),
+    where: eq(tables.applications.id, id),
   });
   return application;
 });

@@ -5,6 +5,8 @@ declare module "#auth-utils" {
     email: string;
     age: number | null;
     profilePic: string | null;
+    isActive: boolean;
+    isSuperuser: boolean;
   }
 }
 export {};

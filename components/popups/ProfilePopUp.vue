@@ -46,9 +46,9 @@ const logout = async () => {
                                     class="profile_createapp">Create
                                     New</span></div>
                             <div class="profile_section d-flex flex-row">
-                                <div v-for="application in userData?.applications"
+                                <div v-for="application in userData?.applications" :key="application.id"
                                     class="profile_box d-inline-flex align-items-center">
-                                    {{ application.title }}
+                                    {{ application.text }}
                                     <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                                 </div>
                             </div>
@@ -57,7 +57,7 @@ const logout = async () => {
                                     class="profile_createapp">Create
                                     New</span></div>
                             <div class="profile_section d-flex flex-row">
-                                <div v-for="party in userData?.own_parties" class="profile_box">
+                                <div v-for="party in userData?.own_parties" :key="party.id" class="profile_box">
                                     <div class="profile_party_title accent">Juicy Bastards</div>
                                     <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                                     <div>{{ party.title }}</div>

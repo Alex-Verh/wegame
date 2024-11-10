@@ -1,6 +1,6 @@
 import * as schema from "~/server/database/schema";
 import { drizzle } from "drizzle-orm/node-postgres";
-
+export { eq, and, or, sql } from "drizzle-orm";
 export const tables = schema;
 
 export function useDrizzle() {

@@ -1,7 +1,26 @@
 <script setup>
-
+const userData = inject("userData");
 const { visible, close } = useNewApplicationPopup()
-const { data: games } = useFetch('/api/games')
+const { data: games } = await useFetch('/api/games')
+
+const selectedGame = ref(games.value[0].id)
+const applicationText = ref("")
+
+const createApplication = async () => {
+    const application = await useFetch('/api/applications', {
+        method: "POST",
+        body: {
+            gameId: selectedGame.value,
+            platformId: 1,
+            text: applicationText.value
+        }
+    })
+    if (application)
+        userData.value.applications?.push(application)
+    applicationText.value = ""
+    close();
+
+}
 </script>
 
 <template>
@@ -9,13 +28,15 @@ const { data: games } = useFetch('/api/games')
         <b-container>
             <div class="application_title">Create Application</div>
             <label for="application_description" class="application_subtitle">Write an application message</label>
-            <textarea name="application_description" id="application_description" class="application_field"></textarea>
+            <textarea v-model="applicationText" name="application_description" id="application_description"
+                class="application_field"></textarea>
             <label for="" class="application_subtitle">Select application game</label>
             <div class="pop_section d-flex flex-row">
-                <Game v-for="game in games" :title="game.title" :image="game.image" class="game_pop" />
+                <Game v-for="game in games" :key="game.id" @click="selectedGame = game.id" :title="game.title"
+                    :image="game.image" class="game_pop" />
             </div>
             <div class="application_buttons d-flex justify-content-center">
-                <div class="button_accent">Save Changes</div>
+                <div @click="createApplication" class="button_accent">Save Changes</div>
                 <div class="button_accent">Delete application</div>
             </div>
         </b-container>

@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) => {
   );
 
   const user = await db.query.users.findFirst({
-    where: (users, { eq }) => eq(users.email, email),
+    where: eq(tables.users.email, email),
   });
 
   if (!user) {
     throw invalidCredentialsError;
   }
 
-  if (!(await verifyPassword(user.password, password))) {
+  if (!(await verifyPassword(user.password as string, password))) {
     throw invalidCredentialsError;
   }
 
@@ -27,6 +27,8 @@ export default defineEventHandler(async (event) => {
       nickname: user.nickname,
       age: user.age,
       profilePic: user.profilePic,
+      isActive: user.isActive,
+      isSuperuser: user.isSuperuser,
     },
     loggedInAt: Date.now(),
   });

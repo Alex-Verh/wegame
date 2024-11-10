@@ -9,7 +9,7 @@ export default defineOAuthGoogleEventHandler({
     const db = useDrizzle();
 
     let dbUser = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, user.email),
+      where: eq(tables.users.email, user.email),
     });
     if (!dbUser) {
       [dbUser] = await db
@@ -31,6 +31,8 @@ export default defineOAuthGoogleEventHandler({
         profilePic: dbUser.profilePic,
         nickname: dbUser.nickname,
         age: dbUser.age,
+        isActive: user.isActive,
+        isSuperuser: user.isSuperuser,
       },
       loggedInAt: Date.now(),
     });

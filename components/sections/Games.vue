@@ -1,6 +1,6 @@
 <script setup>
 
-const { data: games } = useFetch('/api/games')
+const { data: games } = await useFetch('/api/games')
 </script>
 
 <template>
@@ -10,7 +10,7 @@ const { data: games } = useFetch('/api/games')
         </div>
         <div class="games">
             <b-row class="g-5">
-                <b-col v-for="game in games" cols="4" class="d-flex justify-content-center">
+                <b-col v-for="game in games" :key="game.id" cols="4" class="d-flex justify-content-center">
                     <Game :title="game.title" :image="game.image" />
                 </b-col>
             </b-row>

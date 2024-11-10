@@ -3,7 +3,19 @@ const userData = inject("userData");
 const userLinks = computed(() => userData.value.platforms ? userData.value.platforms.reduce((acc, curr) => ({ ...acc, [curr.platformId]: curr.link }), {}) : {})
 const { visible, close } = useUserLinksPopup()
 
-const { data: platforms } = useFetch('/api/platforms')
+const { data: platforms } = await useFetch('/api/platforms')
+const updatePlatformLink = async (platformId, link) => {
+    const { updatedFields } = await $fetch(`/api/users/${userData.value.id}`, {
+        method: "PATCH",
+        body: {
+            platforms: {
+                [platformId]: link
+            }
+        }
+    })
+    if (updatedFields?.platforms)
+        userData.value.platforms = updatedFields.platforms
+}
 </script>
 
 <template>
@@ -12,8 +24,9 @@ const { data: platforms } = useFetch('/api/platforms')
             <div class="links_title">User Links</div>
             <template v-for="platform in platforms">
                 <label :for="`platform_${platform.id}_url`" class="links_subtitle">{{ platform.title }} Profile</label>
-                <input :value="userLinks[platform.id]" type="text" :name="`platform_${platform.id}_url`"
-                    :id="`platform_${platform.id}_url`" class="links_field" />
+                <input :value="userLinks[platform.id]" @change="updatePlatformLink(platform.id, $event.target.value)"
+                    type="text" :name="`platform_${platform.id}_url`" :id="`platform_${platform.id}_url`"
+                    class="links_field" />
             </template>
             <div class="button_accent">Save Changes</div>
         </b-container>

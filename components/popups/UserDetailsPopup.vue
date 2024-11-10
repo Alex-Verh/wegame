@@ -1,11 +1,40 @@
 <script setup>
 const userData = inject("userData");
 
-const selectedLanguages = computed(() =>
+const userLanguages = computed(() =>
     userData.value.languages ? userData.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
 )
+
 const { visible, close } = useUserDetailsPopup()
-const { data: languages } = useFetch('/api/languages')
+const { data: languages } = await useFetch('/api/languages')
+
+const langSearch = ref("")
+const showedLanguages = computed(() => langSearch.value ?
+    languages.value.filter((language) => language.title.toLowerCase().includes(langSearch.value.toLowerCase())) : languages.value)
+
+const toggleLanguage = async (languageId) => {
+
+    const { updatedFields } = await $fetch(`/api/users/${userData.value.id}`, {
+        method: "PATCH",
+        body: {
+            languages: {
+                [languageId]: !userLanguages.value[languageId]
+            }
+        }
+    })
+    if (updatedFields?.languages)
+        userData.value.languages = updatedFields.languages
+}
+const updateAge = async (age) => {
+    const { updatedFields } = await $fetch(`/api/users/${userData.value.id}`, {
+        method: "PATCH",
+        body: {
+            age: Number(age)
+        }
+    })
+    if (updatedFields?.age)
+        userData.value.age = updatedFields.age
+}
 
 </script>
 
@@ -17,14 +46,15 @@ const { data: languages } = useFetch('/api/languages')
             <div class="languages_section">
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input class="languages_input" type="text" name="language_search" id="language_search"
-                        placeholder="Search language" />
+                    <input v-model="langSearch" class="languages_input" type="text" name="language_search"
+                        id="language_search" placeholder="Search language" />
                     <div class="button_accent">Search</div>
                 </div>
 
                 <b-row class="g-1">
-                    <b-col v-for="language in languages" cols="6">
-                        <div :class="{ language_selected: selectedLanguages[language.id] }" class="language">{{
+                    <b-col v-for="language in showedLanguages" :key="language.id" @click="toggleLanguage(language.id)"
+                        cols="6">
+                        <div :class="{ language_selected: userLanguages[language.id] }" class="language">{{
                             language.title }}
                         </div>
                     </b-col>
@@ -33,8 +63,8 @@ const { data: languages } = useFetch('/api/languages')
                 <div class="button_accent">Save Languages</div>
                 <div class="languages_title">Enter your age</div>
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input class="languages_input" type="text" name="user_age" id="user_age"
-                        placeholder="Enter your age number" />
+                    <input @change="updateAge($event.target.value)" :value="userData.age" class="languages_input"
+                        type="text" name="user_age" id="user_age" placeholder="Enter your age number" />
                     <div class="button_accent">Enter</div>
                 </div>
 

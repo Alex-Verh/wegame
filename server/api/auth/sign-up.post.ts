@@ -33,6 +33,8 @@ export default defineEventHandler(async (event) => {
       nickname: user.nickname,
       age: user.age,
       profilePic: user.profilePic,
+      isActive: user.isActive,
+      isSuperuser: user.isSuperuser,
     },
     loggedInAt: Date.now(),
   });

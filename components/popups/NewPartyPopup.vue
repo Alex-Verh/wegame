@@ -1,6 +1,6 @@
 <script setup>
 const { visible, close } = useNewPartyPopup()
-const { data: games } = useFetch('/api/games')
+const { data: games } = await useFetch('/api/games')
 </script>
 
 <template>
@@ -13,7 +13,7 @@ const { data: games } = useFetch('/api/games')
             <textarea name="party_description" id="party_description" class="party_field"></textarea>
             <label for="" class="party_subtitle">Select application game</label>
             <div class="pop_section d-flex flex-row">
-                <Game v-for="game in games" :title="game.title" :image="game.image" class="game_pop" />
+                <Game v-for="game in games" :key="game.id" :title="game.title" :image="game.image" class="game_pop" />
             </div>
             <div class="party_buttons d-flex justify-content-center">
                 <div class="button_accent">Save Changes</div>
