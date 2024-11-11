@@ -7,7 +7,7 @@ const selectedGame = ref(games.value[0].id)
 const applicationText = ref("")
 
 const createApplication = async () => {
-    const application = await useFetch('/api/applications', {
+    const application = await $fetch('/api/applications', {
         method: "POST",
         body: {
             gameId: selectedGame.value,

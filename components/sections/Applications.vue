@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+const { data: applications } = await useFetch('/api/applications')
 </script>
 
 <template>
@@ -6,10 +7,8 @@
         <div class="section_title">Applications - Find One</div>
         <SearchBar />
         <div class="applications">
-            <Application />
-            <Application />
-            <Application />
-            <Application />
+            <Application v-for="application in applications" :key="application.id" :text="application.text"
+                :author="application.author" :game="application.game" />
         </div>
     </section>
 </template>

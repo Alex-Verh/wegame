@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 
-const { data: games } = await useFetch('/api/games')
+const { data: games } = await useFetch('/api/games', { query: { popular: true } })
 </script>
 
 <template>

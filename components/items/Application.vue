@@ -1,27 +1,28 @@
 <script setup>
-defineProps(["title", "author"])
+defineProps(["author", "text", "game"])
 </script>
 
 <template>
     <div class="application">
         <b-row>
             <b-col cols="1">
-                <img src="/images/profile.jpg" alt="Profile Picture" class="application_img">
+                <img :src="author.profilePic" alt="Profile Picture" class="application_img">
             </b-col>
             <b-col cols="2">
                 <div class="applicator_info">
-                    <div class="applicator_name accent">xxx_destroyer_x89</div>
-                    <div class="applicator_age">21 years old</div>
-                    <div class="applicator_location">Russian, English</div>
+                    <div class="applicator_name accent">{{ author.nickname }}</div>
+                    <div class="applicator_age">{{ author.age }}</div>
+                    <div class="applicator_location">{{ author.languages.map(language =>
+                        language.language.title).join(', ') }}</div>
                 </div>
             </b-col>
             <b-col cols="8">
                 <div class="application_text d-flex align-items-center">
-                    Looking for a cool CS 2 player, preferably higher than gold nova 1 and know russian.
+                    {{ text }}
                 </div>
             </b-col>
             <b-col cols="1">
-                <img src="/images/cs_logo.jpg" alt="Counter Strike 2" class="application_game">
+                <img :src="game.icon" alt="Counter Strike 2" class="application_game">
             </b-col>
         </b-row>
     </div>
@@ -47,5 +48,9 @@ defineProps(["title", "author"])
 .application_text {
     font-size: 20px;
     height: 100%;
+}
+
+.application_game {
+    width: 100%;
 }
 </style>
