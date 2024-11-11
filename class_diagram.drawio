@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-07-18T08:16:57.452Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="CIb45KfVzOc-wMTHrq-y" version="24.7.1" type="device">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.7.6">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1615" dy="2097" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1094" dy="1778" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -89,7 +89,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-23" value="Game" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=20;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="580" y="483" width="160" height="124" as="geometry">
+          <mxGeometry x="580" y="483" width="160" height="107" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -101,9 +101,6 @@
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-29" value="Game Icon" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="M_ysaosaSIex-f8YSDbI-23" vertex="1">
           <mxGeometry y="72" width="160" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="M_ysaosaSIex-f8YSDbI-56" value="Ranking ENUM" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="M_ysaosaSIex-f8YSDbI-23" vertex="1">
-          <mxGeometry y="98" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-30" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.015;entryY=1.003;entryDx=0;entryDy=0;entryPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="M_ysaosaSIex-f8YSDbI-28" target="M_ysaosaSIex-f8YSDbI-4" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -129,7 +126,7 @@
         <mxCell id="M_ysaosaSIex-f8YSDbI-37" value="Leader (User_ID FK)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="M_ysaosaSIex-f8YSDbI-35" vertex="1">
           <mxGeometry y="46" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="E8ivGVw3P17KLz8p5qqN-0" value="Game_ID FK" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" vertex="1" parent="M_ysaosaSIex-f8YSDbI-35">
+        <mxCell id="E8ivGVw3P17KLz8p5qqN-0" value="Game_ID FK" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="M_ysaosaSIex-f8YSDbI-35" vertex="1">
           <mxGeometry y="72" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-52" value="Age Range" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="M_ysaosaSIex-f8YSDbI-35" vertex="1">
@@ -178,14 +175,17 @@
             <mxPoint x="550.34" y="-8.680000000000064" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="M_ysaosaSIex-f8YSDbI-48" value="member" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="480" y="-100" width="140" height="90" as="geometry" />
+        <mxCell id="M_ysaosaSIex-f8YSDbI-48" value="request" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="457.5" y="-170" width="195" height="160" as="geometry" />
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-49" value="User_ID FK" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="M_ysaosaSIex-f8YSDbI-48" vertex="1">
-          <mxGeometry y="30" width="140" height="30" as="geometry" />
+          <mxGeometry y="30" width="195" height="30" as="geometry" />
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-50" value="Party_ID FK" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="M_ysaosaSIex-f8YSDbI-48" vertex="1">
-          <mxGeometry y="60" width="140" height="30" as="geometry" />
+          <mxGeometry y="60" width="195" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="mg7fdwHoLdX6ZFN9mQZn-4" value="Type (Pending, Accepted, Denied)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="M_ysaosaSIex-f8YSDbI-48">
+          <mxGeometry y="110" width="195" height="50" as="geometry" />
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-57" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="M_ysaosaSIex-f8YSDbI-35" target="M_ysaosaSIex-f8YSDbI-23" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -200,11 +200,11 @@
           <mxGeometry x="630" y="270" width="30" height="30" as="geometry" />
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-68" value="Platform" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=20;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="280" y="390" width="160" height="80" as="geometry">
+          <mxGeometry x="280" y="400" width="160" height="80" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="M_ysaosaSIex-f8YSDbI-69" value="Name" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="M_ysaosaSIex-f8YSDbI-68" vertex="1">
+        <mxCell id="M_ysaosaSIex-f8YSDbI-69" value="Title" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="M_ysaosaSIex-f8YSDbI-68" vertex="1">
           <mxGeometry y="20" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="M_ysaosaSIex-f8YSDbI-70" value="URL pattern" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="M_ysaosaSIex-f8YSDbI-68" vertex="1">
