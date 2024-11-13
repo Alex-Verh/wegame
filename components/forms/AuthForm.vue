@@ -57,33 +57,33 @@ const onSubmit = async (event: Event) => {
     <div class="container-fluid">
         <Row class="g-1">
             <Col col="8">
-                <img src="/images/register_image_1.jpg" alt="Friends Gaming" class="form_image">
+            <img src="/images/register_image_1.jpg" alt="Friends Gaming" class="form_image">
             </Col>
             <Col col="4">
-                <section>
-                    <form action="" class="form" @submit.prevent="onSubmit">
-                        <div class="form_title">
-                            <span class='form_name accent'>{{ type }}</span> to enhance gaming experience
+            <section>
+                <form action="" class="form" @submit.prevent="onSubmit">
+                    <div class="form_title">
+                        <span class='form_name accent'>{{ type }}</span> to enhance gaming experience
+                    </div>
+                    <div class="form_fields">
+                        <div v-for="(field, name) in fields" :key="name" class="form_field">
+                            <label :for="name" class="form_label">{{ field.label }}</label>
+                            <input :type="field.type" :name="name" :id="name" class="form_input">
                         </div>
-                        <div class="form_fields">
-                            <div v-for="(field, name) in fields" :key="name" class="form_field">
-                                <label :for="name" class="form_label">{{ field.label }}</label>
-                                <input :type="field.type" :name="name" :id="name" class="form_input">
-                            </div>
-                        </div>
-                        <div class="form_buttons d-flex justify-content-between">
-                            <button :disabled="loading" type="submit" class="button_accent form_button">
-                                {{ loading ? 'Loading...' : type }}
-                            </button>
-                            <NuxtLink to="/api/auth/google" class="button_accent form_button">
-                                Google Account
-                            </NuxtLink>
-                        </div>
-                        <NuxtLink :to="typeSwitchLink" class="form_switch">Switch to {{ typeSwitchText }}
+                    </div>
+                    <div class="form_buttons d-flex justify-content-between">
+                        <button :disabled="loading" type="submit" class="button_accent form_button">
+                            {{ loading ? 'Loading...' : type }}
+                        </button>
+                        <NuxtLink external to="/api/auth/google" class="button_accent form_button">
+                            Google Account
                         </NuxtLink>
-                        <div>{{ error }}</div>
-                    </form>
-                </section>
+                    </div>
+                    <NuxtLink :to="typeSwitchLink" class="form_switch">Switch to {{ typeSwitchText }}
+                    </NuxtLink>
+                    <div>{{ error }}</div>
+                </form>
+            </section>
             </Col>
         </Row>
     </div>

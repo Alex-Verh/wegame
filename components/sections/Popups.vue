@@ -1,8 +1,13 @@
+<script setup lang="ts">
+const { loggedIn } = useUserSession()
+
+</script>
+
 <template>
-    <NewApplicationPopup />
+    <ApplicationPopup v-if="loggedIn" />
+    <PartyPopup v-if="loggedIn" />
     <UserDetailsPopup />
-    <UserLinksPopup />
     <PartyMembersPopup />
-    <NewPartyPopup />
+    <UserLinksPopup />
     <ProfilePopup />
 </template>

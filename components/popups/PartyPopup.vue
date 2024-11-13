@@ -1,5 +1,5 @@
 <script setup>
-const { visible, close } = useNewPartyPopup()
+const { visible, close } = usePartyPopup()
 const { data: games } = await useFetch('/api/games')
 </script>
 

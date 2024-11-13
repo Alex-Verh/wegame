@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { loggedIn } = useUserSession()
-const newApplicationPopup = useNewApplicationPopup()
+const applicationPopup = useApplicationPopup()
 const profilePopup = useProfilePopup()
 </script>
 
@@ -9,43 +9,43 @@ const profilePopup = useProfilePopup()
         <div class="container-fluid">
             <Row>
                 <Col col="3">
-                    <div class="logo d-flex align-items-center justify-content-center">
-                        <img src="/images/logo.png" alt="Logo" class="logo_icon">
-                        <NuxtLink to="/" class="logo_text">
-                            WE<span class="accent">GAME</span>
-                        </NuxtLink>
-                    </div>
+                <div class="logo d-flex align-items-center justify-content-center">
+                    <img src="/images/logo.png" alt="Logo" class="logo_icon">
+                    <NuxtLink to="/" class="logo_text">
+                        WE<span class="accent">GAME</span>
+                    </NuxtLink>
+                </div>
                 </Col>
                 <Col col="7">
-                    <div class="links">
-                        <div class="links_row_accent d-flex justify-content-left">
-                            <NuxtLink to="/" class="link">Terms and Conditions</NuxtLink>
-                            <NuxtLink to="/" class="link">Support</NuxtLink>
-                            <NuxtLink to="/" class="link">FAQ</NuxtLink>
-                            <div class="language_dropdown">
-                                <!-- <img src="" alt="" class="language_icon"> -->
-                                <div class="language_text">English (US)</div>
-                                <!-- <img src="" alt="" class="language_icon"> -->
-                            </div>
-                        </div>
-                        <div class="links_row d-flex justify-content-around">
-                            <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend
-                                Quickly</NuxtLink>
-                            <button @click="newApplicationPopup.open" class="link"><img src="" alt=""
-                                    class="link_icon">Create Your Application</button>
-                            <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party
-                            </NuxtLink>
+                <div class="links">
+                    <div class="links_row_accent d-flex justify-content-left">
+                        <NuxtLink to="/" class="link">Terms and Conditions</NuxtLink>
+                        <NuxtLink to="/" class="link">Support</NuxtLink>
+                        <NuxtLink to="/" class="link">FAQ</NuxtLink>
+                        <div class="language_dropdown">
+                            <!-- <img src="" alt="" class="language_icon"> -->
+                            <div class="language_text">English (US)</div>
+                            <!-- <img src="" alt="" class="language_icon"> -->
                         </div>
                     </div>
+                    <div class="links_row d-flex justify-content-around">
+                        <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend
+                            Quickly</NuxtLink>
+                        <button @click="applicationPopup.open" class="link"><img src="" alt="" class="link_icon">Create
+                            Your Application</button>
+                        <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party
+                        </NuxtLink>
+                    </div>
+                </div>
                 </Col>
                 <Col col="2">
-                    <div class="buttons">
-                        <NuxtLink class="button" to="/sign-up">Register
-                        </NuxtLink>
-                        <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">Enter Account
-                        </NuxtLink>
-                        <button v-else @click="profilePopup.open" class="button_accent">View Profile</button>
-                    </div>
+                <div class="buttons">
+                    <NuxtLink class="button" to="/sign-up">Register
+                    </NuxtLink>
+                    <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">Enter Account
+                    </NuxtLink>
+                    <button v-else @click="profilePopup.open" class="button_accent">View Profile</button>
+                </div>
                 </Col>
             </Row>
         </div>

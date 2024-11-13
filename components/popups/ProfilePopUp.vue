@@ -5,8 +5,8 @@ const userData = inject("userData");
 const { clear } = useUserSession()
 
 const { visible, close } = useProfilePopup()
-const newApplicationPopup = useNewApplicationPopup()
-const newPartyPopup = useNewPartyPopup()
+const applicationPopup = useApplicationPopup()
+const partyPopup = usePartyPopup()
 const userDetailsPopup = useUserDetailsPopup()
 const userLinksPopup = useUserLinksPopup()
 
@@ -19,52 +19,53 @@ const logout = async () => {
 }
 </script>
 
+
 <template>
     <Popup :visible @close="close" :style="{ zIndex: 800 }" class="profile">
         <Container>
             <Row class="g-5">
                 <Col col="3">
-                    <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
-                    <p class="profile_username accent">{{ userData?.nickname }}</p>
-                    <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Links</button>
-                    <button @click="userDetailsPopup.open" class="button_accent button_pop">Edit Details</button>
-                    <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
-                        }}</button>
+                <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
+                <p class="profile_username accent">{{ userData?.nickname }}</p>
+                <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Links</button>
+                <button @click="userDetailsPopup.open" class="button_accent button_pop">Edit Details</button>
+                <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
+                    }}</button>
                 </Col>
                 <Col col="9">
-                    <div class="profile_games">
-                        <Container>
-                            <div class="profile_subtitle">Games</div>
-                            <Row class="g-3">
-                                <Col col="3">
-                                    <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg"
-                                        class="profile_game" />
-                                </Col>
-                            </Row>
+                <div class="profile_games">
+                    <Container>
+                        <div class="profile_subtitle">Games</div>
+                        <Row class="g-3">
+                            <Col col="3">
+                            <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg"
+                                class="profile_game" />
+                            </Col>
+                        </Row>
 
-                            <div class="profile_subtitle">Applications - <span @click="newApplicationPopup.open"
-                                    class="profile_createapp">Create
-                                    New</span></div>
-                            <div class="profile_section d-flex flex-row">
-                                <div v-for="application in userData?.applications" :key="application.id"
-                                    class="profile_box d-inline-flex align-items-center">
-                                    {{ application.text }}
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                </div>
+                        <div class="profile_subtitle">Applications - <span @click="applicationPopup.open"
+                                class="profile_createapp">Create
+                                New</span></div>
+                        <div class="profile_section d-flex flex-row">
+                            <div v-for="application in userData?.applications" :key="application.id"
+                                class="profile_box d-inline-flex align-items-center">
+                                {{ application.text }}
+                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                             </div>
+                        </div>
 
-                            <div class="profile_subtitle">Parties - <span @click="newPartyPopup.open"
-                                    class="profile_createapp">Create
-                                    New</span></div>
-                            <div class="profile_section d-flex flex-row">
-                                <div v-for="party in userData?.own_parties" :key="party.id" class="profile_box">
-                                    <div class="profile_party_title accent">Juicy Bastards</div>
-                                    <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
-                                    <div>{{ party.title }}</div>
-                                </div>
+                        <div class="profile_subtitle">Parties - <span @click="partyPopup.open"
+                                class="profile_createapp">Create
+                                New</span></div>
+                        <div class="profile_section d-flex flex-row">
+                            <div v-for="party in userData?.own_parties" :key="party.id" class="profile_box">
+                                <div class="profile_party_title accent">Juicy Bastards</div>
+                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
+                                <div>{{ party.title }}</div>
                             </div>
-                        </Container>
-                    </div>
+                        </div>
+                    </Container>
+                </div>
                 </Col>
             </Row>
         </Container>

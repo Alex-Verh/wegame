@@ -14,6 +14,6 @@ export const usePopup = (popup: string) => {
 export const useProfilePopup = () => usePopup("profilePopup");
 export const useUserDetailsPopup = () => usePopup("userDetailsPopup");
 export const useUserLinksPopup = () => usePopup("userLinksPopup");
-export const useNewApplicationPopup = () => usePopup("newApplicationPopup");
-export const useNewPartyPopup = () => usePopup("newPartyPopup");
+export const useApplicationPopup = () => usePopup("applicationPopup");
+export const usePartyPopup = () => usePopup("partyPopup");
 export const usePartyMembersPopup = () => usePopup("partyMembersPopup");

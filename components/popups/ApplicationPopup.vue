@@ -1,9 +1,11 @@
 <script setup>
+const { application } = defineProps(["application"])
+
 const userData = inject("userData");
-const { visible, close } = useNewApplicationPopup()
+const { visible, close } = useApplicationPopup()
 const { data: games } = await useFetch('/api/games')
 
-const selectedGame = ref(games.value[0].id)
+const selectedGame = ref(application?.gameId || games.value[0].id)
 const applicationText = ref("")
 
 const createApplication = async () => {

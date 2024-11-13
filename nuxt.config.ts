@@ -1,8 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
+  modules: ["usebootstrap", "nuxt-auth-utils", "nuxt-nodemailer"],
   runtimeConfig: {
     databaseUrl: "",
+    secretKey: "",
     oauth: {
       google: {
         clientId: "",
@@ -14,6 +16,15 @@ export default defineNuxtConfig({
       },
     },
   },
+  nodemailer: {
+    from: '"Wegame" <wegame@mail.com>',
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: "",
+      pass: "",
+    },
+  },
   devtools: { enabled: true },
   components: [
     {
@@ -22,5 +33,4 @@ export default defineNuxtConfig({
     },
   ],
   css: ["~/assets/styles/base.css"],
-  modules: ["usebootstrap", "nuxt-auth-utils"],
 });

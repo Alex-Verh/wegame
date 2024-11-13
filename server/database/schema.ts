@@ -1,5 +1,6 @@
 import {
   pgTable,
+  pgEnum,
   varchar,
   integer,
   boolean,
@@ -8,6 +9,11 @@ import {
   index,
 } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
+
+export const requestStatusEnum = pgEnum("request_status", [
+  "pending",
+  "accepted",
+]);
 
 export const platforms = pgTable("platforms", {
   id: serial().primaryKey(),
@@ -115,6 +121,33 @@ export const partiesRelations = relations(parties, ({ one, many }) => ({
   members: many(partyMembers),
 }));
 
+export const partyMembers = pgTable(
+  "party_members",
+  {
+    userId: integer("user_id")
+      .notNull()
+      .references(() => users.id),
+    partyId: integer("party_id")
+      .notNull()
+      .references(() => parties.id),
+    status: requestStatusEnum("request_status").default("pending").notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.partyId] }),
+  })
+);
+
+export const partyMembersRelations = relations(partyMembers, ({ one }) => ({
+  user: one(users, {
+    fields: [partyMembers.userId],
+    references: [users.id],
+  }),
+  party: one(parties, {
+    fields: [partyMembers.partyId],
+    references: [parties.id],
+  }),
+}));
+
 export const userLanguages = pgTable(
   "user_languages",
   {
@@ -165,31 +198,5 @@ export const userPlatformsRelations = relations(userPlatforms, ({ one }) => ({
   platform: one(platforms, {
     fields: [userPlatforms.platformId],
     references: [platforms.id],
-  }),
-}));
-
-export const partyMembers = pgTable(
-  "party_members",
-  {
-    userId: integer("user_id")
-      .notNull()
-      .references(() => users.id),
-    partyId: integer("party_id")
-      .notNull()
-      .references(() => parties.id),
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.partyId] }),
-  })
-);
-
-export const partyMembersRelations = relations(partyMembers, ({ one }) => ({
-  user: one(users, {
-    fields: [partyMembers.userId],
-    references: [users.id],
-  }),
-  party: one(parties, {
-    fields: [partyMembers.partyId],
-    references: [parties.id],
   }),
 }));

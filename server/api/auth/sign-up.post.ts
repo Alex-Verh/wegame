@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export default defineEventHandler(async (event) => {
   const db = useDrizzle();
   const { nickname, email, password } = await readValidatedBody(
@@ -26,18 +28,20 @@ export default defineEventHandler(async (event) => {
   if (!user) {
     throw userAlreadyExistsError;
   }
-  await setUserSession(event, {
-    user: {
-      id: user.id,
-      email: user.email,
-      nickname: user.nickname,
-      age: user.age,
-      profilePic: user.profilePic,
-      isActive: user.isActive,
-      isSuperuser: user.isSuperuser,
-    },
-    loggedInAt: Date.now(),
+
+  const { sendMail } = useNodeMailer();
+  const { secretKey } = useRuntimeConfig();
+
+  const token = jwt.sign({ userId: user.id }, secretKey, {
+    expiresIn: 60 * 10,
   });
+
+  await sendMail({
+    subject: "Wegame user email verification",
+    text: `Verification link: http://localhost:3000/api/auth/activate?token=${token}`,
+    to: user.email,
+  });
+
   setResponseStatus(event, 201);
   return { status: 201, message: "Registered" };
 });

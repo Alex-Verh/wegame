@@ -12,13 +12,12 @@ export default defineEventHandler(async (event) => {
     where: eq(tables.users.email, email),
   });
 
-  if (!user) {
-    throw invalidCredentialsError;
-  }
+  if (!user) throw invalidCredentialsError;
 
-  if (!(await verifyPassword(user.password as string, password))) {
+  if (!(await verifyPassword(user.password as string, password)))
     throw invalidCredentialsError;
-  }
+
+  if (!user.isActive) throw userNotActiveError;
 
   await setUserSession(event, {
     user: {

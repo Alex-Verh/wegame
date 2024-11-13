@@ -13,6 +13,11 @@ export const userAlreadyExistsError = createError({
   message: "User already exists",
 });
 
+export const userNotActiveError = createError({
+  statusCode: 403,
+  message: "User is not active",
+});
+
 export const forbiddenError = createError({
   statusCode: 403,
   message: "Forbidden",
