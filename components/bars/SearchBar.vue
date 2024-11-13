@@ -1,25 +1,25 @@
 <template>
     <div class="search_bar">
-        <b-row class="g-3">
-            <b-col cols="4">
+        <Row class="g-3">
+            <Col col="4">
                 <input type="text" name="find_player" placeholder="Find by name" class="search_field" />
-            </b-col>
-            <b-col cols="4">
+            </Col>
+            <Col col="4">
                 <div class="search_filter accent">Filter by platform</div>
-            </b-col>
-            <b-col cols="4">
+            </Col>
+            <Col col="4">
                 <div class="search_filter accent">Filter by language</div>
-            </b-col>
-            <b-col cols="4">
+            </Col>
+            <Col col="4">
                 <div class="search_filter accent">Filter by game</div>
-            </b-col>
-            <b-col cols="3">
+            </Col>
+            <Col col="3">
                 <div class="search_filter accent">Filter by age</div>
-            </b-col>
-            <b-col cols="5">
+            </Col>
+            <Col col="5">
                 <div class="search_filter accent">Filter by ranking</div>
-            </b-col>
-        </b-row>
+            </Col>
+        </Row>
     </div>
 </template>
 

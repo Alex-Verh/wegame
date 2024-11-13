@@ -25,7 +25,7 @@ const createApplication = async () => {
 
 <template>
     <Popup :visible @close="close">
-        <b-container>
+        <Container>
             <div class="application_title">Create Application</div>
             <label for="application_description" class="application_subtitle">Write an application message</label>
             <textarea v-model="applicationText" name="application_description" id="application_description"
@@ -39,7 +39,7 @@ const createApplication = async () => {
                 <div @click="createApplication" class="button_accent">Save Changes</div>
                 <div class="button_accent">Delete application</div>
             </div>
-        </b-container>
+        </Container>
     </Popup>
 </template>
 

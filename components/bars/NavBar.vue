@@ -6,17 +6,17 @@ const profilePopup = useProfilePopup()
 
 <template>
     <nav class="navigation">
-        <b-container fluid>
-            <b-row>
-                <b-col cols="3">
+        <div class="container-fluid">
+            <Row>
+                <Col col="3">
                     <div class="logo d-flex align-items-center justify-content-center">
                         <img src="/images/logo.png" alt="Logo" class="logo_icon">
                         <NuxtLink to="/" class="logo_text">
                             WE<span class="accent">GAME</span>
                         </NuxtLink>
                     </div>
-                </b-col>
-                <b-col cols="7">
+                </Col>
+                <Col col="7">
                     <div class="links">
                         <div class="links_row_accent d-flex justify-content-left">
                             <NuxtLink to="/" class="link">Terms and Conditions</NuxtLink>
@@ -37,18 +37,18 @@ const profilePopup = useProfilePopup()
                             </NuxtLink>
                         </div>
                     </div>
-                </b-col>
-                <b-col cols="2">
+                </Col>
+                <Col col="2">
                     <div class="buttons">
-                        <button class="button">See Messages
-                        </button>
+                        <NuxtLink class="button" to="/sign-up">Register
+                        </NuxtLink>
                         <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">Enter Account
                         </NuxtLink>
                         <button v-else @click="profilePopup.open" class="button_accent">View Profile</button>
                     </div>
-                </b-col>
-            </b-row>
-        </b-container>
+                </Col>
+            </Row>
+        </div>
     </nav>
 </template>
 

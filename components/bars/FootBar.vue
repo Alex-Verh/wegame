@@ -3,9 +3,9 @@
 
 <template>
     <footer class="footer">
-        <b-container>
-            <b-row>
-                <b-col cols="3" class="d-flex justify-content-center">
+        <Container>
+            <Row>
+                <Col col="3" class="d-flex justify-content-center">
                     <div>
                         <div class="link_column_header">Website Links</div>
                         <div class="links">
@@ -15,8 +15,8 @@
                             <NuxtLink to="/" class="link">Support & FAQ</NuxtLink>
                         </div>
                     </div>
-                </b-col>
-                <b-col cols="3" class="d-flex justify-content-center">
+                </Col>
+                <Col col="3" class="d-flex justify-content-center">
                     <div>
                         <div class="link_column_header">About Us</div>
                         <div class="links">
@@ -25,8 +25,8 @@
                             <a href="#" class="link">GitHub</a>
                         </div>
                     </div>
-                </b-col>
-                <b-col cols="3" class="d-flex justify-content-center">
+                </Col>
+                <Col col="3" class="d-flex justify-content-center">
                     <div>
                         <div class="link_column_header">Other Projects</div>
                         <div class="links">
@@ -34,8 +34,8 @@
                             <a href="#" class="link">Coworkers</a>
                         </div>
                     </div>
-                </b-col>
-                <b-col cols="3" class="d-flex justify-content-center">
+                </Col>
+                <Col col="3" class="d-flex justify-content-center">
                     <div>
                         <div class="link_column_header">Language</div>
                         <div class="links">
@@ -43,32 +43,32 @@
                             <button class="link">English</button>
                         </div>
                     </div>
-                </b-col>
-            </b-row>
+                </Col>
+            </Row>
 
             <div class="footer_line"></div>
 
             <div class="information">
-                <b-row>
-                    <b-col cols="9">
+                <Row>
+                    <Col col="9">
                         <div class="text d-flex align-items-center">WeGame - a brand owned by Alexandru Denis Ltd,
                             located at 13 Kypranoros Str., Evi
                             Building, 1st Floor, Office 102, 1061 Chisinau, Moldova.
                             <br />Beware of false accounts and fraudsters who may
                             attempt to trade and scam users on any game platforms.
                         </div>
-                    </b-col>
-                    <b-col cols="3">
+                    </Col>
+                    <Col col="3">
                         <div class="logo d-flex align-items-center justify-content-center">
                             <img src="/images/logo.png" alt="Logo" class="logo_icon">
                             <NuxtLink to="/" class="logo_text">
                                 WE<span class="accent">GAME</span>
                             </NuxtLink>
                         </div>
-                    </b-col>
-                </b-row>
+                    </Col>
+                </Row>
             </div>
-        </b-container>
+        </Container>
     </footer>
 </template>
 

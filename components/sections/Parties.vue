@@ -8,20 +8,20 @@
         <SearchBar />
 
         <div class="parties">
-            <b-row class="g-5">
-                <b-col cols="6">
+            <Row class="g-5">
+                <Col col="6">
                     <Party />
-                </b-col>
-                <b-col cols="6">
+                </Col>
+                <Col col="6">
                     <Party />
-                </b-col>
-                <b-col cols="6">
+                </Col>
+                <Col col="6">
                     <Party />
-                </b-col>
-                <b-col cols="6">
+                </Col>
+                <Col col="6">
                     <Party />
-                </b-col>
-            </b-row>
+                </Col>
+            </Row>
         </div>
     </section>
 </template>

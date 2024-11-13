@@ -21,26 +21,26 @@ const logout = async () => {
 
 <template>
     <Popup :visible @close="close" :style="{ zIndex: 800 }" class="profile">
-        <b-container>
-            <b-row class="g-5">
-                <b-col cols="3">
+        <Container>
+            <Row class="g-5">
+                <Col col="3">
                     <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
                     <p class="profile_username accent">{{ userData?.nickname }}</p>
                     <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Links</button>
                     <button @click="userDetailsPopup.open" class="button_accent button_pop">Edit Details</button>
                     <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
                         }}</button>
-                </b-col>
-                <b-col cols="9">
+                </Col>
+                <Col col="9">
                     <div class="profile_games">
-                        <b-container>
+                        <Container>
                             <div class="profile_subtitle">Games</div>
-                            <b-row class="g-3">
-                                <b-col cols="3">
+                            <Row class="g-3">
+                                <Col col="3">
                                     <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg"
                                         class="profile_game" />
-                                </b-col>
-                            </b-row>
+                                </Col>
+                            </Row>
 
                             <div class="profile_subtitle">Applications - <span @click="newApplicationPopup.open"
                                     class="profile_createapp">Create
@@ -63,11 +63,11 @@ const logout = async () => {
                                     <div>{{ party.title }}</div>
                                 </div>
                             </div>
-                        </b-container>
+                        </Container>
                     </div>
-                </b-col>
-            </b-row>
-        </b-container>
+                </Col>
+            </Row>
+        </Container>
     </Popup>
 </template>
 

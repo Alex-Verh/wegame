@@ -5,7 +5,7 @@ const { data: games } = await useFetch('/api/games')
 
 <template>
     <Popup :visible @close="close">
-        <b-container>
+        <Container>
             <div class="party_title">Create Party</div>
             <label for="party_name" class="party_subtitle">Party Name</label>
             <textarea name="party_name" id="party_name" class="party_field"></textarea>
@@ -20,7 +20,7 @@ const { data: games } = await useFetch('/api/games')
                 <div class="button_accent">See Members</div>
                 <div class="button_accent">Delete Party</div>
             </div>
-        </b-container>
+        </Container>
     </Popup>
 </template>
 

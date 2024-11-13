@@ -2,9 +2,9 @@
 </script>
 
 <template>
-    <b-container>
+    <Container>
         <Header text='Let’s find an extra quality <span class="accent">lobby</span> for you, right now!'
-            image="/images/main_image.jpg" showStatistics="true" />
+            image="/images/parties_image.jpg" showStatistics="true" />
         <Parties />
-    </b-container>
+    </Container>
 </template>

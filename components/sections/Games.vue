@@ -9,11 +9,11 @@ const { data: games } = await useFetch('/api/games', { query: { popular: true } 
             Popular Games - Select One
         </div>
         <div class="games">
-            <b-row class="g-5">
-                <b-col v-for="game in games" :key="game.id" cols="4" class="d-flex justify-content-center">
+            <Row class="g-5">
+                <Col v-for="game in games" :key="game.id" col="4" class="d-flex justify-content-center">
                     <Game :title="game.title" :image="game.image" />
-                </b-col>
-            </b-row>
+                </Col>
+            </Row>
         </div>
     </section>
 </template>

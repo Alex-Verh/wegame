@@ -20,7 +20,7 @@ const updatePlatformLink = async (platformId, link) => {
 
 <template>
     <Popup :visible @close="close" :width="500" class="links">
-        <b-container>
+        <Container>
             <div class="links_title">User Links</div>
             <template v-for="platform in platforms">
                 <label :for="`platform_${platform.id}_url`" class="links_subtitle">{{ platform.title }} Profile</label>
@@ -29,7 +29,7 @@ const updatePlatformLink = async (platformId, link) => {
                     class="links_field" />
             </template>
             <div class="button_accent">Save Changes</div>
-        </b-container>
+        </Container>
     </Popup>
 </template>
 

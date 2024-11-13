@@ -4,37 +4,37 @@ defineProps(['text', "image", "showStatistics"])
 
 <template>
     <header class="header">
-        <b-row>
-            <b-col cols="6">
+        <Row>
+            <Col col="6">
                 <div class="header_text">
                     <span v-html="text"></span>
                 </div>
-            </b-col>
-            <b-col cols="6" class="d-flex justify-content-center">
+            </Col>
+            <Col col="6" class="d-flex justify-content-center">
                 <img :src="image" alt="Friends" class="header_image">
-            </b-col>
-        </b-row>
+            </Col>
+        </Row>
         <div class="statistics" v-if="showStatistics">
-            <b-row>
-                <b-col cols="4" class="d-flex align-items-center justify-content-center">
+            <Row>
+                <Col col="4" class="d-flex align-items-center justify-content-center">
                     <div class="statistics_item">
                         <div class="item_value">551</div>
                         <div class="item_text">parties</div>
                     </div>
-                </b-col>
-                <b-col cols="4" class="d-flex align-items-center justify-content-center">
+                </Col>
+                <Col col="4" class="d-flex align-items-center justify-content-center">
                     <div class="statistics_item">
                         <div class="item_value">132</div>
                         <div class="item_text">games</div>
                     </div>
-                </b-col>
-                <b-col cols="4" class="d-flex align-items-center justify-content-center">
+                </Col>
+                <Col col="4" class="d-flex align-items-center justify-content-center">
                     <div class="statistics_item">
                         <div class="item_value">1232</div>
                         <div class="item_text">players</div>
                     </div>
-                </b-col>
-            </b-row>
+                </Col>
+            </Row>
         </div>
     </header>
 </template>

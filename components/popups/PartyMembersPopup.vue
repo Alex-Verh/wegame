@@ -4,7 +4,7 @@ const { visible, close } = usePartyMembersPopup()
 
 <template>
     <Popup :visible @close="close" :width="700" class="members">
-        <b-container>
+        <Container>
             <div class="members_title">Party Members</div>
 
             <div class="members_section">
@@ -91,7 +91,7 @@ const { visible, close } = usePartyMembersPopup()
 
 
             <div class="button_accent">Kick All</div>
-        </b-container>
+        </Container>
     </Popup>
 </template>
 

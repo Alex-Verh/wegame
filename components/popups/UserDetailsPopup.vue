@@ -40,7 +40,7 @@ const updateAge = async (age) => {
 
 <template>
     <Popup :visible @close="close" :width="700" class="languagespop">
-        <b-container>
+        <Container>
             <div class="languages_title">Select Languages</div>
 
             <div class="languages_section">
@@ -51,14 +51,14 @@ const updateAge = async (age) => {
                     <div class="button_accent">Search</div>
                 </div>
 
-                <b-row class="g-1">
-                    <b-col v-for="language in showedLanguages" :key="language.id" @click="toggleLanguage(language.id)"
-                        cols="6">
+                <Row class="g-1">
+                    <Col v-for="language in showedLanguages" :key="language.id" @click="toggleLanguage(language.id)"
+                        col="6">
                         <div :class="{ language_selected: userLanguages[language.id] }" class="language">{{
                             language.title }}
                         </div>
-                    </b-col>
-                </b-row>
+                    </Col>
+                </Row>
 
                 <div class="button_accent">Save Languages</div>
                 <div class="languages_title">Enter your age</div>
@@ -69,7 +69,7 @@ const updateAge = async (age) => {
                 </div>
 
             </div>
-        </b-container>
+        </Container>
     </Popup>
 </template>
 

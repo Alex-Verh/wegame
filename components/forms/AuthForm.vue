@@ -54,16 +54,16 @@ const onSubmit = async (event: Event) => {
 </script>
 
 <template>
-    <b-container fluid>
-        <b-row class="g-1">
-            <b-col cols="8">
+    <div class="container-fluid">
+        <Row class="g-1">
+            <Col col="8">
                 <img src="/images/register_image_1.jpg" alt="Friends Gaming" class="form_image">
-            </b-col>
-            <b-col cols="4">
+            </Col>
+            <Col col="4">
                 <section>
                     <form action="" class="form" @submit.prevent="onSubmit">
                         <div class="form_title">
-                            <span class='form_name accent'>{{ type }}</span> to continue your journey with us
+                            <span class='form_name accent'>{{ type }}</span> to enhance gaming experience
                         </div>
                         <div class="form_fields">
                             <div v-for="(field, name) in fields" :key="name" class="form_field">
@@ -84,9 +84,9 @@ const onSubmit = async (event: Event) => {
                         <div>{{ error }}</div>
                     </form>
                 </section>
-            </b-col>
-        </b-row>
-    </b-container>
+            </Col>
+        </Row>
+    </div>
 </template>
 
 <style scoped>
@@ -104,13 +104,13 @@ const onSubmit = async (event: Event) => {
 }
 
 .form_title {
-    font-size: 36px;
+    font-size: 32px;
     color: #fff;
     margin-bottom: 55px;
 }
 
 .form_name {
-    font-size: 64px;
+    font-size: 60px;
     font-weight: 700;
 }
 

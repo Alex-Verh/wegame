@@ -18,6 +18,7 @@ defineProps(['title', 'image'])
   border: 1px solid #FE9F00;
   cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
   font-size: 18px;
+  min-width: 398px ;
 }
 
 .game:hover {
@@ -35,6 +36,7 @@ defineProps(['title', 'image'])
 
 .game:hover .game_image {
   transform: scale(1.1);
+  opacity: 40%;
   /* Scale up the image wrapper */
 }
 

@@ -2,13 +2,13 @@
 </script>
 
 <template>
-  <b-container>
+  <Container>
     <Header
       text='Find new <span class="accent">friends</span> and make game <span class="accent">parties</span> easily and fast now.'
       image="/images/main_image.jpg" />
     <Games />
     <Applications />
-  </b-container>
+  </Container>
 </template>
 
 <style scoped></style>

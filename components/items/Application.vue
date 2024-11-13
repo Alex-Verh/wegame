@@ -4,27 +4,27 @@ defineProps(["author", "text", "game"])
 
 <template>
     <div class="application">
-        <b-row>
-            <b-col cols="1">
+        <Row>
+            <Col col="1">
                 <img :src="author.profilePic" alt="Profile Picture" class="application_img">
-            </b-col>
-            <b-col cols="2">
+            </Col>
+            <Col col="2">
                 <div class="applicator_info">
                     <div class="applicator_name accent">{{ author.nickname }}</div>
                     <div class="applicator_age">{{ author.age }}</div>
                     <div class="applicator_location">{{ author.languages.map(language =>
                         language.language.title).join(', ') }}</div>
                 </div>
-            </b-col>
-            <b-col cols="8">
+            </Col>
+            <Col col="8">
                 <div class="application_text d-flex align-items-center">
                     {{ text }}
                 </div>
-            </b-col>
-            <b-col cols="1">
+            </Col>
+            <Col col="1">
                 <img :src="game.icon" alt="Counter Strike 2" class="application_game">
-            </b-col>
-        </b-row>
+            </Col>
+        </Row>
     </div>
 </template>
 
