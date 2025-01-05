@@ -11,6 +11,7 @@ export const usePopup = (popup: string) => {
     },
   };
 };
+
 export const useProfilePopup = () => usePopup("profilePopup");
 export const useUserDetailsPopup = () => usePopup("userDetailsPopup");
 export const useUserLinksPopup = () => usePopup("userLinksPopup");

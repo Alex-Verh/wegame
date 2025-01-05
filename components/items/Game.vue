@@ -1,11 +1,22 @@
 <script setup>
-defineProps(['title', 'image'])
+import { ref } from 'vue';
+
+const isSelected = ref(false);
+
+const toggleSelected = () => {
+  isSelected.value = !isSelected.value;
+};
+
+defineProps(['title', 'image']);
 </script>
 
 <template>
-  <div class="game">
+  <div class="game"
+      :class="{ game_selected: isSelected }"
+      @click="toggleSelected">
     <img :src="image" alt="GameName" class="game_image">
     <div class="game_title">{{ title }}</div>
+    <img class="game_mark" src="~/assets/icons/mark.svg" alt="Selected" />
   </div>
 </template>
 
@@ -19,6 +30,11 @@ defineProps(['title', 'image'])
   cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
   font-size: 18px;
   min-width: 398px ;
+  aspect-ratio: 16 / 9;
+}
+
+.game_selected {
+  background-color: #14FF00;
 }
 
 .game:hover {
@@ -34,13 +50,17 @@ defineProps(['title', 'image'])
   /* Smooth transition for image */
 }
 
+.game_selected .game_image {
+  opacity: 40%;
+}
+
 .game:hover .game_image {
   transform: scale(1.1);
   opacity: 40%;
   /* Scale up the image wrapper */
 }
 
-.game_title {
+.game_title, .game_mark {
   position: absolute;
   /* Position the content over the image */
   top: 45%;
@@ -56,8 +76,21 @@ defineProps(['title', 'image'])
   color: #fff;
 }
 
+.game_mark {
+  width: 10%;
+  height: 10%;
+}
+
 .game:hover .game_title {
   opacity: 1;
   /* Show the content on hover */
+}
+
+.game_selected:hover .game_title {
+  opacity: 0 !important;
+}
+
+.game_selected .game_mark {
+  opacity: 1;
 }
 </style>
