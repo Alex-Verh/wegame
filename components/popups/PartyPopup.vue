@@ -35,7 +35,7 @@ const { data: games } = await useFetch('/api/games')
                 </Row>
 
                 <label for="party_search" class="party_subtitle">Select your party game</label>
-                <input v-model="partySearcg" type="text" name="party_search" id="party_search"
+                <input v-model="partySearch" type="text" name="party_search" id="party_search"
                 class="party_field" placeholder="Searching.."/>
                 <div class="pop_section d-flex flex-row">
                     <Game v-for="game in games" :key="game.id" :title="game.title" :image="game.image" class="game_pop" />
