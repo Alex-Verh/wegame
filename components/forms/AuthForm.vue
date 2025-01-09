@@ -57,7 +57,23 @@ const onSubmit = async (event: Event) => {
     <div class="container-fluid">
         <Row class="g-1">
             <Col col="8">
-            <img src="/images/register_image_1.jpg" alt="Friends Gaming" class="form_image">
+                <Carousel
+                    id="form_carousel"
+                    class="form_carousel"
+                    indicators
+                    fade
+                    touch
+                    :interval="4500">   
+                        <CarouselItem>
+                            <img src="/images/register_image_1.jpg" class="d-block w-100" alt="Friends Gaming" />
+                        </CarouselItem>
+                        <CarouselItem>
+                            <img src="/images/register_image_2.jpg" class="d-block w-100" alt="Friends Gaming" />
+                        </CarouselItem>
+                        <CarouselItem>
+                            <img src="/images/register_image_3.jpg" class="d-block w-100" alt="Friends Gaming" />
+                        </CarouselItem>
+                    </Carousel>
             </Col>
             <Col col="4">
             <section>
@@ -94,6 +110,11 @@ const onSubmit = async (event: Event) => {
     margin-inline: 0px !important;
 }
 
+.form_carousel {
+    width: 100%;
+    height: 100%;
+}
+
 .container-fluid {
     padding: 0;
 }
@@ -126,10 +147,6 @@ const onSubmit = async (event: Event) => {
     text-decoration: underline;
     cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
     margin-top: 20px;
-}
-
-.form_image {
-    width: 100%;
 }
 
 .form_field {

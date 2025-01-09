@@ -1,8 +1,5 @@
 <script setup lang="ts">
-const loading = ref(false);
 const userData = inject("userData");
-
-const { clear } = useUserSession()
 
 const { visible, close } = useProfilePopup()
 const applicationPopup = useApplicationPopup()
@@ -10,13 +7,7 @@ const partyPopup = usePartyPopup()
 const userDetailsPopup = useUserDetailsPopup()
 const userLinksPopup = useUserLinksPopup()
 
-const logout = async () => {
-    loading.value = true;
-    await clear();
-    loading.value = false;
-    close();
-    navigateTo("/sign-in");
-}
+
 </script>
 
 
@@ -28,9 +19,7 @@ const logout = async () => {
                 <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
                 <p class="profile_username accent">{{ userData?.nickname }}</p>
                 <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Links</button>
-                <button @click="userDetailsPopup.open" class="button_accent button_pop">Edit Details</button>
-                <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
-                    }}</button>
+                <button @click="userDetailsPopup.open" class="button_accent button_pop">Settings</button>
                 </Col>
                 <Col col="9">
                 <div class="profile_games">
@@ -91,7 +80,7 @@ const logout = async () => {
 }
 
 .profile_game {
-    width: 100%;
+    min-width: 100% !important;
     font-size: 12px !important;
 }
 

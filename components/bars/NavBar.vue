@@ -1,7 +1,15 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+
 const { loggedIn } = useUserSession()
 const applicationPopup = useApplicationPopup()
 const profilePopup = useProfilePopup()
+const router = useRouter();
+
+const handleApplicationClick = () => {
+    loggedIn ? applicationPopup.open() : router.push('/login');
+}
 </script>
 
 <template>
@@ -29,12 +37,9 @@ const profilePopup = useProfilePopup()
                         </div>
                     </div>
                     <div class="links_row d-flex justify-content-around">
-                        <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend
-                            Quickly</NuxtLink>
-                        <button @click="applicationPopup.open" class="link"><img src="" alt="" class="link_icon">Create
-                            Your Application</button>
-                        <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party
-                        </NuxtLink>
+                        <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend Quickly</NuxtLink>
+                        <button @click="handleApplicationClick()" class="link"><img src="" alt="" class="link_icon">Create Your Application</button>
+                        <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party</NuxtLink>
                     </div>
                 </div>
                 </Col>

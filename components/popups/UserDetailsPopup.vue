@@ -5,7 +5,12 @@ const userLanguages = computed(() =>
     userData.value.languages ? userData.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
 )
 
+const loading = ref(false);
+
+const { clear } = useUserSession()
+
 const { visible, close } = useUserDetailsPopup()
+const profilePopup = useProfilePopup()
 const { data: languages } = await useFetch('/api/languages')
 
 const langSearch = ref("")
@@ -36,6 +41,23 @@ const updateAge = async (age) => {
         userData.value.age = updatedFields.age
 }
 
+const updatePassword = async (password) => {
+
+}
+
+const updateEmail = async (email) => {
+
+}
+
+const logout = async () => {
+    loading.value = true;
+    await clear();
+    loading.value = false;
+    close();
+    profilePopup.close();
+    navigateTo("/sign-in");
+}
+
 </script>
 
 <template>
@@ -61,13 +83,26 @@ const updateAge = async (age) => {
                 </Row>
 
                 <div class="button_accent">Save Languages</div>
-                <div class="languages_title">Enter your age</div>
+                    
                 <div class="languages_field d-flex align-items-center justify-content-between">
                     <input @change="updateAge($event.target.value)" :value="userData.age" class="languages_input"
                         type="text" name="user_age" id="user_age" placeholder="Enter your age number" />
                     <div class="button_accent">Enter</div>
                 </div>
 
+                <div class="languages_field d-flex align-items-center justify-content-between">
+                    <input @change="updateEmail($event.target.value)" :value="userData.email" class="languages_input"
+                        type="email" name="user_email" id="user_email" placeholder="New email address" />
+                    <div class="button_accent">Change</div>
+                </div>
+
+                <div class="languages_field d-flex align-items-center justify-content-between">
+                    <input @change="updatePassword($event.target.value)" class="languages_input"
+                        type="password" name="user_password" id="user_password" placeholder="New user password" />
+                    <div class="button_accent">Change</div>
+                </div>
+
+                <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'}}</button>
             </div>
         </Container>
     </Popup>
