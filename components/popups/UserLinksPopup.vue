@@ -1,11 +1,14 @@
-<script setup>
-const userData = inject("userData");
-const userLinks = computed(() => userData.value.platforms ? userData.value.platforms.reduce((acc, curr) => ({ ...acc, [curr.platformId]: curr.link }), {}) : {})
-const { visible, close } = useUserLinksPopup()
+<script setup lang="ts">
+defineProps({
+    isOpen: Boolean,
+})
+const userData = inject<Ref<User>>("userData");
+
+const userLinks = computed(() => userData?.value.platforms ? userData?.value.platforms.reduce((acc: any, curr: any) => ({ ...acc, [curr.platformId]: curr.link }), {}) : {})
 
 const { data: platforms } = await useFetch('/api/platforms')
 const updatePlatformLink = async (platformId, link) => {
-    const { updatedFields } = await $fetch(`/api/users/${userData.value.id}`, {
+    const { updatedFields } = await $fetch(`/api/users/${userData?.value.id}`, {
         method: "PATCH",
         body: {
             platforms: {
@@ -19,7 +22,7 @@ const updatePlatformLink = async (platformId, link) => {
 </script>
 
 <template>
-    <Popup :visible @close="close" :width="500" class="links">
+    <Popup :visible="isOpen" :width="500" class="links">
         <Container>
             <div class="links_title">User Links</div>
             <template v-for="platform in platforms">

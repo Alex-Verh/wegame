@@ -1,9 +1,11 @@
-<script setup>
-const { visible, close } = usePartyMembersPopup()
+<script setup lang="ts">
+defineProps({
+    isOpen: Boolean,
+})
 </script>
 
 <template>
-    <Popup :visible @close="close" :width="700" class="members">
+    <Popup :visible="isOpen" :width="700" class="members">
         <Container>
             <div class="members_title">Party Members</div>
 

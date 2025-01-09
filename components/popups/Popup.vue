@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const { visible } = defineProps({
   visible: {
     type: Boolean,
@@ -26,7 +26,7 @@ const close = () => {
 </script>
 
 <template>
-  <div class="popup_overlay" v-show="visible" @click.self="close">
+  <div class="popup_overlay" v-if="visible" @click.self="close">
     <div class="popup" :style="{ width: width + 'px' }">
       <img class="popup_close" src="~/assets/icons/close.svg" alt="Close Popup" @click.self="close" />
       <slot></slot>

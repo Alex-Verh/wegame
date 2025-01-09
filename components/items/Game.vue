@@ -1,19 +1,10 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
 
-const isSelected = ref(false);
-
-const toggleSelected = () => {
-  isSelected.value = !isSelected.value;
-};
-
-defineProps(['title', 'image']);
+defineProps(['title', 'image', 'isSelected']);
 </script>
 
 <template>
-  <div class="game"
-      :class="{ game_selected: isSelected }"
-      @click="toggleSelected">
+  <div class="game" :class="{ game_selected: isSelected }">
     <img :src="image" alt="GameName" class="game_image">
     <div class="game_title">{{ title }}</div>
     <img class="game_mark" src="~/assets/icons/mark.svg" alt="Selected" />
@@ -29,7 +20,7 @@ defineProps(['title', 'image']);
   border: 1px solid #FE9F00;
   cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
   font-size: 18px;
-  min-width: 398px ;
+  min-width: 398px;
   aspect-ratio: 16 / 9;
 }
 
@@ -60,7 +51,8 @@ defineProps(['title', 'image']);
   /* Scale up the image wrapper */
 }
 
-.game_title, .game_mark {
+.game_title,
+.game_mark {
   position: absolute;
   /* Position the content over the image */
   top: 45%;

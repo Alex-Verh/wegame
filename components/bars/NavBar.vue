@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-
+const userData = inject<Ref<User>>("userData");
 
 const { loggedIn } = useUserSession()
-const applicationPopup = useApplicationPopup()
-const profilePopup = useProfilePopup()
+const applicationPopup = usePopup()
+const profilePopup = usePopup()
 const router = useRouter();
 
 const handleApplicationClick = () => {
@@ -13,6 +13,8 @@ const handleApplicationClick = () => {
 </script>
 
 <template>
+    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="userData" @close="profilePopup.close" />
+    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
     <nav class="navigation">
         <div class="container-fluid">
             <Row>
@@ -37,9 +39,12 @@ const handleApplicationClick = () => {
                         </div>
                     </div>
                     <div class="links_row d-flex justify-content-around">
-                        <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend Quickly</NuxtLink>
-                        <button @click="handleApplicationClick()" class="link"><img src="" alt="" class="link_icon">Create Your Application</button>
-                        <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party</NuxtLink>
+                        <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend
+                            Quickly</NuxtLink>
+                        <button @click="handleApplicationClick()" class="link"><img src="" alt=""
+                                class="link_icon">Create Your Application</button>
+                        <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party
+                        </NuxtLink>
                     </div>
                 </div>
                 </Col>

@@ -1,16 +1,19 @@
-<script setup>
-const userData = inject("userData");
+<script setup lang="ts">
+defineProps({
+    isOpen: Boolean,
+})
+
+const userData = inject<Ref<User>>("userData");
 
 const userLanguages = computed(() =>
-    userData.value.languages ? userData.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
+    userData?.value.languages ? userData?.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
 )
 
 const loading = ref(false);
 
 const { clear } = useUserSession()
 
-const { visible, close } = useUserDetailsPopup()
-const profilePopup = useProfilePopup()
+const profilePopup = usePopup()
 const { data: languages } = await useFetch('/api/languages')
 
 const langSearch = ref("")
@@ -61,7 +64,7 @@ const logout = async () => {
 </script>
 
 <template>
-    <Popup :visible @close="close" :width="700" class="languagespop">
+    <Popup :visible="isOpen" :width="700" class="languagespop">
         <Container>
             <div class="languages_title">Select Languages</div>
 
@@ -76,14 +79,14 @@ const logout = async () => {
                 <Row class="g-1">
                     <Col v-for="language in showedLanguages" :key="language.id" @click="toggleLanguage(language.id)"
                         col="6">
-                        <div :class="{ language_selected: userLanguages[language.id] }" class="language">{{
-                            language.title }}
-                        </div>
+                    <div :class="{ language_selected: userLanguages[language.id] }" class="language">{{
+                        language.title }}
+                    </div>
                     </Col>
                 </Row>
 
                 <div class="button_accent">Save Languages</div>
-                    
+
                 <div class="languages_field d-flex align-items-center justify-content-between">
                     <input @change="updateAge($event.target.value)" :value="userData.age" class="languages_input"
                         type="text" name="user_age" id="user_age" placeholder="Enter your age number" />
@@ -97,12 +100,13 @@ const logout = async () => {
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updatePassword($event.target.value)" class="languages_input"
-                        type="password" name="user_password" id="user_password" placeholder="New user password" />
+                    <input @change="updatePassword($event.target.value)" class="languages_input" type="password"
+                        name="user_password" id="user_password" placeholder="New user password" />
                     <div class="button_accent">Change</div>
                 </div>
 
-                <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'}}</button>
+                <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
+                    }}</button>
             </div>
         </Container>
     </Popup>

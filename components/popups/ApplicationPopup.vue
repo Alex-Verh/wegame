@@ -1,11 +1,15 @@
-<script setup>
-const { application } = defineProps(["application"])
+<script setup lang="ts">
+const { application } = defineProps({
+    isOpen: Boolean,
+    application: Object
+})
 
-const userData = inject("userData");
-const { visible, close } = useApplicationPopup()
+
+const userData = inject<Ref<User>>("userData");
+
 const { data: games } = await useFetch('/api/games')
 
-const selectedGame = ref(application?.gameId || games.value[0].id)
+const selectedGame = ref(application?.gameId || games?.value?.[0].id)
 const applicationText = ref("")
 const applicationSearch = ref("")
 const applicationRank = ref("")
@@ -21,7 +25,7 @@ const createApplication = async () => {
         }
     })
     if (application)
-        userData.value.applications?.push(application)
+        userData?.value.applications?.push(application)
     applicationText.value = ""
     close();
 
@@ -29,7 +33,7 @@ const createApplication = async () => {
 </script>
 
 <template>
-    <Popup :visible @close="close">
+    <Popup :visible="isOpen">
         <Container>
             <div class="application_title">Create Application</div>
 
@@ -41,36 +45,42 @@ const createApplication = async () => {
 
                 <label for="application_rank" class="application_subtitle">Describe your game rank</label>
                 <input v-model="applicationRank" type="text" name="application_rank" id="application_rank"
-                class="application_field" placeholder="Silver III"/>
+                    class="application_field" placeholder="Silver III" />
 
                 <!-- TODO make the platform list dynamic (from db) -->
                 <label for="application_platforms" class="application_subtitle">Select Game Platform</label>
                 <div class="application_platforms">
-                    <input v-model="applicationPlatform" type="radio" id="Steam" name="application_platform" value="Steam" />
+                    <input v-model="applicationPlatform" type="radio" id="Steam" name="application_platform"
+                        value="Steam" />
                     <label for="Steam" class="application_platform">Steam</label>
 
                     <input v-model="applicationPlatform" type="radio" id="EA" name="application_platform" value="EA" />
                     <label for="EA" class="application_platform">EA Play</label>
 
-                    <input v-model="applicationPlatform" type="radio" id="Epic" name="application_platform" value="Epic" />
+                    <input v-model="applicationPlatform" type="radio" id="Epic" name="application_platform"
+                        value="Epic" />
                     <label for="Epic" class="application_platform">Epic Games</label>
 
-                    <input v-model="applicationPlatform" type="radio" id="XBOX" name="application_platform" value="XBOX" />
+                    <input v-model="applicationPlatform" type="radio" id="XBOX" name="application_platform"
+                        value="XBOX" />
                     <label for="XBOX" class="application_platform">XBOX</label>
 
-                    <input v-model="applicationPlatform" type="radio" id="Playstation" name="application_platform" value="Playstation" />
+                    <input v-model="applicationPlatform" type="radio" id="Playstation" name="application_platform"
+                        value="Playstation" />
                     <label for="Playstation" class="application_platform">Playstation</label>
 
-                    <input v-model="applicationPlatform" type="radio" id="Battle" name="application_platform" value="Battle" />
+                    <input v-model="applicationPlatform" type="radio" id="Battle" name="application_platform"
+                        value="Battle" />
                     <label for="Battle" class="application_platform">Battle.net</label>
                 </div>
 
                 <label for="application_search" class="application_subtitle">Search your application game</label>
                 <input v-model="applicationSearch" type="text" name="application_search" id="application_search"
-                class="application_field" placeholder="Searching.."/>
+                    class="application_field" placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
-                    <Game v-for="game in games" :key="game.id" @click="selectedGame = game.id" :title="game.title"
-                        :image="game.image" class="game_pop" />
+                    <Game v-for="game in games" :key="game.id" @click="selectedGame = game.id"
+                        :isSelected="selectedGame == game.id" :title="game.title" :image="game.image"
+                        class="game_pop" />
                 </div>
 
                 <div class="application_buttons d-flex justify-content-center">
@@ -93,7 +103,7 @@ const createApplication = async () => {
     overflow-y: scroll;
     height: 500px;
     padding: 0 30px;
-} 
+}
 
 .application_body::-webkit-scrollbar {
     width: 3px;
@@ -134,7 +144,7 @@ const createApplication = async () => {
     display: none;
 }
 
-.application_platforms input[type="radio"]:checked + .application_platform {
+.application_platforms input[type="radio"]:checked+.application_platform {
     color: #FE9F00;
 }
 

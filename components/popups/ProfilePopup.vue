@@ -1,23 +1,29 @@
 <script setup lang="ts">
-const userData = inject("userData");
-
-const { visible, close } = useProfilePopup()
-const applicationPopup = useApplicationPopup()
-const partyPopup = usePartyPopup()
-const userDetailsPopup = useUserDetailsPopup()
-const userLinksPopup = useUserLinksPopup()
+defineProps({
+    isOpen: Boolean,
+    user: Object as PropType<User>
+})
+const emit = defineEmits(["close"])
+const applicationPopup = usePopup()
+const partyPopup = usePopup()
+const userDetailsPopup = usePopup()
+const userLinksPopup = usePopup()
 
 
 </script>
 
 
 <template>
-    <Popup :visible @close="close" :style="{ zIndex: 800 }" class="profile">
+    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
+    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" />
+    <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" />
+    <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" />
+    <Popup :visible="isOpen" :style="{ zIndex: 800 }" @close="emit('close')" class="profile">
         <Container>
             <Row class="g-5">
                 <Col col="3">
                 <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
-                <p class="profile_username accent">{{ userData?.nickname }}</p>
+                <p class="profile_username accent">{{ user?.nickname }}</p>
                 <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Links</button>
                 <button @click="userDetailsPopup.open" class="button_accent button_pop">Settings</button>
                 </Col>
@@ -36,7 +42,7 @@ const userLinksPopup = useUserLinksPopup()
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="application in userData?.applications" :key="application.id"
+                            <div v-for="application in user?.applications" :key="application.id"
                                 class="profile_box d-inline-flex align-items-center">
                                 {{ application.text }}
                                 <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
@@ -47,7 +53,7 @@ const userLinksPopup = useUserLinksPopup()
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="party in userData?.own_parties" :key="party.id" class="profile_box">
+                            <div v-for="party in user?.ownParties" :key="party.id" class="profile_box">
                                 <div class="profile_party_title accent">Juicy Bastards</div>
                                 <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                                 <div>{{ party.title }}</div>
