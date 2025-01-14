@@ -8,5 +8,5 @@ export const usePopup = () => {
     close: () => {
       popupVisibility.value = false;
     },
-  };2
+  };
 };
