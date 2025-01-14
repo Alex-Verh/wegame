@@ -40,11 +40,12 @@ const onSubmit = async (event: Event) => {
             body,
         });
         await fetch();
-        console.log('User signed up successfully')
+        useToast("Logged in successfully", "success")
     }
     catch (err) {
-        if (err instanceof Error)
-            error.value = err.message
+        if (err instanceof Error) {
+            useToast(err.message, "danger")
+        }
     }
     finally {
         loading.value = false;
@@ -57,23 +58,17 @@ const onSubmit = async (event: Event) => {
     <div class="container-fluid">
         <Row class="g-1">
             <Col col="8">
-                <Carousel
-                    id="form_carousel"
-                    class="form_carousel"
-                    indicators
-                    fade
-                    touch
-                    :interval="4500">   
-                        <CarouselItem>
-                            <img src="/images/register_image_1.jpg" class="d-block w-100" alt="Friends Gaming" />
-                        </CarouselItem>
-                        <CarouselItem>
-                            <img src="/images/register_image_2.jpg" class="d-block w-100" alt="Friends Gaming" />
-                        </CarouselItem>
-                        <CarouselItem>
-                            <img src="/images/register_image_3.jpg" class="d-block w-100" alt="Friends Gaming" />
-                        </CarouselItem>
-                    </Carousel>
+            <Carousel id="form_carousel" class="form_carousel" indicators fade touch :interval="4500">
+                <CarouselItem>
+                    <img src="/images/register_image_1.jpg" class="d-block w-100" alt="Friends Gaming" />
+                </CarouselItem>
+                <CarouselItem>
+                    <img src="/images/register_image_2.jpg" class="d-block w-100" alt="Friends Gaming" />
+                </CarouselItem>
+                <CarouselItem>
+                    <img src="/images/register_image_3.jpg" class="d-block w-100" alt="Friends Gaming" />
+                </CarouselItem>
+            </Carousel>
             </Col>
             <Col col="4">
             <section>

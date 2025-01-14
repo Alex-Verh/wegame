@@ -13,18 +13,7 @@ watchEffect(async () => {
 
 provide("userData", userData);
 
-
-const toasts = ref<Array<{ id: number; content: string; variant: string }>>([]);
-
-function createToast(content: string, variant: string = 'primary') {
-  const id = Date.now();
-  console.log("chinazes")
-  toasts.value.push({ id, content, variant });
-
-  setTimeout(() => {
-    toasts.value = toasts.value.filter((toast) => toast.id !== id);
-  }, 5000);
-}
+const toasts = useState("toasts", () => []);
 </script>
 
 

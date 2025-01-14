@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useToast } from '~/composables/toasts';
+
 defineProps({
     isOpen: Boolean,
     isEditable: Boolean
@@ -21,7 +23,7 @@ const updatePlatformLink = async (platformId, link) => {
     if (updatedFields?.platforms)
         userData.value.platforms = updatedFields.platforms
 
-    // TODO: Show success message
+    useToast("Links updated successfully", "success")
 }
 </script>
 

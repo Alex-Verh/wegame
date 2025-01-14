@@ -2,13 +2,18 @@
 import { useRouter } from 'vue-router';
 const userData = inject<Ref<User>>("userData");
 
-const { loggedIn } = useUserSession()
+const { loggedIn, clear } = useUserSession()
 const applicationPopup = usePopup()
 const profilePopup = usePopup()
 const router = useRouter();
 
 const handleApplicationClick = () => {
     loggedIn ? applicationPopup.open() : router.push('/login');
+}
+
+const logout = async () => {
+    await clear();
+    navigateTo("/sign-in");
 }
 </script>
 
@@ -50,8 +55,9 @@ const handleApplicationClick = () => {
                 </Col>
                 <Col col="2">
                 <div class="buttons">
-                    <NuxtLink class="button" to="/sign-up">Register
+                    <NuxtLink v-if="!loggedIn" class="button" to="/sign-up">Register
                     </NuxtLink>
+                    <button v-else @click="logout" class="button">Logout</button>
                     <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">Enter Account
                     </NuxtLink>
                     <button v-else @click="profilePopup.open" class="button_accent">View Profile</button>
