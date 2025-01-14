@@ -16,7 +16,6 @@ provide("userData", userData);
 
 
 <template>
-  <Popups />
   <NavBar />
   <main>
     <NuxtPage />

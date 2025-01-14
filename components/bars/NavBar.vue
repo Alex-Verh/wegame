@@ -14,7 +14,7 @@ const handleApplicationClick = () => {
 
 <template>
     <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="userData" @close="profilePopup.close" />
-    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
+    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
     <nav class="navigation">
         <div class="container-fluid">
             <Row>

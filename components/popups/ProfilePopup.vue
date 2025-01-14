@@ -1,8 +1,12 @@
 <script setup lang="ts">
-defineProps({
+const { user } = defineProps({
     isOpen: Boolean,
     user: Object as PropType<User>
 })
+
+const { user: sessionUser } = useUserSession()
+
+const isOwner = computed(() => sessionUser.value?.id === user?.id)
 const emit = defineEmits(["close"])
 const applicationPopup = usePopup()
 const partyPopup = usePopup()
@@ -14,18 +18,23 @@ const userLinksPopup = usePopup()
 
 
 <template>
-    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
+    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
     <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" />
     <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" />
-    <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" />
+    <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" :isEditable="isOwner" />
     <Popup :visible="isOpen" :style="{ zIndex: 800 }" @close="emit('close')" class="profile">
         <Container>
             <Row class="g-5">
                 <Col col="3">
-                <img class="profile_picture" src="/images/profile.jpg" alt="Profile Username">
+                <img class="profile_picture" :src="user?.profilePic" alt="Profile Username">
                 <p class="profile_username accent">{{ user?.nickname }}</p>
-                <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Links</button>
-                <button @click="userDetailsPopup.open" class="button_accent button_pop">Settings</button>
+                <template v-if="isOwner">
+                    <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Contact</button>
+                    <button @click="userDetailsPopup.open" class="button_accent button_pop">Settings</button>
+                </template>
+                <template v-else>
+                    <button @click="userLinksPopup.open" class="button_accent button_pop">See Contact</button>
+                </template>
                 </Col>
                 <Col col="9">
                 <div class="profile_games">

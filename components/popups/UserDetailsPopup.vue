@@ -20,7 +20,7 @@ const langSearch = ref("")
 const showedLanguages = computed(() => langSearch.value ?
     languages.value.filter((language) => language.title.toLowerCase().includes(langSearch.value.toLowerCase())) : languages.value)
 
-const toggleLanguage = async (languageId) => {
+const toggleLanguage = async (languageId: number) => {
 
     const { updatedFields } = await $fetch(`/api/users/${userData.value.id}`, {
         method: "PATCH",

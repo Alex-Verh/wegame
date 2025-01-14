@@ -1,10 +1,12 @@
 <script setup lang="ts">
 defineProps({
     isOpen: Boolean,
+    isEditable: Boolean
 })
 const userData = inject<Ref<User>>("userData");
 
 const userLinks = computed(() => userData?.value.platforms ? userData?.value.platforms.reduce((acc: any, curr: any) => ({ ...acc, [curr.platformId]: curr.link }), {}) : {})
+const isSaved = ref(true)
 
 const { data: platforms } = await useFetch('/api/platforms')
 const updatePlatformLink = async (platformId, link) => {
@@ -18,6 +20,8 @@ const updatePlatformLink = async (platformId, link) => {
     })
     if (updatedFields?.platforms)
         userData.value.platforms = updatedFields.platforms
+
+    // TODO: Show success message
 }
 </script>
 
@@ -27,11 +31,10 @@ const updatePlatformLink = async (platformId, link) => {
             <div class="links_title">User Links</div>
             <template v-for="platform in platforms">
                 <label :for="`platform_${platform.id}_url`" class="links_subtitle">{{ platform.title }} Profile</label>
-                <input :value="userLinks[platform.id]" @change="updatePlatformLink(platform.id, $event.target.value)"
-                    type="text" :name="`platform_${platform.id}_url`" :id="`platform_${platform.id}_url`"
-                    class="links_field" />
+                <input :readonly="!isEditable" :value="userLinks[platform.id]"
+                    @change="updatePlatformLink(platform.id, $event.target.value)" type="text" @input="isSaved = false"
+                    :name="`platform_${platform.id}_url`" :id="`platform_${platform.id}_url`" class="links_field" />
             </template>
-            <div class="button_accent">Save Changes</div>
         </Container>
     </Popup>
 </template>

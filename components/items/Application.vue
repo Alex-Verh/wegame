@@ -1,28 +1,33 @@
 <script setup>
 defineProps(["author", "text", "game"])
+
+const profilePopup = usePopup()
+
 </script>
 
 <template>
-    <div class="application">
+    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="author" @close="profilePopup.close" />
+
+    <div class="application" @click="profilePopup.open">
         <Row>
             <Col col="1">
-                <img :src="author.profilePic" alt="Profile Picture" class="application_img">
+            <img :src="author.profilePic" alt="Profile Picture" class="application_img">
             </Col>
             <Col col="2">
-                <div class="applicator_info">
-                    <div class="applicator_name accent">{{ author.nickname }}</div>
-                    <div class="applicator_age">{{ author.age }}</div>
-                    <div class="applicator_location">{{ author.languages.map(language =>
-                        language.language.title).join(', ') }}</div>
-                </div>
+            <div class="applicator_info">
+                <div class="applicator_name accent">{{ author.nickname }}</div>
+                <div class="applicator_age">{{ author.age }}</div>
+                <div class="applicator_location">{{ author.languages.map(language =>
+                    language.language.title).join(', ') }}</div>
+            </div>
             </Col>
             <Col col="8">
-                <div class="application_text d-flex align-items-center">
-                    {{ text }}
-                </div>
+            <div class="application_text d-flex align-items-center">
+                {{ text }}
+            </div>
             </Col>
             <Col col="1">
-                <img :src="game.icon" alt="Counter Strike 2" class="application_game">
+            <img :src="game.icon" alt="Counter Strike 2" class="application_game">
             </Col>
         </Row>
     </div>
