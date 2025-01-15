@@ -1,10 +1,21 @@
 <script setup lang="ts">
-defineProps({
+const { party } = defineProps({
+    isNew: Boolean,
     isOpen: Boolean,
+    party: Object,
 })
+
 const { data: games } = await useFetch('/api/games')
 
-const partySearch = ref("")
+const gamesSearch = ref("")
+const showedGames = computed(() =>
+    gamesSearch.value ?
+        games?.value?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
+        games?.value
+)
+
+const partyGame = ref(party?.gameId || games?.value?.[0].id)
+
 </script>
 
 <template>
@@ -44,11 +55,17 @@ const partySearch = ref("")
                 </Row>
 
                 <label for="party_search" class="party_subtitle">Select your party game</label>
-                <input v-model="partySearch" type="text" name="party_search" id="party_search" class="party_field"
+                <input v-model="gamesSearch" type="text" name="party_search" id="party_search" class="party_field"
                     placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
-                    <Game v-for="game in games" :key="game.id" :title="game.title" :image="game.image"
-                        class="game_pop" />
+                    <template v-for="game in showedGames" :key="game.id">
+                        <input v-model="partyGame" type="radio" :id="`${game.title}+${game.id}`"
+                            name="application_game" :value="game.id" />
+                        <label :for="`${game.title}+${game.id}`">
+                            <Game :title="game.title" :image="game.image" class="game_pop" :isSelected="game.id === partyGame" 
+                            />
+                        </label>
+                    </template>
                 </div>
 
                 <div class="party_buttons d-flex justify-content-center">
@@ -148,15 +165,5 @@ const partySearch = ref("")
 /* Scroll */
 ::-webkit-scrollbar {
     height: 3px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #FE9F00;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #201F30;
 }
 </style>

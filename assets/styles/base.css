@@ -18,12 +18,22 @@ body {
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
+    background: #FE9F00;
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: #201F30;
+}
+
+/* Handle */
+body::-webkit-scrollbar-thumb {
     background: #201F30;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+body::-webkit-scrollbar-thumb:hover {
     background: #FE9F00;
 }
 

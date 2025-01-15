@@ -77,10 +77,10 @@ const createApplication = async () => {
                         <input v-model="applicationGame" type="radio" :id="`${game.title}+${game.id}`"
                             name="application_game" :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">
-                            <Game :title="game.title" :image="game.image" class="game_pop" />
+                            <Game :title="game.title" :image="game.image" class="game_pop" :isSelected="game.id === applicationGame" 
+                            />
                         </label>
                     </template>
-
                 </div>
 
                 <div class="application_buttons d-flex justify-content-center">
@@ -192,15 +192,5 @@ const createApplication = async () => {
 /* Scroll */
 ::-webkit-scrollbar {
     height: 3px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #FE9F00;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #201F30;
 }
 </style>

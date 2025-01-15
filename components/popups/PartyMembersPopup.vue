@@ -7,6 +7,34 @@ defineProps({
 <template>
     <Popup :visible="isOpen" :width="700" class="members">
         <Container>
+            <div class="members_title">Party Requests</div>
+
+            <div class="members_section">
+                <div class="members_member d-flex align-items-center justify-content-between">
+                    <span class="members_name">
+                        @alllexlelfef
+                    </span>
+                    <div>
+                        <button class="button_accent">Accept</button>
+                        <button class="button_accent">Deny</button>
+                    </div>
+                </div>
+
+                <div class="members_member d-flex align-items-center justify-content-between">
+                    <span class="members_name">
+                        @alllexlelfef
+                    </span>
+                    <div>
+                        <button class="button_accent">Accept</button>
+                        <button class="button_accent">Deny</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="button_accent">Accept Everyone</button>
+
+
             <div class="members_title">Party Members</div>
 
             <div class="members_section">
@@ -15,8 +43,8 @@ defineProps({
                         @alllexlelfef
                     </span>
                     <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
+                        <button class="button_accent">See User</button>
+                        <button class="button_accent">Kick</button>
                     </div>
                 </div>
 
@@ -25,8 +53,8 @@ defineProps({
                         @alllexlelfef
                     </span>
                     <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
+                        <button class="button_accent">See User</button>
+                        <button class="button_accent">Kick</button>
                     </div>
                 </div>
 
@@ -35,8 +63,18 @@ defineProps({
                         @alllexlelfef
                     </span>
                     <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
+                        <button class="button_accent">See User</button>
+                        <button class="button_accent">Kick</button>
+                    </div>
+                </div>
+                
+                <div class="members_member d-flex align-items-center justify-content-between">
+                    <span class="members_name">
+                        @alllexlelfef
+                    </span>
+                    <div>
+                        <button class="button_accent">See User</button>
+                        <button class="button_accent">Kick</button>
                     </div>
                 </div>
 
@@ -45,8 +83,8 @@ defineProps({
                         @alllexlelfef
                     </span>
                     <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
+                        <button class="button_accent">See User</button>
+                        <button class="button_accent">Kick</button>
                     </div>
                 </div>
 
@@ -55,44 +93,21 @@ defineProps({
                         @alllexlelfef
                     </span>
                     <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <div class="button_accent">See User</div>
-                        <div class="button_accent">Kick</div>
+                        <button class="button_accent">See User</button>
+                        <button class="button_accent">Kick</button>
                     </div>
                 </div>
             </div>
 
-
-            <div class="button_accent">Kick All</div>
+            <div class="members_title">Discord Server URL</div>
+            <div class="members_member d-flex align-items-center justify-content-between">
+                    <span class="members_name">
+                        https://discord.com/invite/ID
+                    </span>
+                    <div>
+                        <button class="button_accent">Navigate</button>
+                    </div>
+                </div>
         </Container>
     </Popup>
 </template>
@@ -105,15 +120,16 @@ defineProps({
 }
 
 .members_section {
-    height: 300px;
+    max-height: 250px;
     overflow-y: auto;
-    margin-bottom: 30px;
+    scroll-snap-type: y mandatory;
 }
 
 .members_member {
     border: 1px solid #444259;
     padding: 0 0 0 15px;
     margin-bottom: 20px;
+    scroll-snap-align: start;
 }
 
 .members_member:last-of-type {
@@ -132,7 +148,7 @@ defineProps({
 }
 
 .members_member .button_accent:first-of-type {
-    background-color: #fff;
+    background-color: #fff !important;
 }
 
 .members_member .button_accent:last-of-type {

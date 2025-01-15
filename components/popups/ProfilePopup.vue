@@ -159,13 +159,4 @@ const userLinksPopup = usePopup()
     height: 3px;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #FE9F00;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #201F30;
-}
 </style>
