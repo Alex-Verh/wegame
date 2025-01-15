@@ -19,7 +19,7 @@ const userLinksPopup = usePopup()
 
 <template>
     <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
-    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" />
+    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" isNew/>
     <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" />
     <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" :isEditable="isOwner" />
     <Popup :visible="isOpen" :style="{ zIndex: 800 }" @close="emit('close')" class="profile">
@@ -43,7 +43,7 @@ const userLinksPopup = usePopup()
                         <Row class="g-3">
                             <Col col="3">
                             <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg"
-                                class="profile_game" />
+                                class="profile_game" @click="useToast('Counter-Strike: Global Offensive', 'info')"/>
                             </Col>
                         </Row>
 
@@ -96,7 +96,7 @@ const userLinksPopup = usePopup()
 
 .profile_game {
     min-width: 100% !important;
-    font-size: 12px !important;
+    font-size: 0px !important;
 }
 
 .profile_username {

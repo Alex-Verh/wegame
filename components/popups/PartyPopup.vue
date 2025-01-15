@@ -5,6 +5,8 @@ const { party } = defineProps({
     party: Object,
 })
 
+const userData = inject<Ref<User>>("userData");
+
 const { data: games } = await useFetch('/api/games')
 
 const gamesSearch = ref("")
@@ -14,8 +16,28 @@ const showedGames = computed(() =>
         games?.value
 )
 
-const partyGame = ref(party?.gameId || games?.value?.[0].id)
+const partyGame = ref(party?.gameId || games?.value?.[0].id) //!TODO Check maybe not select any game when creating
+const partyName = ref("")
+const partyText = ref("")
+const partyMinAge = ref(0)
+const partyMaxAge = ref(99)
+const partyMemberNr = ref(5)
 
+
+const createParty = async () => {
+    const party = await $fetch('/api/parties', {
+        method: "POST",
+        body: {
+            gameId: partyGame.value,
+            // TODO send values
+        }
+    })
+    if (party)
+        userData?.value.parties?.push(party)
+// TODO reset values
+    close();
+
+}
 </script>
 
 <template>
@@ -25,21 +47,21 @@ const partyGame = ref(party?.gameId || games?.value?.[0].id)
 
             <div class="party_body">
                 <label for="party_name" class="party_subtitle">Party Name</label>
-                <input type="text" name="party_name" id="party_name" class="party_field"
+                <input v-model="partyName" type="text" name="party_name" id="party_name" class="party_field"
                     placeholder="Some cool name.." />
 
                 <label for="party_description" class="party_subtitle">Party Description</label>
-                <textarea name="party_description" id="party_description" class="party_field party_textarea"
+                <textarea v-model="partyText" name="party_description" id="party_description" class="party_field party_textarea"
                     placeholder="We will be playing on Faceit.."></textarea>
 
                 <Row>
                     <Col col="6">
                     <label for="party_age" class="party_subtitle">Select age range</label>
                     <div class="d-flex align-items-center party_numbers">
-                        <input type="number" min="0" max="99" name="party_minage" id="party_minage"
+                        <input v-model="partyMinAge" type="number" min="0" max="99" name="party_minage" id="party_minage"
                             class="party_field party_minifield" placeholder="10">
                         <span> - </span>
-                        <input type="number" min="0" max="99" name="party_maxage" id="party_maxage"
+                        <input v-model="partyMaxAge" type="number" min="0" max="99" name="party_maxage" id="party_maxage"
                             class="party_field party_minifield" placeholder="99">
                         <span>years old</span>
                     </div>
@@ -47,7 +69,7 @@ const partyGame = ref(party?.gameId || games?.value?.[0].id)
                     <Col col="6">
                     <label for="party_members" class="party_subtitle">Max. number of members</label>
                     <div class="d-flex align-items-center party_numbers">
-                        <input type="number" min="2" max="30" name="party_members" id="party_members"
+                        <input v-model="partyMemberNr" type="number" min="2" max="30" name="party_members" id="party_members"
                             class="party_field party_minifield" placeholder="5">
                         <span>members</span>
                     </div>
@@ -69,9 +91,12 @@ const partyGame = ref(party?.gameId || games?.value?.[0].id)
                 </div>
 
                 <div class="party_buttons d-flex justify-content-center">
-                    <div class="button_accent">Save Changes</div>
-                    <div class="button_accent">See Members</div>
-                    <div class="button_accent">Delete Party</div>
+                    <button v-if="isNew" @click="createParty" class="button_accent">Save Changes</button>
+                    <template v-else>
+                        <button class="button_accent">Save Changes</button>
+                        <button class="button_accent">See Members</button>
+                        <button class="button_accent">Delete application</button>
+                    </template>
                 </div>
 
             </div>
@@ -141,16 +166,24 @@ const partyGame = ref(party?.gameId || games?.value?.[0].id)
     overflow-y: hidden;
 }
 
-.game_pop {
+.pop_section input[type="radio"] {
+    display: none;
+}
+
+.pop_section label {
+    display: block;
     margin-inline-end: 25px;
+}
+
+.pop_section label:last-of-type {
+    margin-inline-end: 0px;
+}
+
+.game_pop {
     flex-shrink: 0;
     height: 100%;
     font-size: 12px !important;
     min-width: auto !important;
-}
-
-.game_pop:last-of-type {
-    margin-inline-end: 0px;
 }
 
 .party_buttons {

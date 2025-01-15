@@ -31,8 +31,6 @@ const createApplication = async () => {
             platformId: applicationPlatform.value,
             text: applicationText.value,
             ranking: applicationRank.value,
-
-
         }
     })
     if (application)
@@ -168,16 +166,15 @@ const createApplication = async () => {
     margin-inline-end: 25px;
 }
 
+.pop_section label:last-of-type {
+    margin-inline-end: 0px;
+}
+
 .game_pop {
-    margin-inline-end: 25px;
     flex-shrink: 0;
     height: 100%;
     min-width: auto !important;
     font-size: 12px !important;
-}
-
-.game_pop:last-of-type {
-    margin-inline-end: 0px;
 }
 
 .application_buttons {
