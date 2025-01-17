@@ -1,21 +1,20 @@
 <script setup lang="ts">
-const { application } = defineProps({
-    isNew: Boolean,
-    isOpen: Boolean,
-    application: Object,
-})
+const { application } = defineProps<{
+    isNew: boolean,
+    isOpen: boolean,
+    application?: ApplicationT,
+}>()
 
 
-const userData = inject<Ref<User>>("userData");
-
-const { data: games } = await useFetch('/api/games')
-const { data: platforms } = await useFetch('/api/platforms')
+const user = inject<Ref<UserT>>("user");
+const games = inject<GameT[]>("games");
+const platforms = inject<PlatformT[]>("platforms");
 
 const gamesSearch = ref("")
 const showedGames = computed(() =>
     gamesSearch.value ?
-        games?.value?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
-        games?.value
+        games?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
+        games
 )
 
 const applicationGame = ref(application?.gameId || "")
@@ -24,7 +23,7 @@ const applicationText = ref("")
 const applicationRank = ref("")
 
 const createApplication = async () => {
-    const application = await $fetch('/api/applications', {
+    const application: ApplicationT = await $fetch('/api/applications', {
         method: "POST",
         body: {
             gameId: applicationGame.value,
@@ -33,13 +32,14 @@ const createApplication = async () => {
             ranking: applicationRank.value,
         }
     })
-    if (application)
-        userData?.value.applications?.push(application)
-    applicationText.value = ""
-    applicationRank.value = ""
-    applicationGame.value = ""
-    applicationPlatform.value = ""
-    close();
+    if (application) {
+        user?.value.applications?.push(application)
+        applicationText.value = ""
+        applicationRank.value = ""
+        applicationGame.value = ""
+        applicationPlatform.value = ""
+        close();
+    }
 
 }
 </script>
@@ -77,8 +77,8 @@ const createApplication = async () => {
                         <input v-model="applicationGame" type="radio" :id="`${game.title}+${game.id}`"
                             name="application_game" :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">
-                            <Game :title="game.title" :image="game.image" class="game_pop" :isSelected="game.id === applicationGame" 
-                            />
+                            <Game :title="game.title" :image="game.image" class="game_pop"
+                                :isSelected="game.id === applicationGame" />
                         </label>
                     </template>
                 </div>

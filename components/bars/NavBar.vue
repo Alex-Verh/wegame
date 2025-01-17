@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-const userData = inject<Ref<User>>("userData");
+const user = inject<Ref<UserT>>("user");
 
 const { loggedIn, clear } = useUserSession()
 const applicationPopup = usePopup()
 const profilePopup = usePopup()
-const router = useRouter();
 
 const handleApplicationClick = () => {
-    loggedIn ? applicationPopup.open() : router.push('/login');
+    loggedIn ? applicationPopup.open() : navigateTo("/sign-in");
 }
 
 const logout = async () => {
@@ -18,7 +16,7 @@ const logout = async () => {
 </script>
 
 <template>
-    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="userData" @close="profilePopup.close" />
+    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="user" @close="profilePopup.close" />
     <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
     <nav class="navigation">
         <div class="container-fluid">

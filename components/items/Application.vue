@@ -1,24 +1,25 @@
-<script setup>
-defineProps(["author", "text", "game"])
+<script setup lang="ts">
+import type { ApplicationT } from "@/composables/types";
+defineProps<ApplicationT>()
 
 const profilePopup = usePopup()
 
 </script>
 
 <template>
-    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="author" @close="profilePopup.close" />
+    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="author as UserT" @close="profilePopup.close" />
 
     <div class="application" @click="profilePopup.open">
         <Row>
             <Col col="1">
-            <img :src="author.profilePic" alt="Profile Picture" class="application_img">
+            <img :src="author?.profilePic as string" alt="Profile Picture" class="application_img">
             </Col>
             <Col col="2">
             <div class="applicator_info">
-                <div class="applicator_name accent">{{ author.nickname }}</div>
-                <div class="applicator_age">{{ author.age }}</div>
-                <div class="applicator_location">{{ author.languages.map(language =>
-                    language.language.title).join(', ') }}</div>
+                <div class="applicator_name accent">{{ author?.nickname }}</div>
+                <div class="applicator_age">{{ author?.age }}</div>
+                <div class="applicator_location">{{ author?.languages?.map(language =>
+                    language.language?.title).join(', ') }}</div>
             </div>
             </Col>
             <Col col="8">
@@ -27,7 +28,7 @@ const profilePopup = usePopup()
             </div>
             </Col>
             <Col col="1">
-            <img :src="game.icon" alt="Counter Strike 2" class="application_game">
+            <img :src="game?.icon" alt="Counter Strike 2" class="application_game">
             </Col>
         </Row>
     </div>

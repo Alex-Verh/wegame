@@ -38,6 +38,7 @@ export default defineEventHandler(async (event) => {
         },
       },
       game: true,
+      platform: true,
     },
   });
   return applications;

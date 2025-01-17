@@ -1,6 +1,14 @@
 <script lang="ts" setup>
 
 const userData = ref({});
+const games = await useFetch('/api/games');
+const platforms = await useFetch('/api/platforms');
+const languages = await useFetch('/api/languages');
+
+provide("user", userData);
+provide("games", games);
+provide("platforms", platforms);
+provide("languages", languages);
 
 const { user } = useUserSession();
 
@@ -11,7 +19,6 @@ watchEffect(async () => {
     userData.value = {};
 })
 
-provide("userData", userData);
 
 const toasts = useState("toasts", () => []);
 </script>

@@ -118,6 +118,10 @@ export const partiesRelations = relations(parties, ({ one, many }) => ({
     fields: [parties.platformId],
     references: [platforms.id],
   }),
+  game: one(games, {
+    fields: [parties.gameId],
+    references: [games.id],
+  }),
   members: many(partyMembers),
 }));
 

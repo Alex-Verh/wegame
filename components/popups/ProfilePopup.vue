@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const { user } = defineProps({
-    isOpen: Boolean,
-    user: Object as PropType<User>
-})
+const { user } = defineProps<{
+    isOpen: boolean,
+    user?: UserT
+}>()
 
 const { user: sessionUser } = useUserSession()
 
@@ -19,14 +19,14 @@ const userLinksPopup = usePopup()
 
 <template>
     <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
-    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" isNew/>
+    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" isNew />
     <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" />
     <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" :isEditable="isOwner" />
     <Popup :visible="isOpen" :style="{ zIndex: 800 }" @close="emit('close')" class="profile">
         <Container>
             <Row class="g-5">
                 <Col col="3">
-                <img class="profile_picture" :src="user?.profilePic" alt="Profile Username">
+                <img class="profile_picture" :src="user?.profilePic as string" alt="Profile Username">
                 <p class="profile_username accent">{{ user?.nickname }}</p>
                 <template v-if="isOwner">
                     <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Contact</button>
@@ -42,8 +42,8 @@ const userLinksPopup = usePopup()
                         <div class="profile_subtitle">Games</div>
                         <Row class="g-3">
                             <Col col="3">
-                            <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg"
-                                class="profile_game" @click="useToast('Counter-Strike: Global Offensive', 'info')"/>
+                            <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg" class="profile_game"
+                                @click="useToast('Counter-Strike: Global Offensive', 'info')" />
                             </Col>
                         </Row>
 
@@ -158,5 +158,4 @@ const userLinksPopup = usePopup()
 ::-webkit-scrollbar {
     height: 3px;
 }
-
 </style>

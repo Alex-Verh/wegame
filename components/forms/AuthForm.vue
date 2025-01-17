@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-const { fields, submitUrl } = defineProps({
-    type: String,
-    typeSwitchText: String,
-    typeSwitchLink: String,
-    submitUrl: String,
-    fields: Object,
-});
+const { fields, submitUrl } = defineProps<{
+    type: string,
+    typeSwitchText: string,
+    typeSwitchLink: string,
+    submitUrl: string,
+    fields: { [key: string]: { label: string, type: string, validator?: (value: any) => boolean } }
+}>();
 
 const emit = defineEmits(["submit"]);
 
@@ -78,8 +78,8 @@ const onSubmit = async (event: Event) => {
                     </div>
                     <div class="form_fields">
                         <div v-for="(field, name) in fields" :key="name" class="form_field">
-                            <label :for="name" class="form_label">{{ field.label }}</label>
-                            <input :type="field.type" :name="name" :id="name" class="form_input">
+                            <label :for="name as string" class="form_label">{{ field.label }}</label>
+                            <input :type="field.type" :name="name as string" :id="name as string" class="form_input">
                         </div>
                     </div>
                     <div class="form_buttons d-flex justify-content-between">

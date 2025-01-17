@@ -1,7 +1,7 @@
 <script setup lang="ts">
-defineProps({
-    isOpen: Boolean,
-})
+defineProps<{
+    isOpen: boolean,
+}>()
 </script>
 
 <template>
@@ -67,7 +67,7 @@ defineProps({
                         <button class="button_accent">Kick</button>
                     </div>
                 </div>
-                
+
                 <div class="members_member d-flex align-items-center justify-content-between">
                     <span class="members_name">
                         @alllexlelfef
@@ -101,13 +101,13 @@ defineProps({
 
             <div class="members_title">Discord Server URL</div>
             <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        https://discord.com/invite/ID
-                    </span>
-                    <div>
-                        <button class="button_accent">Navigate</button>
-                    </div>
+                <span class="members_name">
+                    https://discord.com/invite/ID
+                </span>
+                <div>
+                    <button class="button_accent">Navigate</button>
                 </div>
+            </div>
         </Container>
     </Popup>
 </template>

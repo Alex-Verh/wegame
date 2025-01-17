@@ -1,12 +1,12 @@
 <script setup lang="ts">
-defineProps({
-    isOpen: Boolean,
-})
+defineProps<{
+    isOpen: boolean,
+}>()
 
-const userData = inject<Ref<User>>("userData");
+const user = inject<Ref<UserT>>("user");
 
 const userLanguages = computed(() =>
-    userData?.value.languages ? userData?.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
+    user?.value.languages ? user?.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
 )
 
 const loading = ref(false);
@@ -14,15 +14,15 @@ const loading = ref(false);
 const { clear } = useUserSession()
 
 const profilePopup = usePopup()
-const { data: languages } = await useFetch('/api/languages')
+const languages = inject<LanguageT[]>("languages")
 
 const langSearch = ref("")
 const showedLanguages = computed(() => langSearch.value ?
-    languages.value.filter((language) => language.title.toLowerCase().includes(langSearch.value.toLowerCase())) : languages.value)
+    languages?.filter((language) => language.title.toLowerCase().includes(langSearch.value.toLowerCase())) : languages)
 
 const toggleLanguage = async (languageId: number) => {
 
-    const { updatedFields } = await $fetch(`/api/users/${userData.value.id}`, {
+    const { updatedFields } = await $fetch(`/api/users/${user?.value.id}`, {
         method: "PATCH",
         body: {
             languages: {
@@ -31,17 +31,17 @@ const toggleLanguage = async (languageId: number) => {
         }
     })
     if (updatedFields?.languages)
-        userData.value.languages = updatedFields.languages
+        user.value.languages = updatedFields.languages
 }
 const updateAge = async (age) => {
-    const { updatedFields } = await $fetch(`/api/users/${userData.value.id}`, {
+    const { updatedFields } = await $fetch(`/api/users/${user.value.id}`, {
         method: "PATCH",
         body: {
             age: Number(age)
         }
     })
     if (updatedFields?.age)
-        userData.value.age = updatedFields.age
+        user.value.age = updatedFields.age
 }
 
 const updatePassword = async (password) => {
@@ -88,13 +88,13 @@ const logout = async () => {
                 <div class="button_accent">Save Languages</div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updateAge($event.target.value)" :value="userData.age" class="languages_input"
+                    <input @change="updateAge($event.target.value)" :value="user.age" class="languages_input"
                         type="text" name="user_age" id="user_age" placeholder="Enter your age number" />
                     <div class="button_accent">Enter</div>
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updateEmail($event.target.value)" :value="userData.email" class="languages_input"
+                    <input @change="updateEmail($event.target.value)" :value="user.email" class="languages_input"
                         type="email" name="user_email" id="user_email" placeholder="New email address" />
                     <div class="button_accent">Change</div>
                 </div>

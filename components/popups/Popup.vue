@@ -1,14 +1,8 @@
 <script setup lang="ts">
-const { visible } = defineProps({
-  visible: {
-    type: Boolean,
-    default: false,
-  },
-  width: {
-    type: Number,
-    default: 1000,
-  }
-})
+const { visible, width = 1000 } = defineProps<{
+  visible?: boolean,
+  width?: number
+}>()
 
 const emit = defineEmits(['close']);
 

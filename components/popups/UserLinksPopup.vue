@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { useToast } from '~/composables/toasts';
 
-defineProps({
-    isOpen: Boolean,
-    isEditable: Boolean
-})
-const userData = inject<Ref<User>>("userData");
+defineProps<{
+    isOpen: boolean,
+    isEditable: boolean
+}>()
+const user = inject<Ref<UserT>>("user");
 
-const userLinks = computed(() => userData?.value.platforms ? userData?.value.platforms.reduce((acc: any, curr: any) => ({ ...acc, [curr.platformId]: curr.link }), {}) : {})
+const userLinks = computed(() => user?.value.platforms ? user?.value.platforms.reduce((acc: any, curr: any) => ({ ...acc, [curr.platformId]: curr.link }), {}) : {})
 const isSaved = ref(true)
 
-const { data: platforms } = await useFetch('/api/platforms')
+const platforms = inject<PlatformT[]>("platforms")
 const updatePlatformLink = async (platformId, link) => {
-    const { updatedFields } = await $fetch(`/api/users/${userData?.value.id}`, {
+    const { updatedFields } = await $fetch(`/api/users/${user?.value.id}`, {
         method: "PATCH",
         body: {
             platforms: {
@@ -21,7 +21,7 @@ const updatePlatformLink = async (platformId, link) => {
         }
     })
     if (updatedFields?.platforms)
-        userData.value.platforms = updatedFields.platforms
+        user.value.platforms = updatedFields.platforms
 
     useToast("Links updated successfully", "success")
 }

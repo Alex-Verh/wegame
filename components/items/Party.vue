@@ -1,5 +1,6 @@
-<script setup>
-defineProps(["author", "title", "game", "description", "membersLimit", "platform"])
+<script setup lang="ts">
+import type { PartyT } from "@/composables/types";
+defineProps<PartyT>()
 
 const partyMembersPopup = usePopup()
 </script>
@@ -10,19 +11,19 @@ const partyMembersPopup = usePopup()
         <div class="party_main">
             <Row>
                 <Col col="10">
-                    <div class="party_name"> {{ title }} </div>
-                    <div class="party_description"> {{ description }} </div>
+                <div class="party_name"> {{ title }} </div>
+                <div class="party_description"> {{ description }} </div>
                 </Col>
                 <Col col="2">
-                    <img src="/images/cs_logo.jpg" alt="Counter Strike 2" class="party_icon">
-                    <div class="button_accent">Join</div>
+                <img :src="game?.icon" :alt="game?.title" class="party_icon">
+                <div class="button_accent">Join</div>
                 </Col>
             </Row>
         </div>
         <div class="party_bottom d-flex justify-content-between">
-            <div class="party_platform">Steam</div>
+            <div class="party_platform">{{ platform?.title }}</div>
             <div class="party_players" @click="partyMembersPopup.open">See players</div>
-            <div class="party_players_amount">4 out 5 people</div>
+            <div class="party_players_amount">{{ members?.length + 1 }} out {{ membersLimit }} people</div>
         </div>
     </div>
 </template>
@@ -50,7 +51,9 @@ const partyMembersPopup = usePopup()
     margin-top: 20px;
 }
 
-.party_platform, .party_players, .party_players_amount {
+.party_platform,
+.party_players,
+.party_players_amount {
     flex: 1;
 }
 

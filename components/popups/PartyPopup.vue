@@ -5,16 +5,16 @@ const { party } = defineProps({
     party: Object,
 })
 
-const userData = inject<Ref<User>>("userData");
+const user = inject<Ref<UserT>>("user");
 
-const { data: games } = await useFetch('/api/games')
-const { data: platforms } = await useFetch('/api/platforms')
+const games = inject<GameT[]>("games");
+const platforms = inject<PlatformT[]>("platforms");
 
 const gamesSearch = ref("")
 const showedGames = computed(() =>
     gamesSearch.value ?
-        games?.value?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
-        games?.value
+        games?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
+        games
 )
 
 const partyGame = ref(party?.gameId || "")
@@ -27,7 +27,7 @@ const partyPlatform = ref(party?.platformId || "")
 
 
 const createParty = async () => {
-    const party = await $fetch('/api/parties', {
+    const party: PartyT = await $fetch('/api/parties', {
         method: "POST",
         body: {
             gameId: partyGame.value,
@@ -39,16 +39,17 @@ const createParty = async () => {
             platformId: partyPlatform.value,
         }
     })
-    if (party)
-        userData?.value.parties?.push(party)
-    partyName.value = ""
-    partyText.value = ""
-    partyMinAge.value = 0
-    partyMaxAge.value = 99
-    partyMemberNr.value = 5
-    partyGame.value = ""
-    partyPlatform.value = ""
-    close();
+    if (party) {
+        user?.value.parties?.push(party)
+        partyName.value = ""
+        partyText.value = ""
+        partyMinAge.value = 0
+        partyMaxAge.value = 99
+        partyMemberNr.value = 5
+        partyGame.value = ""
+        partyPlatform.value = ""
+        close();
+    }
 }
 </script>
 
@@ -63,26 +64,26 @@ const createParty = async () => {
                     placeholder="Some cool name.." />
 
                 <label for="party_description" class="party_subtitle">Party Description</label>
-                <textarea v-model="partyText" name="party_description" id="party_description" class="party_field party_textarea"
-                    placeholder="We will be playing on Faceit.."></textarea>
+                <textarea v-model="partyText" name="party_description" id="party_description"
+                    class="party_field party_textarea" placeholder="We will be playing on Faceit.."></textarea>
 
                 <Row>
                     <Col col="6">
                     <label for="party_age" class="party_subtitle">Select age range</label>
                     <div class="d-flex align-items-center party_numbers">
-                        <input v-model="partyMinAge" type="number" min="0" max="99" name="party_minage" id="party_minage"
-                            class="party_field party_minifield" placeholder="10">
+                        <input v-model="partyMinAge" type="number" min="0" max="99" name="party_minage"
+                            id="party_minage" class="party_field party_minifield" placeholder="10">
                         <span> - </span>
-                        <input v-model="partyMaxAge" type="number" min="0" max="99" name="party_maxage" id="party_maxage"
-                            class="party_field party_minifield" placeholder="99">
+                        <input v-model="partyMaxAge" type="number" min="0" max="99" name="party_maxage"
+                            id="party_maxage" class="party_field party_minifield" placeholder="99">
                         <span>years old</span>
                     </div>
                     </Col>
                     <Col col="6">
                     <label for="party_members" class="party_subtitle">Max. number of members</label>
                     <div class="d-flex align-items-center party_numbers">
-                        <input v-model="partyMemberNr" type="number" min="2" max="30" name="party_members" id="party_members"
-                            class="party_field party_minifield" placeholder="5">
+                        <input v-model="partyMemberNr" type="number" min="2" max="30" name="party_members"
+                            id="party_members" class="party_field party_minifield" placeholder="5">
                         <span>members</span>
                     </div>
                     </Col>
@@ -103,11 +104,11 @@ const createParty = async () => {
                     placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
                     <template v-for="game in showedGames" :key="game.id">
-                        <input v-model="partyGame" type="radio" :id="`${game.title}+${game.id}`"
-                            name="party_game" :value="game.id" />
+                        <input v-model="partyGame" type="radio" :id="`${game.title}+${game.id}`" name="party_game"
+                            :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">
-                            <Game :title="game.title" :image="game.image" class="game_pop" :isSelected="game.id === partyGame" 
-                            />
+                            <Game :title="game.title" :image="game.image" class="game_pop"
+                                :isSelected="game.id === partyGame" />
                         </label>
                     </template>
                 </div>

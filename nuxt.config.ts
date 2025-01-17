@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
-  modules: ["usebootstrap", "nuxt-auth-utils", "nuxt-nodemailer"],
+  modules: [
+    "usebootstrap",
+    "nuxt-auth-utils",
+    "nuxt-nodemailer",
+    "@scalar/nuxt",
+  ],
   runtimeConfig: {
     databaseUrl: "",
     secretKey: "",
@@ -32,5 +37,10 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  nitro: {
+    experimental: {
+      openAPI: true,
+    },
+  },
   css: ["~/assets/styles/base.css"],
 });
