@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+const { data: parties } = await useFetch('/api/parties')
 </script>
 
 <template>
@@ -9,18 +10,11 @@
 
         <div class="parties">
             <Row class="g-5">
-                <Col col="6">
-                    <Party />
-                </Col>
-                <Col col="6">
-                    <Party />
-                </Col>
-                <Col col="6">
-                    <Party />
-                </Col>
-                <Col col="6">
-                    <Party />
-                </Col>
+                <template v-for="party in parties" :key="party.id">
+                    <Col col="6">
+                        <Party :title="party.title" :description="party.description" />
+                    </Col>
+                </template>
             </Row>
         </div>
     </section>

@@ -8,6 +8,7 @@ const { party } = defineProps({
 const userData = inject<Ref<User>>("userData");
 
 const { data: games } = await useFetch('/api/games')
+const { data: platforms } = await useFetch('/api/platforms')
 
 const gamesSearch = ref("")
 const showedGames = computed(() =>
@@ -16,12 +17,13 @@ const showedGames = computed(() =>
         games?.value
 )
 
-const partyGame = ref(party?.gameId || games?.value?.[0].id) //!TODO Check maybe not select any game when creating
+const partyGame = ref(party?.gameId || "")
 const partyName = ref("")
 const partyText = ref("")
 const partyMinAge = ref(0)
 const partyMaxAge = ref(99)
 const partyMemberNr = ref(5)
+const partyPlatform = ref(party?.platformId || "")
 
 
 const createParty = async () => {
@@ -29,14 +31,24 @@ const createParty = async () => {
         method: "POST",
         body: {
             gameId: partyGame.value,
-            // TODO send values
+            title: partyName.value,
+            description: partyText.value,
+            minAge: partyMinAge.value,
+            maxAge: partyMaxAge.value,
+            membersLimit: partyMemberNr.value,
+            platformId: partyPlatform.value,
         }
     })
     if (party)
         userData?.value.parties?.push(party)
-// TODO reset values
+    partyName.value = ""
+    partyText.value = ""
+    partyMinAge.value = 0
+    partyMaxAge.value = 99
+    partyMemberNr.value = 5
+    partyGame.value = ""
+    partyPlatform.value = ""
     close();
-
 }
 </script>
 
@@ -76,13 +88,23 @@ const createParty = async () => {
                     </Col>
                 </Row>
 
+                <label for="party_platforms" class="party_subtitle">Select Game Platform</label>
+                <div class="party_platforms">
+                    <template v-for="platform in platforms" :key="platform.id">
+                        <input v-model="partyPlatform" type="radio" :id="`${platform.title}+${platform.id}`"
+                            name="party_platform" :value="platform.id" />
+                        <label :for="`${platform.title}+${platform.id}`" class="party_platform">{{ platform.title
+                            }}</label>
+                    </template>
+                </div>
+
                 <label for="party_search" class="party_subtitle">Select your party game</label>
                 <input v-model="gamesSearch" type="text" name="party_search" id="party_search" class="party_field"
                     placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
                     <template v-for="game in showedGames" :key="game.id">
                         <input v-model="partyGame" type="radio" :id="`${game.title}+${game.id}`"
-                            name="application_game" :value="game.id" />
+                            name="party_game" :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">
                             <Game :title="game.title" :image="game.image" class="game_pop" :isSelected="game.id === partyGame" 
                             />
@@ -95,7 +117,7 @@ const createParty = async () => {
                     <template v-else>
                         <button class="button_accent">Save Changes</button>
                         <button class="button_accent">See Members</button>
-                        <button class="button_accent">Delete application</button>
+                        <button class="button_accent">Delete party</button>
                     </template>
                 </div>
 
@@ -159,15 +181,31 @@ const createParty = async () => {
     color: #444259;
 }
 
+.party_platforms {
+    display: flex;
+    justify-content: space-between;
+    color: #444259;
+}
+
+.party_platforms input[type="radio"],
+.pop_section input[type="radio"] {
+    display: none;
+}
+
+.party_platforms input[type="radio"]:checked+.party_platform {
+    color: #FE9F00;
+}
+
+.party_platform {
+    cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
+}
+
+
 .pop_section {
     margin-top: 20px;
     height: 130px;
     overflow-x: auto;
     overflow-y: hidden;
-}
-
-.pop_section input[type="radio"] {
-    display: none;
 }
 
 .pop_section label {

@@ -18,8 +18,8 @@ const showedGames = computed(() =>
         games?.value
 )
 
-const applicationGame = ref(application?.gameId || games?.value?.[0].id)
-const applicationPlatform = ref(application?.gameId || games?.value?.[0].id)
+const applicationGame = ref(application?.gameId || "")
+const applicationPlatform = ref(application?.platformId || "")
 const applicationText = ref("")
 const applicationRank = ref("")
 
@@ -37,6 +37,8 @@ const createApplication = async () => {
         userData?.value.applications?.push(application)
     applicationText.value = ""
     applicationRank.value = ""
+    applicationGame.value = ""
+    applicationPlatform.value = ""
     close();
 
 }
