@@ -6,7 +6,7 @@ export default defineOAuthGoogleEventHandler({
     if (!user.email) {
       throw invalidCredentialsError;
     }
-    const db = useDrizzle();
+    const db = useDB();
 
     let dbUser = await db.query.users.findFirst({
       where: eq(tables.users.email, user.email),

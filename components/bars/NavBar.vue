@@ -1,7 +1,9 @@
 <script setup lang="ts">
-const user = inject<Ref<UserT>>("user");
 
 const { loggedIn, clear } = useUserSession()
+
+const { data: userData } = useCurrentUser()
+
 const applicationPopup = usePopup()
 const profilePopup = usePopup()
 
@@ -16,7 +18,7 @@ const logout = async () => {
 </script>
 
 <template>
-    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="user" @close="profilePopup.close" />
+    <ProfilePopup v-if="userData" :isOpen="profilePopup.isOpen.value" :user="userData" @close="profilePopup.close" />
     <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
     <nav class="navigation">
         <div class="container-fluid">

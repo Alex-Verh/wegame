@@ -1,30 +1,34 @@
 <script setup lang="ts">
-import { useToast } from '~/composables/toasts';
 
-defineProps<{
+const { user } = defineProps<{
+    user: User,
     isOpen: boolean,
     isEditable: boolean
 }>()
-const user = inject<Ref<UserT>>("user");
 
-const userLinks = computed(() => user?.value.platforms ? user?.value.platforms.reduce((acc: any, curr: any) => ({ ...acc, [curr.platformId]: curr.link }), {}) : {})
+const userLinks = computed<{ [id: number]: string }>(() => user.platforms ? user.platforms.reduce((acc, curr) => ({ ...acc, [curr.platform.id]: curr.link }), {}) : {})
 const isSaved = ref(true)
 
-const platforms = inject<PlatformT[]>("platforms")
-const updatePlatformLink = async (platformId, link) => {
-    const { updatedFields } = await $fetch(`/api/users/${user?.value.id}`, {
-        method: "PATCH",
-        body: {
-            platforms: {
-                [platformId]: link
-            }
-        }
-    })
-    if (updatedFields?.platforms)
-        user.value.platforms = updatedFields.platforms
+const { data: platforms } = usePlatforms()
 
-    useToast("Links updated successfully", "success")
+interface PlatformLink {
+    platformId: number,
+    link: string
 }
+
+const { mutate: updatePlatformLink } = useMutation({
+    mutation: (platformLink: PlatformLink) => {
+        return $fetch(`/api/users/${user.id}`, {
+            method: "PATCH",
+            body: {
+                platforms: {
+                    [platformLink.platformId]: platformLink.link
+                }
+            }
+        })
+    }
+})
+
 </script>
 
 <template>

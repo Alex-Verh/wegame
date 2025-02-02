@@ -4,53 +4,75 @@ const { party } = defineProps({
     isOpen: Boolean,
     party: Object,
 })
+const emit = defineEmits()
 
-const user = inject<Ref<UserT>>("user");
+const { data: games } = useGames()
+const { data: platforms } = usePlatforms()
 
-const games = inject<GameT[]>("games");
-const platforms = inject<PlatformT[]>("platforms");
+const { loggedIn } = useUserSession()
 
 const gamesSearch = ref("")
 const showedGames = computed(() =>
     gamesSearch.value ?
-        games?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
-        games
+        games.value?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
+        games.value
 )
 
-const partyGame = ref(party?.gameId || "")
-const partyName = ref("")
-const partyText = ref("")
+const partyTitle = ref("")
+const partyDescription = ref("")
+const partyGame = ref(party?.gameId || 0)
+const partyPlatform = ref(party?.platformId || 0)
 const partyMinAge = ref(0)
-const partyMaxAge = ref(99)
+const partyMaxAge = ref(100)
 const partyMemberNr = ref(5)
-const partyPlatform = ref(party?.platformId || "")
 
+const queryCache = useQueryCache()
 
-const createParty = async () => {
-    const party: PartyT = await $fetch('/api/parties', {
-        method: "POST",
-        body: {
-            gameId: partyGame.value,
-            title: partyName.value,
-            description: partyText.value,
-            minAge: partyMinAge.value,
-            maxAge: partyMaxAge.value,
-            membersLimit: partyMemberNr.value,
-            platformId: partyPlatform.value,
-        }
-    })
-    if (party) {
-        user?.value.parties?.push(party)
-        partyName.value = ""
-        partyText.value = ""
-        partyMinAge.value = 0
-        partyMaxAge.value = 99
-        partyMemberNr.value = 5
-        partyGame.value = ""
-        partyPlatform.value = ""
-        close();
-    }
+interface PartyData {
+    title: string,
+    description: string,
+    gameId: number,
+    platformId: number,
+    minAge: number,
+    maxAge: number,
+    membersLimit: number
 }
+
+const { mutate: createParty, isLoading: loading } = useMutation({
+    mutation: (party: PartyData) => {
+        if (!loggedIn) throw new Error('Login required')
+        if (!party.title.trim()) throw new Error('Title is required')
+        if (!party.gameId) throw new Error('Game is required')
+        if (!party.platformId) throw new Error('Platform is required')
+        return $fetch('/api/parties', {
+            method: "POST",
+            body: {
+                ...party
+            }
+        })
+    },
+
+    async onSuccess(party) {
+        await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties"] })
+
+        partyTitle.value = ""
+        partyDescription.value = ""
+        partyGame.value = 0
+        partyPlatform.value = 0
+        partyMinAge.value = 0
+        partyMaxAge.value = 100
+        partyMemberNr.value = 5
+
+        useToast(`Party "${party.title}" created.`)
+        emit('close')
+    },
+
+    onError(err) {
+        console.error(err)
+        useToast(err.message)
+    }
+})
+
 </script>
 
 <template>
@@ -60,11 +82,11 @@ const createParty = async () => {
 
             <div class="party_body">
                 <label for="party_name" class="party_subtitle">Party Name</label>
-                <input v-model="partyName" type="text" name="party_name" id="party_name" class="party_field"
+                <input v-model="partyTitle" type="text" name="party_name" id="party_name" class="party_field"
                     placeholder="Some cool name.." />
 
                 <label for="party_description" class="party_subtitle">Party Description</label>
-                <textarea v-model="partyText" name="party_description" id="party_description"
+                <textarea v-model="partyDescription" name="party_description" id="party_description"
                     class="party_field party_textarea" placeholder="We will be playing on Faceit.."></textarea>
 
                 <Row>
@@ -107,14 +129,15 @@ const createParty = async () => {
                         <input v-model="partyGame" type="radio" :id="`${game.title}+${game.id}`" name="party_game"
                             :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">
-                            <Game :title="game.title" :image="game.image" class="game_pop"
-                                :isSelected="game.id === partyGame" />
+                            <Game v-bind="game" class="game_pop" :isSelected="game.id === partyGame" />
                         </label>
                     </template>
                 </div>
 
                 <div class="party_buttons d-flex justify-content-center">
-                    <button v-if="isNew" @click="createParty" class="button_accent">Save Changes</button>
+                    <button v-if="isNew"
+                        @click="createParty({ title: partyTitle, description: partyDescription, gameId: partyGame, platformId: partyPlatform, minAge: partyMinAge, maxAge: partyMaxAge, membersLimit: partyMemberNr })"
+                        class="button_accent">Save Changes</button>
                     <template v-else>
                         <button class="button_accent">Save Changes</button>
                         <button class="button_accent">See Members</button>

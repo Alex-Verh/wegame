@@ -1,12 +1,23 @@
 <script setup lang="ts">
+import type { Application } from '~/server/utils/db';
+
 const { user } = defineProps<{
     isOpen: boolean,
-    user?: UserT
+    user: User
 }>()
 
 const { user: sessionUser } = useUserSession()
 
-const isOwner = computed(() => sessionUser.value?.id === user?.id)
+const { data: userApplications } = useQuery({
+    key: () => ["users", user.id, "applications"],
+    query: () => useRequestFetch()(`/api/applications`, { query: { authorId: user.id } }) as Promise<Application[]>,
+})
+const { data: userParties } = useQuery({
+    key: () => ["users", user.id, "parties"],
+    query: () => useRequestFetch()(`/api/parties`, { query: { leaderId: user.id } }) as Promise<Party[]>,
+})
+
+const isOwner = computed(() => sessionUser.value?.id === user.id)
 const emit = defineEmits(["close"])
 const applicationPopup = usePopup()
 const partyPopup = usePopup()
@@ -16,18 +27,18 @@ const userLinksPopup = usePopup()
 
 </script>
 
-
 <template>
     <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
     <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" isNew />
-    <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" />
-    <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" :isEditable="isOwner" />
+    <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" :user="user" />
+    <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" :isEditable="isOwner"
+        :user="user" />
     <Popup :visible="isOpen" :style="{ zIndex: 800 }" @close="emit('close')" class="profile">
         <Container>
             <Row class="g-5">
                 <Col col="3">
-                <img class="profile_picture" :src="user?.profilePic as string" alt="Profile Username">
-                <p class="profile_username accent">{{ user?.nickname }}</p>
+                <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username">
+                <p class="profile_username accent">{{ user.nickname }}</p>
                 <template v-if="isOwner">
                     <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Contact</button>
                     <button @click="userDetailsPopup.open" class="button_accent button_pop">Settings</button>
@@ -42,8 +53,9 @@ const userLinksPopup = usePopup()
                         <div class="profile_subtitle">Games</div>
                         <Row class="g-3">
                             <Col col="3">
-                            <Game title="Counter-Strike: Global Offensive" image="/images/csgo.jpg" class="profile_game"
-                                @click="useToast('Counter-Strike: Global Offensive', 'info')" />
+                            <!-- TODO: show user games -->
+                            <!-- <Game " title="Counter-Strike: Global Offensive" image="/images/csgo.jpg" icon="/images/csgo-icon.png"
+                                class="profile_game" @click="useToast('Counter-Strike: Global Offensive', 'info')" /> -->
                             </Col>
                         </Row>
 
@@ -51,7 +63,7 @@ const userLinksPopup = usePopup()
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="application in user?.applications" :key="application.id"
+                            <div v-for="application in userApplications" :key="application.id"
                                 class="profile_box d-inline-flex align-items-center">
                                 {{ application.text }}
                                 <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
@@ -62,7 +74,7 @@ const userLinksPopup = usePopup()
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="party in user?.parties" :key="party.id" class="profile_box">
+                            <div v-for="party in userParties" :key="party.id" class="profile_box">
                                 <div class="profile_party_title accent">{{ party.title }}</div>
                                 <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                                 <div>{{ party.description }}</div>

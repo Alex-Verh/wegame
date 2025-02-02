@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const db = useDrizzle();
+  const db = useDB();
   const { email, password } = await readValidatedBody(
     event,
     z.object({

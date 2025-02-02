@@ -1,6 +1,20 @@
 <script setup lang="ts">
-import type { PartyT } from "@/composables/types";
-defineProps<PartyT>()
+defineProps<{
+    id: number;
+    title: string;
+    gameId: number;
+    platformId: number;
+    leaderId: number;
+    description: string | null;
+    minAge: number;
+    maxAge: number;
+    membersLimit: number;
+    game: Game;
+    platform: Platform;
+    members: {
+        userId: number;
+    }[]
+}>()
 
 const partyMembersPopup = usePopup()
 </script>
@@ -15,13 +29,13 @@ const partyMembersPopup = usePopup()
                 <div class="party_description"> {{ description }} </div>
                 </Col>
                 <Col col="2">
-                <img :src="game?.icon" :alt="game?.title" class="party_icon">
+                <img :src="game.icon" :alt="game.title" class="party_icon">
                 <div class="button_accent">Join</div>
                 </Col>
             </Row>
         </div>
         <div class="party_bottom d-flex justify-content-between">
-            <div class="party_platform">{{ platform?.title }}</div>
+            <div class="party_platform">{{ platform.title }}</div>
             <div class="party_players" @click="partyMembersPopup.open">See players</div>
             <div class="party_players_amount">{{ members?.length + 1 }} out {{ membersLimit }} people</div>
         </div>

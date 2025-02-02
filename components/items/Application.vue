@@ -1,13 +1,26 @@
 <script setup lang="ts">
-import type { ApplicationT } from "@/composables/types";
-defineProps<ApplicationT>()
+const { authorId } = defineProps<{
+    id: number;
+    authorId: number;
+    gameId: number;
+    text: string;
+    platformId: number;
+    ranking: string | null;
+    game: Game;
+    platform: Platform;
+}>()
+
+const { data: author } = useQuery({
+    key: () => ["users", authorId],
+    query: () => useRequestFetch()(`/api/users/${authorId}`) as Promise<User>,
+})
 
 const profilePopup = usePopup()
 
 </script>
 
 <template>
-    <ProfilePopup :isOpen="profilePopup.isOpen.value" :user="author as UserT" @close="profilePopup.close" />
+    <ProfilePopup v-if="author" :isOpen="profilePopup.isOpen.value" :user="author" @close="profilePopup.close" />
 
     <div class="application" @click="profilePopup.open">
         <Row>
@@ -16,10 +29,10 @@ const profilePopup = usePopup()
             </Col>
             <Col col="2">
             <div class="applicator_info">
-                <div class="applicator_name accent">{{ author?.nickname }}</div>
-                <div class="applicator_age">{{ author?.age }}</div>
-                <div class="applicator_location">{{ author?.languages?.map(language =>
-                    language.language?.title).join(', ') }}</div>
+                <div class="applicator_name accent">{{ author ? author.nickname : "loading..." }}</div>
+                <div class="applicator_age">{{ author ? author.age : "loading..." }}</div>
+                <div class="applicator_location">{{ author ? author.languages.map(language =>
+                    language.title).join(', ') : "loading..." }}</div>
             </div>
             </Col>
             <Col col="8">
@@ -28,7 +41,7 @@ const profilePopup = usePopup()
             </div>
             </Col>
             <Col col="1">
-            <img :src="game?.icon" alt="Counter Strike 2" class="application_game">
+            <img :src="game.icon" alt="Counter Strike 2" class="application_game">
             </Col>
         </Row>
     </div>

@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     event,
     z.object({ popular: z.coerce.boolean().default(false) }).parse
   );
-  const db = useDrizzle();
+  const db = useDB();
   if (popular)
     return await db
       .select({

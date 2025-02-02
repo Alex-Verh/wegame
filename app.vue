@@ -1,26 +1,6 @@
 <script lang="ts" setup>
 
-const userData = ref({});
-const games = await useFetch('/api/games');
-const platforms = await useFetch('/api/platforms');
-const languages = await useFetch('/api/languages');
-
-provide("user", userData);
-provide("games", games);
-provide("platforms", platforms);
-provide("languages", languages);
-
-const { user } = useUserSession();
-
-watchEffect(async () => {
-  if (user.value)
-    userData.value = await $fetch(`/api/users/${user.value.id}`);
-  else
-    userData.value = {};
-})
-
-
-const toasts = useState("toasts", () => []);
+const toasts = useState<Toast[]>("toasts", () => []);
 </script>
 
 

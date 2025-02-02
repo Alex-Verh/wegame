@@ -13,8 +13,12 @@ export default defineEventHandler(async (event) => {
         })
         .partial().parse
     );
-  const db = useDrizzle();
+  const db = useDB();
   const applications = await db.query.applications.findMany({
+    with: {
+      game: true,
+      platform: true,
+    },
     where: and(
       authorId ? eq(tables.applications.authorId, authorId) : undefined,
       gameId ? eq(tables.applications.gameId, gameId) : undefined,
@@ -30,16 +34,6 @@ export default defineEventHandler(async (event) => {
           sql`ts_rank(to_tsvector('english', ${tables.applications.text}), websearch_to_tsquery('english', ${searchQuery}))`
         )
       : asc(tables.applications.text),
-    with: {
-      author: {
-        columns: { id: true, nickname: true, age: true, profilePic: true },
-        with: {
-          languages: { columns: { userId: false }, with: { language: true } },
-        },
-      },
-      game: true,
-      platform: true,
-    },
   });
   return applications;
 });

@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       ranking: z.string().optional(),
     }).parse
   );
-  const db = useDrizzle();
+  const db = useDB();
 
   const [application] = await db
     .insert(tables.applications)

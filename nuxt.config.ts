@@ -6,6 +6,8 @@ export default defineNuxtConfig({
     "nuxt-auth-utils",
     "nuxt-nodemailer",
     "@scalar/nuxt",
+    "@pinia/colada-nuxt",
+    "@pinia/nuxt",
   ],
   runtimeConfig: {
     databaseUrl: "",

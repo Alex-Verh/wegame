@@ -56,10 +56,16 @@ export const applications = pgTable(
   "applications",
   {
     id: serial().primaryKey(),
-    authorId: integer("author_id").references(() => users.id),
-    gameId: integer("game_id").references(() => games.id),
+    authorId: integer("author_id")
+      .references(() => users.id)
+      .notNull(),
+    gameId: integer("game_id")
+      .references(() => games.id)
+      .notNull(),
     text: varchar().notNull(),
-    platformId: integer("platform_id").references(() => platforms.id),
+    platformId: integer("platform_id")
+      .references(() => platforms.id)
+      .notNull(),
     ranking: varchar(),
   },
   (table) => ({
@@ -89,14 +95,20 @@ export const parties = pgTable(
   "parties",
   {
     id: serial().primaryKey(),
-    leaderId: integer("leader_id").references(() => users.id),
-    gameId: integer("game_id").references(() => games.id),
+    leaderId: integer("leader_id")
+      .references(() => users.id)
+      .notNull(),
+    gameId: integer("game_id")
+      .references(() => games.id)
+      .notNull(),
     title: varchar().notNull(),
     description: varchar(),
-    minAge: integer("min_range"),
-    maxAge: integer("max_range"),
-    membersLimit: integer("members_limit"),
-    platformId: integer("platform_id").references(() => platforms.id),
+    minAge: integer("min_range").default(0).notNull(),
+    maxAge: integer("max_range").default(100).notNull(),
+    membersLimit: integer("members_limit").default(100).notNull(),
+    platformId: integer("platform_id")
+      .references(() => platforms.id)
+      .notNull(),
   },
   (table) => ({
     searchIndex: index("parties_search_index").using(
@@ -129,11 +141,11 @@ export const partyMembers = pgTable(
   "party_members",
   {
     userId: integer("user_id")
-      .notNull()
-      .references(() => users.id),
+      .references(() => users.id)
+      .notNull(),
     partyId: integer("party_id")
-      .notNull()
-      .references(() => parties.id),
+      .references(() => parties.id)
+      .notNull(),
     status: requestStatusEnum("request_status").default("pending").notNull(),
   },
   (t) => ({
@@ -156,11 +168,11 @@ export const userLanguages = pgTable(
   "user_languages",
   {
     userId: integer("user_id")
-      .notNull()
-      .references(() => users.id),
+      .references(() => users.id)
+      .notNull(),
     languageId: integer("language_id")
-      .notNull()
-      .references(() => languages.id),
+      .references(() => languages.id)
+      .notNull(),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.userId, t.languageId] }),
@@ -182,11 +194,11 @@ export const userPlatforms = pgTable(
   "user_platforms",
   {
     userId: integer("user_id")
-      .notNull()
-      .references(() => users.id),
+      .references(() => users.id)
+      .notNull(),
     platformId: integer("platform_id")
-      .notNull()
-      .references(() => platforms.id),
+      .references(() => platforms.id)
+      .notNull(),
     link: varchar().notNull(),
   },
   (t) => ({

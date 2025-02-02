@@ -1,20 +1,4 @@
-export interface PlatformT {
-  id: number;
-  title: string;
-  urlPattern: string;
-}
-
-export interface LanguageT {
-  id: number;
-  title: string;
-}
-export interface GameT {
-  id: number;
-  title: string;
-  image: string;
-  icon: string;
-}
-
+/*
 export interface ApplicationT {
   id: number;
   authorId?: number | null;
@@ -59,3 +43,4 @@ export interface UserT {
   parties?: Array<PartyT> | null;
   ownParties?: Array<PartyT> | null;
 }
+*/

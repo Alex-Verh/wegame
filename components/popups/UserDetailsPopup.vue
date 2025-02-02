@@ -1,63 +1,84 @@
 <script setup lang="ts">
-defineProps<{
+const { user } = defineProps<{
+    user: User,
     isOpen: boolean,
 }>()
 
-const user = inject<Ref<UserT>>("user");
+const emit = defineEmits()
 
-const userLanguages = computed(() =>
-    user?.value.languages ? user?.value.languages.reduce((acc, curr) => ({ ...acc, [curr.languageId]: true }), {}) : {}
+
+const userLanguages = computed<{ [id: number]: boolean }>(() =>
+    user.languages ? user.languages.reduce((acc, curr) => ({ ...acc, [curr.id]: true }), {}) : {}
 )
+const userAge = ref(user.age as number)
+const userEmail = ref(user.email)
 
 const loading = ref(false);
 
 const { clear } = useUserSession()
 
-const profilePopup = usePopup()
-const languages = inject<LanguageT[]>("languages")
+const { data: languages } = useLanguages()
 
 const langSearch = ref("")
-const showedLanguages = computed(() => langSearch.value ?
-    languages?.filter((language) => language.title.toLowerCase().includes(langSearch.value.toLowerCase())) : languages)
+const showedLanguages = computed(() => {
+    if (languages.value)
+        return langSearch.value ? languages.value.filter((language) => language.title.toLowerCase().includes(langSearch.value.toLowerCase())) : languages.value
+    return []
+})
 
-const toggleLanguage = async (languageId: number) => {
-
-    const { updatedFields } = await $fetch(`/api/users/${user?.value.id}`, {
-        method: "PATCH",
-        body: {
-            languages: {
-                [languageId]: !userLanguages.value[languageId]
+// TODO rewrite using pinia-colada mutations
+const { mutate: toggleLanguage } = useMutation({
+    mutation: (languageId: number) => {
+        return $fetch(`/api/users/${user.id}`, {
+            method: "PATCH",
+            body: {
+                languages: {
+                    [languageId]: !userLanguages.value[languageId]
+                }
             }
-        }
-    })
-    if (updatedFields?.languages)
-        user.value.languages = updatedFields.languages
-}
-const updateAge = async (age) => {
-    const { updatedFields } = await $fetch(`/api/users/${user.value.id}`, {
-        method: "PATCH",
-        body: {
-            age: Number(age)
-        }
-    })
-    if (updatedFields?.age)
-        user.value.age = updatedFields.age
-}
+        })
+    },
 
-const updatePassword = async (password) => {
+})
+const { mutate: updateAge } = useMutation({
+    mutation: (age: number) => {
+        return $fetch(`/api/users/${user.id}`, {
+            method: "PATCH",
+            body: {
+                age
+            }
+        })
+    }
+})
 
-}
+const { mutate: updateEmail } = useMutation({
+    mutation: (email: string) => {
+        return $fetch(`/api/users/${user.id}`, {
+            method: "PATCH",
+            body: {
+                email
+            }
+        })
+    }
+})
 
-const updateEmail = async (email) => {
-
-}
+// TODO: password update
+const { mutate: updatePassword } = useMutation({
+    mutation: (password: string) => {
+        return $fetch(`/api/users/${user.id}`, {
+            method: "PATCH",
+            body: {
+                password
+            }
+        })
+    }
+})
 
 const logout = async () => {
     loading.value = true;
     await clear();
     loading.value = false;
-    close();
-    profilePopup.close();
+    emit("close");
     navigateTo("/sign-in");
 }
 
@@ -88,20 +109,20 @@ const logout = async () => {
                 <div class="button_accent">Save Languages</div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updateAge($event.target.value)" :value="user.age" class="languages_input"
-                        type="text" name="user_age" id="user_age" placeholder="Enter your age number" />
+                    <input @change="updateAge(userAge)" v-model="userAge" class="languages_input" type="text"
+                        name="user_age" id="user_age" placeholder="Enter your age number" />
                     <div class="button_accent">Enter</div>
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updateEmail($event.target.value)" :value="user.email" class="languages_input"
-                        type="email" name="user_email" id="user_email" placeholder="New email address" />
+                    <input @change="updateEmail(userEmail)" v-model="userEmail" class="languages_input" type="email"
+                        name="user_email" id="user_email" placeholder="New email address" />
                     <div class="button_accent">Change</div>
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updatePassword($event.target.value)" class="languages_input" type="password"
-                        name="user_password" id="user_password" placeholder="New user password" />
+                    <input @change="updatePassword('')" class="languages_input" type="password" name="user_password"
+                        id="user_password" placeholder="New user password" />
                     <div class="button_accent">Change</div>
                 </div>
 

@@ -12,9 +12,7 @@ const { data: parties } = await useFetch('/api/parties')
             <Row class="g-5">
                 <template v-for="party in parties" :key="party.id">
                     <Col col="6">
-                    <Party :id="party.id" :title="party.title" :description="party.description" :game="party.game"
-                        :platform="party.platform" :membersLimit="party.membersLimit" :members="party.members"
-                        :minAge="party.minAge" :maxAge="party.maxAge" />
+                    <Party v-bind="party" />
                     </Col>
                 </template>
             </Row>

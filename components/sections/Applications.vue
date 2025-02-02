@@ -7,9 +7,7 @@ const { data: applications } = await useFetch('/api/applications')
         <div class="section_title">Applications - Find One</div>
         <SearchBar />
         <div class="applications">
-            <Application v-for="application in applications" :key="application.id" :id="application.id""
-                :text="application.text" :ranking="application.ranking" :author="application.author"
-                :game="application.game" />
+            <Application v-for="application in applications" :key="application.id" v-bind="application" />
         </div>
     </section>
 </template>

@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
       description: z.string().optional(),
     }).parse
   );
-  const db = useDrizzle();
+  const db = useDB();
 
   const [party] = await db
     .insert(tables.parties)

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
       .object({
         nickname: z.string(),
         email: z.string().email(),
-        age: z.number(),
+        age: z.coerce.number(),
         profilePic: z.string(),
         languages: z.record(z.coerce.number(), z.boolean()),
         platforms: z.record(z.coerce.number(), z.string().nullable()),
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
   if (!user.isSuperuser && user.id !== id) {
     throw forbiddenError;
   }
-  const db = useDrizzle();
+  const db = useDB();
   const result: any = {};
   if (updatedUser.languages) {
     const langsToInsert = [];

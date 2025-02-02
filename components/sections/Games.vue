@@ -11,7 +11,7 @@ const { data: games } = await useFetch('/api/games', { query: { popular: true } 
         <div class="games">
             <Row class="g-5">
                 <Col v-for="game in games" :key="game.id" col="4" class="d-flex justify-content-center">
-                    <Game :title="game.title" :image="game.image" />
+                <Game v-bind="game" />
                 </Col>
             </Row>
         </div>

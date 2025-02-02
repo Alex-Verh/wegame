@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     z.object({ id: z.coerce.number() }).parse
   );
 
-  const db = useDrizzle();
+  const db = useDB();
   const dbUser = await db.query.users.findFirst({
     columns: {
       password: false,
@@ -13,42 +13,27 @@ export default defineEventHandler(async (event) => {
     where: eq(tables.users.id, id),
     with: {
       platforms: {
-        columns: {
-          userId: false,
-        },
+        columns: { userId: false, platformId: false },
+        with: { platform: true },
       },
       languages: {
-        columns: {
-          userId: false,
-        },
+        columns: { userId: false, languageId: false },
+        with: { language: true },
       },
       applications: true,
       own_parties: true,
       member_parties: {
-        columns: {
-          userId: false,
-        },
-        with: {
-          party: true,
-        },
+        columns: { userId: false },
+        with: { party: true },
       },
     },
   });
   if (!dbUser) throw userNotFoundError;
 
+  const { own_parties, member_parties, languages, ...user } = dbUser;
   return {
-    id: dbUser.id,
-    profilePic: dbUser.profilePic,
-    nickname: dbUser.nickname,
-    age: dbUser.age,
-    isActive: dbUser.isActive,
-    isSuperuser: dbUser.isSuperuser,
-    platforms: dbUser.platforms,
-    languages: dbUser.languages,
-    applications: dbUser.applications,
-    parties: [
-      ...dbUser.own_parties,
-      ...dbUser.member_parties.map(({ party }) => party),
-    ],
+    ...user,
+    parties: [...own_parties, ...member_parties.map(({ party }) => party)],
+    languages: languages.map(({ language }) => language),
   };
 });

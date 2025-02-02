@@ -1,8 +1,6 @@
 <script setup lang="ts">
 
-defineProps<{
-  title: string, image: string, isSelected?: boolean
-}>();
+defineProps<{ id: number; title: string; image: string; isSelected?: boolean }>();
 </script>
 
 <template>

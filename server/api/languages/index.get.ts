@@ -1,4 +1,4 @@
 export default defineEventHandler(async (event) => {
-  const db = useDrizzle();
+  const db = useDB();
   return await db.query.languages.findMany({});
 });

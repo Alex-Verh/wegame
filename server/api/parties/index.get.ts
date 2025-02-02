@@ -13,15 +13,9 @@ export default defineEventHandler(async (event) => {
         })
         .partial().parse
     );
-  const db = useDrizzle();
+  const db = useDB();
   const parties = await db.query.parties.findMany({
     with: {
-      leader: {
-        columns: { id: true, nickname: true, age: true, profilePic: true },
-        with: {
-          languages: { columns: { userId: false }, with: { language: true } },
-        },
-      },
       game: true,
       platform: true,
       members: {

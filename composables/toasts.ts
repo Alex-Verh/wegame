@@ -1,5 +1,11 @@
+export interface Toast {
+  id: number;
+  content: string;
+  variant: string;
+}
+
 export const useToast = (content: string, variant: string = "primary") => {
-  const toasts = useState("toasts", () => []);
+  const toasts = useState<Toast[]>("toasts", () => []);
   const id = Date.now();
   toasts.value.push({ id, content, variant });
 

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
-  const db = useDrizzle();
+  const db = useDB();
   const { nickname, email, password } = await readValidatedBody(
     event,
     z.object({

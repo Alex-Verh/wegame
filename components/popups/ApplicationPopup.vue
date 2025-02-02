@@ -1,47 +1,69 @@
 <script setup lang="ts">
+
 const { application } = defineProps<{
     isNew: boolean,
     isOpen: boolean,
-    application?: ApplicationT,
+    application?: Application,
 }>()
 
+const emit = defineEmits()
 
-const user = inject<Ref<UserT>>("user");
-const games = inject<GameT[]>("games");
-const platforms = inject<PlatformT[]>("platforms");
+const { data: games } = useGames()
+const { data: platforms } = usePlatforms()
+
+const { loggedIn } = useUserSession()
 
 const gamesSearch = ref("")
 const showedGames = computed(() =>
     gamesSearch.value ?
-        games?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
-        games
+        games.value?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
+        games.value
 )
 
-const applicationGame = ref(application?.gameId || "")
-const applicationPlatform = ref(application?.platformId || "")
-const applicationText = ref("")
-const applicationRank = ref("")
 
-const createApplication = async () => {
-    const application: ApplicationT = await $fetch('/api/applications', {
-        method: "POST",
-        body: {
-            gameId: applicationGame.value,
-            platformId: applicationPlatform.value,
-            text: applicationText.value,
-            ranking: applicationRank.value,
-        }
-    })
-    if (application) {
-        user?.value.applications?.push(application)
-        applicationText.value = ""
-        applicationRank.value = ""
-        applicationGame.value = ""
-        applicationPlatform.value = ""
-        close();
-    }
+const appText = ref("")
+const appRank = ref("")
+const appGame = ref(application?.gameId || 0)
+const appPlatform = ref(application?.platformId || 0)
 
+const queryCache = useQueryCache()
+
+interface ApplicationData {
+    text: string, ranking: string, gameId: number, platformId: number
 }
+
+const { mutate: createApplication, isLoading: loading } = useMutation({
+    mutation: (app: ApplicationData) => {
+        if (!loggedIn) throw new Error('Login required')
+        if (!app.text.trim()) throw new Error('Title is required')
+        if (!app.gameId) throw new Error('Game is required')
+        if (!app.platformId) throw new Error('Platform is required')
+        return $fetch('/api/applications', {
+            method: "POST",
+            body: {
+                ...app
+            }
+        })
+    },
+
+    async onSuccess(application) {
+        await queryCache.invalidateQueries({ key: ['users', application.authorId, "applications"] })
+
+        appText.value = ""
+        appRank.value = ""
+        appGame.value = 0
+        appPlatform.value = 0
+
+        useToast(`Application "${application.text}" created.`)
+        emit("close")
+    },
+
+    onError(err) {
+        console.error(err)
+        useToast(err.message)
+    }
+})
+
 </script>
 
 <template>
@@ -52,17 +74,17 @@ const createApplication = async () => {
             <div class="application_body">
 
                 <label for="application_description" class="application_subtitle">Write an application message</label>
-                <textarea v-model="applicationText" name="application_description" id="application_description"
+                <textarea v-model="appText" name="application_description" id="application_description"
                     class="application_field application_textarea" placeholder="I am looking for a friend.."></textarea>
 
                 <label for="application_rank" class="application_subtitle">Describe your game rank</label>
-                <input v-model="applicationRank" type="text" name="application_rank" id="application_rank"
+                <input v-model="appRank" type="text" name="application_rank" id="application_rank"
                     class="application_field" placeholder="Silver III" />
 
                 <label for="application_platforms" class="application_subtitle">Select Game Platform</label>
                 <div class="application_platforms">
                     <template v-for="platform in platforms" :key="platform.id">
-                        <input v-model="applicationPlatform" type="radio" :id="`${platform.title}+${platform.id}`"
+                        <input v-model="appPlatform" type="radio" :id="`${platform.title}+${platform.id}`"
                             name="application_platform" :value="platform.id" />
                         <label :for="`${platform.title}+${platform.id}`" class="application_platform">{{ platform.title
                             }}</label>
@@ -74,17 +96,18 @@ const createApplication = async () => {
                     placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
                     <template v-for="game in showedGames" :key="game.id">
-                        <input v-model="applicationGame" type="radio" :id="`${game.title}+${game.id}`"
-                            name="application_game" :value="game.id" />
+                        <input v-model="appGame" type="radio" :id="`${game.title}+${game.id}`" name="application_game"
+                            :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">
-                            <Game :title="game.title" :image="game.image" class="game_pop"
-                                :isSelected="game.id === applicationGame" />
+                            <Game v-bind="game" class="game_pop" :isSelected="game.id === appGame" />
                         </label>
                     </template>
                 </div>
 
                 <div class="application_buttons d-flex justify-content-center">
-                    <button v-if="isNew" @click="createApplication" class="button_accent">Save Changes</button>
+                    <button v-if="isNew"
+                        @click="createApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform })"
+                        class="button_accent">Save Changes</button>
                     <template v-else>
                         <button class="button_accent">Save Changes</button>
                         <button class="button_accent">Delete application</button>
