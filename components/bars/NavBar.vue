@@ -19,7 +19,7 @@ const logout = async () => {
 
 <template>
     <ProfilePopup v-if="userData" :isOpen="profilePopup.isOpen.value" :user="userData" @close="profilePopup.close" />
-    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
+    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
     <nav class="navigation">
         <div class="container-fluid">
             <Row>

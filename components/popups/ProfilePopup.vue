@@ -24,12 +24,19 @@ const partyPopup = usePopup()
 const userDetailsPopup = usePopup()
 const userLinksPopup = usePopup()
 
+const applicationPopups = ref<boolean[]>([]);
+
+watchEffect(() => {
+    if (userApplications.value) {
+        applicationPopups.value = userApplications.value.map(() => false)
+    }
+})
 
 </script>
 
 <template>
-    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" isNew />
-    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" isNew />
+    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
+    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" />
     <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" :user="user" />
     <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" :isEditable="isOwner"
         :user="user" />
@@ -63,10 +70,13 @@ const userLinksPopup = usePopup()
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="application in userApplications" :key="application.id"
+                            <div v-for="(application, index) in userApplications" :key="application.id"
                                 class="profile_box d-inline-flex align-items-center">
                                 {{ application.text }}
-                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
+                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Edit"
+                                    @click="applicationPopups[index] = true" />
+                                <ApplicationPopup :application="application" :isOpen="applicationPopups[index]"
+                                    @close="applicationPopups[index] = false" />
                             </div>
                         </div>
 

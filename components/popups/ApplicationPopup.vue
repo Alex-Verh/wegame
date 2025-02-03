@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 const { application } = defineProps<{
-    isNew: boolean,
     isOpen: boolean,
     application?: Application,
 }>()
@@ -20,20 +19,22 @@ const showedGames = computed(() =>
         games.value
 )
 
-
-const appText = ref("")
-const appRank = ref("")
+const appText = ref(application?.text || "")
+const appRank = ref(application?.ranking || "")
 const appGame = ref(application?.gameId || 0)
 const appPlatform = ref(application?.platformId || 0)
 
 const queryCache = useQueryCache()
 
-interface ApplicationData {
+interface ApplicationCreate {
     text: string, ranking: string, gameId: number, platformId: number
 }
+interface ApplicationUpdate extends ApplicationCreate {
+    id: number
+}
 
-const { mutate: createApplication, isLoading: loading } = useMutation({
-    mutation: (app: ApplicationData) => {
+const { mutate: createApplication } = useMutation({
+    mutation: (app: ApplicationCreate) => {
         if (!loggedIn) throw new Error('Login required')
         if (!app.text.trim()) throw new Error('Title is required')
         if (!app.gameId) throw new Error('Game is required')
@@ -62,6 +63,40 @@ const { mutate: createApplication, isLoading: loading } = useMutation({
         console.error(err)
         useToast(err.message)
     }
+})
+
+const { mutate: updateApplication } = useMutation({
+    mutation: (app: ApplicationUpdate) => {
+        if (!loggedIn) throw new Error('Login required')
+        if (!app.text.trim()) throw new Error('Title is required')
+        if (!app.gameId) throw new Error('Game is required')
+        if (!app.platformId) throw new Error('Platform is required')
+        return $fetch(`/api/applications/${app.id}`, {
+            method: "PATCH",
+            body: {
+                ...app
+            }
+        })
+    },
+    async onSuccess(application) {
+        await queryCache.invalidateQueries({ key: ['users', application.authorId, "applications"] })
+        useToast(`Application "${application.text}" updated.`)
+        emit("close")
+    },
+})
+
+const { mutate: deleteApplication } = useMutation({
+    mutation: (appId: number) => {
+        if (!loggedIn) throw new Error('Login required')
+        return $fetch(`/api/applications/${appId}`, {
+            method: "DELETE",
+        })
+    },
+    async onSuccess(application) {
+        await queryCache.invalidateQueries({ key: ['users', application.authorId, "applications"] })
+        useToast(`Application "${application?.text}" deleted.`)
+        emit("close")
+    },
 })
 
 </script>
@@ -105,13 +140,16 @@ const { mutate: createApplication, isLoading: loading } = useMutation({
                 </div>
 
                 <div class="application_buttons d-flex justify-content-center">
-                    <button v-if="isNew"
+                    <template v-if="application">
+                        <button
+                            @click="updateApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform, id: application.id })"
+                            class="button_accent">Save Changes</button>
+                        <button @click="deleteApplication(application.id)" class="button_accent">Delete
+                            application</button>
+                    </template>
+                    <button v-else
                         @click="createApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform })"
                         class="button_accent">Save Changes</button>
-                    <template v-else>
-                        <button class="button_accent">Save Changes</button>
-                        <button class="button_accent">Delete application</button>
-                    </template>
                 </div>
 
             </div>

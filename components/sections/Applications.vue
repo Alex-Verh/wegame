@@ -1,5 +1,11 @@
 <script setup lang="ts">
-const { data: applications } = await useFetch('/api/applications')
+
+
+const { data: applications } = useQuery({
+    key: ["applications"],
+
+    query: () => useRequestFetch()("/api/applications", { query: {} }) as Promise<Application[]>,
+})
 </script>
 
 <template>

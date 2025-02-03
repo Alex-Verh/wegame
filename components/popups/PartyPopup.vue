@@ -1,9 +1,8 @@
 <script setup lang="ts">
-const { party } = defineProps({
-    isNew: Boolean,
-    isOpen: Boolean,
-    party: Object,
-})
+const { party } = defineProps<{
+    isOpen: boolean,
+    party?: Party,
+}>()
 const emit = defineEmits()
 
 const { data: games } = useGames()

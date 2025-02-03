@@ -10,6 +10,7 @@ const { authorId } = defineProps<{
     platform: Platform;
 }>()
 
+
 const { data: author } = useQuery({
     key: () => ["users", authorId],
     query: () => useRequestFetch()(`/api/users/${authorId}`) as Promise<User>,

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 
 const toasts = useState<Toast[]>("toasts", () => []);
+
 </script>
-
-
 <template>
   <ToastContainer padding="3" bottom="0" end="0" position="fixed">
     <Toast v-for="toast in toasts" :key="toast.id" :text-color="'white'" :background-color="toast.variant" :border="0"
