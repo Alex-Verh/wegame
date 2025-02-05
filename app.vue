@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ModalsContainer } from 'vue-final-modal';
 
 const toasts = useState<Toast[]>("toasts", () => []);
 
@@ -13,6 +14,7 @@ const toasts = useState<Toast[]>("toasts", () => []);
       </b-div>
     </Toast>
   </ToastContainer>
+  <ModalsContainer />
   <NavBar />
   <main>
     <NuxtPage />

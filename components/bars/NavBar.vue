@@ -1,15 +1,20 @@
 <script setup lang="ts">
+import ApplicationPopup from '../popups/ApplicationPopup.vue'
 
 const { loggedIn, clear } = useUserSession()
 
 const { data: userData } = useCurrentUser()
 
-const applicationPopup = usePopup()
-const profilePopup = usePopup()
+const profilePopup = usePopup("my-profile")
 
-const handleApplicationClick = () => {
-    loggedIn ? applicationPopup.open() : navigateTo("/sign-in");
-}
+const appPopup = useModal({
+    component: ApplicationPopup,
+    attrs: {
+        onClose: () => {
+            appPopup.close()
+        }
+    }
+})
 
 const logout = async () => {
     await clear();
@@ -18,9 +23,8 @@ const logout = async () => {
 </script>
 
 <template>
-    <ProfilePopup v-if="userData" :isOpen="profilePopup.isOpen.value" :user="userData" @close="profilePopup.close" />
-    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
     <nav class="navigation">
+        <ProfilePopup v-if="userData" :modalId="profilePopup.modalId" :user="userData" @close="profilePopup.close" />
         <div class="container-fluid">
             <Row>
                 <Col col="3">
@@ -46,8 +50,8 @@ const logout = async () => {
                     <div class="links_row d-flex justify-content-around">
                         <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend
                             Quickly</NuxtLink>
-                        <button @click="handleApplicationClick()" class="link"><img src="" alt=""
-                                class="link_icon">Create Your Application</button>
+                        <button @click="appPopup.open" class="link"><img src="" alt="" class="link_icon">Create Your
+                            Application</button>
                         <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party
                         </NuxtLink>
                     </div>

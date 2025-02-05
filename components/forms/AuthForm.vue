@@ -7,7 +7,7 @@ const { fields, submitUrl } = defineProps<{
     fields: { [key: string]: { label: string, type: string, validator?: (value: any) => boolean } }
 }>();
 
-const emit = defineEmits(["submit"]);
+defineEmits<{ submit: [] }>();
 
 const loading = ref(false);
 const error = ref("");

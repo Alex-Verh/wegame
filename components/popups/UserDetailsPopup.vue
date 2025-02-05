@@ -85,7 +85,7 @@ const logout = async () => {
 </script>
 
 <template>
-    <Popup :visible="isOpen" :width="700" class="languagespop">
+    <Popup :width="700" class="languagespop">
         <Container>
             <div class="languages_title">Select Languages</div>
 

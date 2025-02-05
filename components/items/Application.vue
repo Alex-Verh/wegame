@@ -16,14 +16,14 @@ const { data: author } = useQuery({
     query: () => useRequestFetch()(`/api/users/${authorId}`) as Promise<User>,
 })
 
-const profilePopup = usePopup()
+
+const profilePopup = usePopup("user-profile")
 
 </script>
 
 <template>
-    <ProfilePopup v-if="author" :isOpen="profilePopup.isOpen.value" :user="author" @close="profilePopup.close" />
-
     <div class="application" @click="profilePopup.open">
+        <ProfilePopup v-if="author" :modalId="profilePopup.modalId" :user="author" @close="profilePopup.close" />
         <Row>
             <Col col="1">
             <img :src="author?.profilePic as string" alt="Profile Picture" class="application_img">

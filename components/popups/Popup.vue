@@ -1,36 +1,26 @@
 <script setup lang="ts">
-const { visible, width = 1000 } = defineProps<{
-  visible?: boolean,
-  width?: number
+import { VueFinalModal } from 'vue-final-modal';
+
+const { width = 1000 } = defineProps<{
+  width?: number,
 }>()
 
-const emit = defineEmits(['close']);
+const emit = defineEmits<{ close: [] }>();
 
-watchEffect(() => {
-  if (!document) return;
-  if (visible) {
-    document.body.classList.add('no-scroll');
-  } else {
-    document.body.classList.remove('no-scroll');
-  }
-})
-const close = () => {
-  emit('close');
-}
+
 </script>
 
 <template>
-  <div class="popup_overlay" v-if="visible" @click.self="close">
-    <div class="popup" :style="{ width: width + 'px' }">
-      <img class="popup_close" src="~/assets/icons/close.svg" alt="Close Popup" @click.self="close" />
-      <slot></slot>
-    </div>
-  </div>
+  <VueFinalModal clickToClose escToClose class="popup_overlay" contentClass="popup"
+    :contentStyle="{ width: width + 'px' }">
+    <img class="popup_close" src="~/assets/icons/close.svg" alt="Close Popup" @click.self="emit('close')" />
+    <slot></slot>
+  </VueFinalModal>
 </template>
 
 
 
-<style scoped>
+<style>
 .popup_overlay {
   position: fixed;
   top: 0;
@@ -50,6 +40,7 @@ const close = () => {
   color: #fff;
   padding: 25px 35px;
   position: relative;
+  z-index: 1000;
 }
 
 .popup_close {

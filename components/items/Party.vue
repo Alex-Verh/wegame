@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import PartyMembersPopup from '../popups/PartyMembersPopup.vue';
+
+const { members } = defineProps<{
     id: number;
     title: string;
     gameId: number;
@@ -16,12 +18,14 @@ defineProps<{
     }[]
 }>()
 
-const partyMembersPopup = usePopup()
+const membersPopup = usePopup("party-members")
+
 </script>
 
 <template>
-    <PartyMembersPopup :isOpen="partyMembersPopup.isOpen.value" @close="partyMembersPopup.close" />
     <div class="party">
+        <PartyMembersPopup v-if="members" :modalId="membersPopup.modalId" :members="members"
+            @close="membersPopup.close" />
         <div class="party_main">
             <Row>
                 <Col col="10">
@@ -36,7 +40,7 @@ const partyMembersPopup = usePopup()
         </div>
         <div class="party_bottom d-flex justify-content-between">
             <div class="party_platform">{{ platform.title }}</div>
-            <div class="party_players" @click="partyMembersPopup.open">See players</div>
+            <div class="party_players" @click="membersPopup.open">See players</div>
             <div class="party_players_amount">{{ members?.length + 1 }} out {{ membersLimit }} people</div>
         </div>
     </div>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-defineProps<{
-    isOpen: boolean,
-}>()
+defineProps<{ members: User[] }>()
+defineEmits()
 </script>
 
 <template>
-    <Popup :visible="isOpen" :width="700" class="members">
+    <Popup :width="700" class="members">
         <Container>
             <div class="members_title">Party Requests</div>
 

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Application } from '~/server/utils/db';
+import ApplicationPopup from './ApplicationPopup.vue';
+import PartyPopup from './PartyPopup.vue';
+import UserDetailsPopup from './UserDetailsPopup.vue';
 
 const { user } = defineProps<{
-    isOpen: boolean,
     user: User
 }>()
 
@@ -18,29 +19,75 @@ const { data: userParties } = useQuery({
 })
 
 const isOwner = computed(() => sessionUser.value?.id === user.id)
-const emit = defineEmits(["close"])
-const applicationPopup = usePopup()
-const partyPopup = usePopup()
-const userDetailsPopup = usePopup()
-const userLinksPopup = usePopup()
 
-const applicationPopups = ref<boolean[]>([]);
-
-watchEffect(() => {
-    if (userApplications.value) {
-        applicationPopups.value = userApplications.value.map(() => false)
+const applicationPopup = useModal({
+    component: ApplicationPopup,
+    attrs: {
+        onClose: () => {
+            applicationPopup.close()
+        }
     }
 })
+const partyPopup = useModal({
+    component: PartyPopup,
+    attrs: {
+        onClose: () => {
+            partyPopup.close()
+        }
+    }
+})
+const userDetailsPopup = useModal({
+    component: UserDetailsPopup,
+    attrs: {
+        onClose: () => {
+            userDetailsPopup.close()
+        },
+        user
+    }
+})
+const userLinksPopup = useModal({
+    component: UserDetailsPopup,
+    attrs: {
+        onClose: () => {
+            userLinksPopup.close()
+        },
+        user,
+        isEditable: isOwner
+    }
+})
+
+const applicationEditPopup = useModal({
+    component: ApplicationPopup,
+    attrs: {
+        onClose: () => {
+            applicationEditPopup.close()
+        }
+    }
+})
+
+const editApplication = (application: Application) => {
+    applicationEditPopup.patchOptions({ attrs: { application } })
+    applicationEditPopup.open()
+}
+
+const partyEditPopup = useModal({
+    component: PartyPopup,
+    attrs: {
+        onClose: () => {
+            partyEditPopup.close()
+        }
+    }
+})
+
+const editParty = (party: Party) => {
+    partyEditPopup.patchOptions({ attrs: { party } })
+    partyEditPopup.open()
+}
 
 </script>
 
 <template>
-    <ApplicationPopup :isOpen="applicationPopup.isOpen.value" @close="applicationPopup.close" />
-    <PartyPopup :isOpen="partyPopup.isOpen.value" @close="partyPopup.close" />
-    <UserDetailsPopup :isOpen="userDetailsPopup.isOpen.value" @close="userDetailsPopup.close" :user="user" />
-    <UserLinksPopup :isOpen="userLinksPopup.isOpen.value" @close="userLinksPopup.close" :isEditable="isOwner"
-        :user="user" />
-    <Popup :visible="isOpen" :style="{ zIndex: 800 }" @close="emit('close')" class="profile">
+    <Popup :style="{ zIndex: 800 }" class="profile">
         <Container>
             <Row class="g-5">
                 <Col col="3">
@@ -71,12 +118,10 @@ watchEffect(() => {
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
                             <div v-for="(application, index) in userApplications" :key="application.id"
+                                @click="editApplication(application)"
                                 class="profile_box d-inline-flex align-items-center">
                                 {{ application.text }}
-                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Edit"
-                                    @click="applicationPopups[index] = true" />
-                                <ApplicationPopup :application="application" :isOpen="applicationPopups[index]"
-                                    @close="applicationPopups[index] = false" />
+                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Edit" />
                             </div>
                         </div>
 
@@ -84,7 +129,8 @@ watchEffect(() => {
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="party in userParties" :key="party.id" class="profile_box">
+                            <div v-for="party in userParties" :key="party.id" @click="editParty(party)"
+                                class="profile_box">
                                 <div class="profile_party_title accent">{{ party.title }}</div>
                                 <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                                 <div>{{ party.description }}</div>

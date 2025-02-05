@@ -1,23 +1,16 @@
 <script setup lang="ts">
 
 const { application } = defineProps<{
-    isOpen: boolean,
     application?: Application,
 }>()
 
 const emit = defineEmits()
 
-const { data: games } = useGames()
-const { data: platforms } = usePlatforms()
-
 const { loggedIn } = useUserSession()
 
-const gamesSearch = ref("")
-const showedGames = computed(() =>
-    gamesSearch.value ?
-        games.value?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
-        games.value
-)
+const { data: platforms } = usePlatforms()
+
+const { searchQuery: gameSearchQ, games } = useGameSearch()
 
 const appText = ref(application?.text || "")
 const appRank = ref(application?.ranking || "")
@@ -47,20 +40,17 @@ const { mutate: createApplication } = useMutation({
         })
     },
 
-    async onSuccess(application) {
+    onSuccess: async (application) => {
         await queryCache.invalidateQueries({ key: ['users', application.authorId, "applications"] })
-
         appText.value = ""
         appRank.value = ""
         appGame.value = 0
         appPlatform.value = 0
-
         useToast(`Application "${application.text}" created.`)
         emit("close")
     },
 
-    onError(err) {
-        console.error(err)
+    onError: (err) => {
         useToast(err.message)
     }
 })
@@ -68,41 +58,49 @@ const { mutate: createApplication } = useMutation({
 const { mutate: updateApplication } = useMutation({
     mutation: (app: ApplicationUpdate) => {
         if (!loggedIn) throw new Error('Login required')
+        if (!app.id) throw new Error('There is no existing application')
         if (!app.text.trim()) throw new Error('Title is required')
         if (!app.gameId) throw new Error('Game is required')
         if (!app.platformId) throw new Error('Platform is required')
-        return $fetch(`/api/applications/${app.id}`, {
+        const { id, ...body } = app
+        return $fetch(`/api/applications/${id}`, {
             method: "PATCH",
-            body: {
-                ...app
-            }
+            body
         })
     },
-    async onSuccess(application) {
+    onSuccess: async (application) => {
         await queryCache.invalidateQueries({ key: ['users', application.authorId, "applications"] })
         useToast(`Application "${application.text}" updated.`)
         emit("close")
     },
+    onError: (err) => {
+        useToast(err.message)
+    }
+
 })
 
 const { mutate: deleteApplication } = useMutation({
     mutation: (appId: number) => {
         if (!loggedIn) throw new Error('Login required')
+        if (!appId) throw new Error('There is no application')
         return $fetch(`/api/applications/${appId}`, {
             method: "DELETE",
         })
     },
-    async onSuccess(application) {
+    onSuccess: async (application) => {
         await queryCache.invalidateQueries({ key: ['users', application.authorId, "applications"] })
         useToast(`Application "${application?.text}" deleted.`)
         emit("close")
     },
+    onError: (err) => {
+        useToast(err.message)
+    }
 })
 
 </script>
 
 <template>
-    <Popup :visible="isOpen">
+    <Popup>
         <Container>
             <div class="application_title">Create Application</div>
 
@@ -127,10 +125,10 @@ const { mutate: deleteApplication } = useMutation({
                 </div>
 
                 <label for="games_search" class="application_subtitle">Search your application game</label>
-                <input v-model="gamesSearch" type="text" name="games_search" id="games_search" class="application_field"
+                <input v-model="gameSearchQ" type="text" name="games_search" id="games_search" class="application_field"
                     placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
-                    <template v-for="game in showedGames" :key="game.id">
+                    <template v-for="game in games" :key="game.id">
                         <input v-model="appGame" type="radio" :id="`${game.title}+${game.id}`" name="application_game"
                             :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">

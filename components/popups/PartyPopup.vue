@@ -1,33 +1,25 @@
 <script setup lang="ts">
 const { party } = defineProps<{
-    isOpen: boolean,
     party?: Party,
 }>()
 const emit = defineEmits()
 
-const { data: games } = useGames()
 const { data: platforms } = usePlatforms()
+const { searchQuery: gameSearchQ, games } = useGameSearch()
 
 const { loggedIn } = useUserSession()
 
-const gamesSearch = ref("")
-const showedGames = computed(() =>
-    gamesSearch.value ?
-        games.value?.filter((game) => game.title.toLowerCase().includes(gamesSearch.value.trim().toLowerCase())) :
-        games.value
-)
-
-const partyTitle = ref("")
-const partyDescription = ref("")
+const partyTitle = ref(party?.title || "")
+const partyDescription = ref(party?.description || "")
 const partyGame = ref(party?.gameId || 0)
 const partyPlatform = ref(party?.platformId || 0)
-const partyMinAge = ref(0)
-const partyMaxAge = ref(100)
-const partyMemberNr = ref(5)
+const partyMinAge = ref(party?.minAge || 0)
+const partyMaxAge = ref(party?.maxAge || 100)
+const partyMemberNr = ref(party?.membersLimit || 5)
 
 const queryCache = useQueryCache()
 
-interface PartyData {
+interface PartyCreate {
     title: string,
     description: string,
     gameId: number,
@@ -36,9 +28,12 @@ interface PartyData {
     maxAge: number,
     membersLimit: number
 }
+interface PartyUpdate extends PartyCreate {
+    id: number
+}
 
-const { mutate: createParty, isLoading: loading } = useMutation({
-    mutation: (party: PartyData) => {
+const { mutate: createParty } = useMutation({
+    mutation: (party: PartyCreate) => {
         if (!loggedIn) throw new Error('Login required')
         if (!party.title.trim()) throw new Error('Title is required')
         if (!party.gameId) throw new Error('Game is required')
@@ -51,9 +46,8 @@ const { mutate: createParty, isLoading: loading } = useMutation({
         })
     },
 
-    async onSuccess(party) {
+    onSuccess: async (party) => {
         await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties"] })
-
         partyTitle.value = ""
         partyDescription.value = ""
         partyGame.value = 0
@@ -61,21 +55,62 @@ const { mutate: createParty, isLoading: loading } = useMutation({
         partyMinAge.value = 0
         partyMaxAge.value = 100
         partyMemberNr.value = 5
-
         useToast(`Party "${party.title}" created.`)
         emit('close')
     },
 
-    onError(err) {
-        console.error(err)
+    onError: (err) => {
+        useToast(err.message)
+    }
+})
+const { mutate: updateParty } = useMutation({
+    mutation: (party: PartyUpdate) => {
+        if (!loggedIn) throw new Error('Login required')
+        if (!party.id) throw new Error('There is no existing party')
+        if (!party.title.trim()) throw new Error('Title is required')
+        if (!party.gameId) throw new Error('Game is required')
+        if (!party.platformId) throw new Error('Platform is required')
+        const { id, ...body } = party;
+        return $fetch(`/api/parties/${id}`, {
+            method: "PATCH",
+            body
+        })
+    },
+
+    onSuccess: async (party) => {
+        await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties"] })
+        useToast(`Party "${party.title}" updated.`)
+        emit('close')
+    },
+    onError: (err) => {
         useToast(err.message)
     }
 })
 
+const { mutate: deleteParty } = useMutation({
+    mutation: (partyId: number) => {
+        if (!loggedIn) throw new Error('Login required')
+        if (!partyId) throw new Error('There is no existing party')
+        return $fetch(`/api/parties/${partyId}`, {
+            method: "DELETE",
+        })
+    },
+    onSuccess: async (party) => {
+        await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties"] })
+        useToast(`Party "${party.title}" deleted.`)
+        emit('close')
+    },
+    onError: (err) => {
+        useToast(err.message)
+    }
+})
+const membersPopup = usePopup("party-members")
 </script>
 
 <template>
-    <Popup :visible="isOpen">
+    <Popup>
+        <PartyMembersPopup v-if="party?.members" :modalId="membersPopup.modalId" :members="party.members"
+            @close="membersPopup.close" />
         <Container>
             <div class="party_title">Create Party</div>
 
@@ -121,10 +156,10 @@ const { mutate: createParty, isLoading: loading } = useMutation({
                 </div>
 
                 <label for="party_search" class="party_subtitle">Select your party game</label>
-                <input v-model="gamesSearch" type="text" name="party_search" id="party_search" class="party_field"
+                <input v-model="gameSearchQ" type="text" name="party_search" id="party_search" class="party_field"
                     placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
-                    <template v-for="game in showedGames" :key="game.id">
+                    <template v-for="game in games" :key="game.id">
                         <input v-model="partyGame" type="radio" :id="`${game.title}+${game.id}`" name="party_game"
                             :value="game.id" />
                         <label :for="`${game.title}+${game.id}`">
@@ -134,14 +169,16 @@ const { mutate: createParty, isLoading: loading } = useMutation({
                 </div>
 
                 <div class="party_buttons d-flex justify-content-center">
-                    <button v-if="isNew"
+                    <template v-if="party">
+                        <button
+                            @click="updateParty({ title: partyTitle, description: partyDescription, gameId: partyGame, platformId: partyPlatform, minAge: partyMinAge, maxAge: partyMaxAge, membersLimit: partyMemberNr, id: party.id })"
+                            class="button_accent">Save Changes</button>
+                        <button @click="membersPopup.open" class="button_accent">See Members</button>
+                        <button @click="deleteParty(party.id)" class="button_accent">Delete party</button>
+                    </template>
+                    <button v-else
                         @click="createParty({ title: partyTitle, description: partyDescription, gameId: partyGame, platformId: partyPlatform, minAge: partyMinAge, maxAge: partyMaxAge, membersLimit: partyMemberNr })"
                         class="button_accent">Save Changes</button>
-                    <template v-else>
-                        <button class="button_accent">Save Changes</button>
-                        <button class="button_accent">See Members</button>
-                        <button class="button_accent">Delete party</button>
-                    </template>
                 </div>
 
             </div>

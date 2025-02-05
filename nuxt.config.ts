@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@scalar/nuxt",
     "@pinia/colada-nuxt",
     "@pinia/nuxt",
+    "@vue-final-modal/nuxt",
   ],
   runtimeConfig: {
     databaseUrl: "",
