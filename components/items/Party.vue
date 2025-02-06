@@ -18,7 +18,7 @@ const { members } = defineProps<{
     }[]
 }>()
 
-const membersPopup = usePopup("party-members")
+const membersPopup = usePopup("partyMembers")
 
 </script>
 

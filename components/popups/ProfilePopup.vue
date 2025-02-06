@@ -2,12 +2,18 @@
 import ApplicationPopup from './ApplicationPopup.vue';
 import PartyPopup from './PartyPopup.vue';
 import UserDetailsPopup from './UserDetailsPopup.vue';
+import UserLinksPopup from './UserLinksPopup.vue';
 
 const { user } = defineProps<{
-    user: User
+    user: DetailedUser
 }>()
 
 const { user: sessionUser } = useUserSession()
+
+const { data: userGames } = useQuery({
+    key: () => ["users", user.id, "games"],
+    query: () => useRequestFetch()(`/api/games`, { query: { userId: user.id } }) as Promise<Game[]>
+})
 
 const { data: userApplications } = useQuery({
     key: () => ["users", user.id, "applications"],
@@ -18,7 +24,6 @@ const { data: userParties } = useQuery({
     query: () => useRequestFetch()(`/api/parties`, { query: { leaderId: user.id } }) as Promise<Party[]>,
 })
 
-const isOwner = computed(() => sessionUser.value?.id === user.id)
 
 const applicationPopup = useModal({
     component: ApplicationPopup,
@@ -36,25 +41,8 @@ const partyPopup = useModal({
         }
     }
 })
-const userDetailsPopup = useModal({
-    component: UserDetailsPopup,
-    attrs: {
-        onClose: () => {
-            userDetailsPopup.close()
-        },
-        user
-    }
-})
-const userLinksPopup = useModal({
-    component: UserDetailsPopup,
-    attrs: {
-        onClose: () => {
-            userLinksPopup.close()
-        },
-        user,
-        isEditable: isOwner
-    }
-})
+const userDetailsPopup = usePopup("myUserDetails")
+const userLinksPopup = usePopup("myUserLinks")
 
 const applicationEditPopup = useModal({
     component: ApplicationPopup,
@@ -88,12 +76,14 @@ const editParty = (party: Party) => {
 
 <template>
     <Popup :style="{ zIndex: 800 }" class="profile">
+        <UserDetailsPopup :modalId="userDetailsPopup.modalId" @close="userDetailsPopup.close" :user="user" />
+        <userLinksPopup :modalId="userLinksPopup.modalId" @close="userLinksPopup.close" :user="user" />
         <Container>
             <Row class="g-5">
                 <Col col="3">
                 <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username">
                 <p class="profile_username accent">{{ user.nickname }}</p>
-                <template v-if="isOwner">
+                <template v-if="sessionUser?.id === user.id">
                     <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Contact</button>
                     <button @click="userDetailsPopup.open" class="button_accent button_pop">Settings</button>
                 </template>
@@ -107,9 +97,7 @@ const editParty = (party: Party) => {
                         <div class="profile_subtitle">Games</div>
                         <Row class="g-3">
                             <Col col="3">
-                            <!-- TODO: show user games -->
-                            <!-- <Game " title="Counter-Strike: Global Offensive" image="/images/csgo.jpg" icon="/images/csgo-icon.png"
-                                class="profile_game" @click="useToast('Counter-Strike: Global Offensive', 'info')" /> -->
+                            <Game v-for="game in userGames" :key="game.id" v-bind="game" class="profile_game" />
                             </Col>
                         </Row>
 
@@ -117,7 +105,7 @@ const editParty = (party: Party) => {
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="(application, index) in userApplications" :key="application.id"
+                            <div v-for="application in userApplications" :key="application.id"
                                 @click="editApplication(application)"
                                 class="profile_box d-inline-flex align-items-center">
                                 {{ application.text }}

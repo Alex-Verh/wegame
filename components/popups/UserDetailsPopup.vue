@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const { user } = defineProps<{
     user: User,
-    isOpen: boolean,
 }>()
 
 const emit = defineEmits()
@@ -12,6 +11,7 @@ const userLanguages = computed<{ [id: number]: boolean }>(() =>
 )
 const userAge = ref(user.age as number)
 const userEmail = ref(user.email)
+const userPassword = ref("")
 
 const loading = ref(false);
 
@@ -26,7 +26,8 @@ const showedLanguages = computed(() => {
     return []
 })
 
-// TODO rewrite using pinia-colada mutations
+const queryCache = useQueryCache()
+
 const { mutate: toggleLanguage } = useMutation({
     mutation: (languageId: number) => {
         return $fetch(`/api/users/${user.id}`, {
@@ -39,6 +40,14 @@ const { mutate: toggleLanguage } = useMutation({
         })
     },
 
+    onSuccess: async () => {
+        await queryCache.invalidateQueries({ key: ['users', user.id], exact: true })
+    },
+
+    onError: (err) => {
+        useToast(err.message)
+    }
+
 })
 const { mutate: updateAge } = useMutation({
     mutation: (age: number) => {
@@ -48,6 +57,13 @@ const { mutate: updateAge } = useMutation({
                 age
             }
         })
+    },
+    onSuccess: async () => {
+        await queryCache.invalidateQueries({ key: ['users', user.id], exact: true })
+        useToast("Age updated")
+    },
+    onError: (err) => {
+        useToast(err.message)
     }
 })
 
@@ -59,6 +75,13 @@ const { mutate: updateEmail } = useMutation({
                 email
             }
         })
+    },
+    onSuccess: async () => {
+        await queryCache.invalidateQueries({ key: ['users', user.id], exact: true })
+        useToast("Email confirmation link sent")
+    },
+    onError: (err) => {
+        useToast(err.message)
     }
 })
 
@@ -71,6 +94,13 @@ const { mutate: updatePassword } = useMutation({
                 password
             }
         })
+    },
+    onSuccess: async () => {
+        await queryCache.invalidateQueries({ key: ['users', user.id], exact: true })
+        useToast("Password updated")
+    },
+    onError: (err) => {
+        useToast(err.message)
     }
 })
 
@@ -106,24 +136,24 @@ const logout = async () => {
                     </Col>
                 </Row>
 
-                <div class="button_accent">Save Languages</div>
+                <div class="button_accent">Save Languages (todo)</div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updateAge(userAge)" v-model="userAge" class="languages_input" type="text"
+                    <input @keyup.enter="updateAge(userAge)" v-model="userAge" class="languages_input" type="text"
                         name="user_age" id="user_age" placeholder="Enter your age number" />
-                    <div class="button_accent">Enter</div>
+                    <div @click="updateAge(userAge)" class="button_accent">Enter</div>
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updateEmail(userEmail)" v-model="userEmail" class="languages_input" type="email"
-                        name="user_email" id="user_email" placeholder="New email address" />
-                    <div class="button_accent">Change</div>
+                    <input @keyup.enter="updateEmail(userEmail)" v-model="userEmail" class="languages_input"
+                        type="email" name="user_email" id="user_email" placeholder="New email address" />
+                    <div @click="updateEmail(userEmail)" class="button_accent">Change</div>
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
-                    <input @change="updatePassword('')" class="languages_input" type="password" name="user_password"
-                        id="user_password" placeholder="New user password" />
-                    <div class="button_accent">Change</div>
+                    <input @keyup.enter="updatePassword(userPassword)" v-model="userPassword" class="languages_input"
+                        type="password" name="user_password" id="user_password" placeholder="New user password" />
+                    <div @click="updatePassword(userPassword)" class="button_accent">Change</div>
                 </div>
 
                 <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'

@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event);
   const { id } = await getValidatedRouterParams(
@@ -20,6 +21,10 @@ export default defineEventHandler(async (event) => {
   if (!user.isSuperuser && user.id !== id) {
     throw forbiddenError;
   }
+
+  const { sendMail } = useNodeMailer();
+  const { secretKey } = useRuntimeConfig();
+
   const db = useDB();
   const result: any = {};
   if (updatedUser.languages) {
@@ -85,21 +90,30 @@ export default defineEventHandler(async (event) => {
     });
     delete updatedUser.platforms;
   }
+  if (updatedUser.email) {
+    const token = jwt.sign(
+      { userId: user.id, email: updatedUser.email },
+      secretKey,
+      {
+        expiresIn: 60 * 10,
+      }
+    );
+    await sendMail({
+      subject: "Wegame user email verification",
+      text: `Verification link: http://localhost:3000/api/users/email?token=${token}`,
+      to: updatedUser.email,
+    });
+    delete updatedUser.email;
+  }
+
   if (Object.keys(updatedUser).length) {
     const [userFields] = await db
       .update(tables.users)
       .set(updatedUser)
       .where(eq(tables.users.id, id))
-      .returning(
-        Object.keys(updatedUser).reduce(
-          (acc, key) => ({ ...acc, [key]: tables.users[key] }),
-          {}
-        )
-      );
+      .returning();
     Object.assign(result, userFields);
   }
 
-  return {
-    updatedFields: result,
-  };
+  return result;
 });

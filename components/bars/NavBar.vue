@@ -5,7 +5,7 @@ const { loggedIn, clear } = useUserSession()
 
 const { data: userData } = useCurrentUser()
 
-const profilePopup = usePopup("my-profile")
+const profilePopup = usePopup("myProfile")
 
 const appPopup = useModal({
     component: ApplicationPopup,

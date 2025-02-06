@@ -1,10 +1,13 @@
+import { exists } from "drizzle-orm";
+
 export default defineEventHandler(async (event) => {
-  const { leaderId, gameId, platformId, searchQuery, limit, offset } =
+  const { leaderId, memberId, gameId, platformId, searchQuery, limit, offset } =
     await getValidatedQuery(
       event,
       z
         .object({
           leaderId: z.coerce.number(),
+          memberId: z.coerce.number(),
           gameId: z.coerce.number(),
           platformId: z.coerce.number(),
           searchQuery: z.string(),
@@ -14,7 +17,7 @@ export default defineEventHandler(async (event) => {
         .partial().parse
     );
   const db = useDB();
-  const parties = await db.query.parties.findMany({
+  const query = {
     with: {
       game: true,
       platform: true,
@@ -24,6 +27,19 @@ export default defineEventHandler(async (event) => {
     },
     where: and(
       leaderId ? eq(tables.parties.leaderId, leaderId) : undefined,
+      memberId
+        ? exists(
+            db
+              .select()
+              .from(tables.partyMembers)
+              .where(
+                and(
+                  eq(tables.partyMembers.partyId, tables.parties.id),
+                  eq(tables.partyMembers.userId, memberId)
+                )
+              )
+          )
+        : undefined,
       gameId ? eq(tables.parties.gameId, gameId) : undefined,
       platformId ? eq(tables.parties.platformId, platformId) : undefined,
       searchQuery
@@ -43,6 +59,7 @@ export default defineEventHandler(async (event) => {
             ), websearch_to_tsquery('english', ${searchQuery}))`
         )
       : asc(tables.parties.title),
-  });
-  return parties;
+  } as const;
+
+  return await db.query.parties.findMany(query);
 });

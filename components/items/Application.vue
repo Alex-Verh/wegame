@@ -17,7 +17,7 @@ const { data: author } = useQuery({
 })
 
 
-const profilePopup = usePopup("user-profile")
+const profilePopup = usePopup("userProfile")
 
 </script>
 

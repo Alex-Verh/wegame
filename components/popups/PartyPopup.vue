@@ -104,7 +104,7 @@ const { mutate: deleteParty } = useMutation({
         useToast(err.message)
     }
 })
-const membersPopup = usePopup("party-members")
+const membersPopup = usePopup("partyMembers")
 </script>
 
 <template>
