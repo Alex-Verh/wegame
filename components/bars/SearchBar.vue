@@ -1,23 +1,50 @@
+<script setup lang="ts">
+const title = defineModel<string>("title")
+const platformId = defineModel<number>("platform")
+const languageId = defineModel<number>("language")
+const gameId = defineModel<number>("game")
+const age = defineModel<number>("age")
+const ranking = defineModel<string>("ranking")
+
+const { data: games } = useGames()
+const { data: platforms } = usePlatforms()
+const { data: languages } = useLanguages()
+
+</script>
+
 <template>
     <div class="search_bar">
         <Row class="g-3">
             <Col col="4">
-                <input type="text" name="find_player" placeholder="Find by name" class="search_field" />
+            <input v-model.lazy="title" type="text" name="find_by_title" placeholder="Find by title"
+                class="search_field" />
             </Col>
             <Col col="4">
-                <div class="search_filter accent">Filter by platform</div>
+            <select v-model="platformId" class="search_filter accent">
+                <option disabled :value="0">Filter by platform</option>
+                <option v-for="platform in platforms" :key="platform.id" :value="platform.id">{{ platform.title }}
+                </option>
+            </select>
             </Col>
             <Col col="4">
-                <div class="search_filter accent">Filter by language</div>
+            <select v-model="languageId" class="search_filter accent">
+                <option disabled :value="0">Filter by language</option>
+                <option v-for="language in languages" :key="language.id" :value="language.id">{{ language.title }}
+                </option>
+            </select>
             </Col>
             <Col col="4">
-                <div class="search_filter accent">Filter by game</div>
+            <select v-model="gameId" class="search_filter accent">
+                <option disabled :value="0">Filter by game</option>
+                <option v-for="game in games" :key="game.id" :value="game.id">{{ game.title }}</option>
+            </select>
             </Col>
             <Col col="3">
-                <div class="search_filter accent">Filter by age</div>
+            <input v-model.lazy="age" type="number" name="find_by_age" placeholder="Find by age" class="search_field" />
             </Col>
             <Col col="5">
-                <div class="search_filter accent">Filter by ranking</div>
+            <input v-model.lazy="ranking" type="text" name="find_by_ranking" placeholder="Find by ranking"
+                class="search_field" />
             </Col>
         </Row>
     </div>
@@ -51,6 +78,10 @@
     width: 100%;
     /* Optional: make it full width */
     cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
+}
+
+.search_filter {
+    background: transparent;
 }
 
 .search_field {

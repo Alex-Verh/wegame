@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const { authorId, gameId, platformId, searchQuery, limit, offset } =
+  const { authorId, gameId, platformId, ranking, searchQuery, limit, offset } =
     await getValidatedQuery(
       event,
       z
@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
           authorId: z.coerce.number(),
           gameId: z.coerce.number(),
           platformId: z.coerce.number(),
+          ranking: z.string(),
           searchQuery: z.string(),
           limit: z.coerce.number().default(16),
           offset: z.coerce.number().default(0),
@@ -23,6 +24,7 @@ export default defineEventHandler(async (event) => {
       authorId ? eq(tables.applications.authorId, authorId) : undefined,
       gameId ? eq(tables.applications.gameId, gameId) : undefined,
       platformId ? eq(tables.applications.platformId, platformId) : undefined,
+      ranking ? eq(tables.applications.ranking, ranking) : undefined,
       searchQuery
         ? sql`to_tsvector('english', ${tables.applications.text}) @@ websearch_to_tsquery('english', ${searchQuery})`
         : undefined
