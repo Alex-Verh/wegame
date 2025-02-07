@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PartyMembersPopup from '../popups/PartyMembersPopup.vue';
 
-const { members } = defineProps<{
+const { id, members, leaderId } = defineProps<{
     id: number;
     title: string;
     gameId: number;
@@ -15,8 +15,29 @@ const { members } = defineProps<{
     platform: Platform;
     members: {
         userId: number;
+        status: "pending" | "accepted";
     }[]
 }>()
+
+
+const { user } = useUserSession()
+
+const userCanJoin = computed(() => !members.find((member) => member.userId === user.value?.id) && leaderId !== user.value?.id)
+
+const { mutate: joinParty } = useMutation({
+    mutation: (userId: number) => {
+        return $fetch(`/api/parties/${id}`, {
+            method: "PATCH",
+            body: { members: { [userId]: "pending" } }
+        })
+    },
+    onSuccess: async () => {
+        useToast('Join request sent')
+    },
+    onError: (err) => {
+        useToast(err.message)
+    }
+})
 
 const membersPopup = usePopup("partyMembers")
 
@@ -24,7 +45,7 @@ const membersPopup = usePopup("partyMembers")
 
 <template>
     <div class="party">
-        <PartyMembersPopup v-if="members" :modalId="membersPopup.modalId" :members="members"
+        <PartyMembersPopup v-if="members" :modalId="membersPopup.modalId" :members="members" :leaderId="leaderId"
             @close="membersPopup.close" />
         <div class="party_main">
             <Row>
@@ -34,14 +55,15 @@ const membersPopup = usePopup("partyMembers")
                 </Col>
                 <Col col="2">
                 <img :src="game.icon" :alt="game.title" class="party_icon">
-                <div class="button_accent">Join</div>
+                <button :disabled="!userCanJoin || !user" @click="joinParty(user!.id)"
+                    class="button_accent">Join</button>
                 </Col>
             </Row>
         </div>
         <div class="party_bottom d-flex justify-content-between">
             <div class="party_platform">{{ platform.title }}</div>
             <div class="party_players" @click="membersPopup.open">See players</div>
-            <div class="party_players_amount">{{ members?.length + 1 }} out {{ membersLimit }} people</div>
+            <div class="party_players_amount">{{ members?.length }} out {{ membersLimit }} people</div>
         </div>
     </div>
 </template>

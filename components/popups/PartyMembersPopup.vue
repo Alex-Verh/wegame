@@ -1,112 +1,61 @@
 <script setup lang="ts">
-defineProps<{ members: User[] }>()
+const { members, leaderId } = defineProps<{ members: { userId: number, status: "accepted" | "pending" }[], leaderId: number }>()
 defineEmits()
+const { user } = useUserSession()
+
+
+const isMember = computed(() => members.find((member) => member.userId === user.value?.id))
+const isLeader = computed(() => leaderId === user.value?.id)
+
 </script>
 
 <template>
     <Popup :width="700" class="members">
         <Container>
-            <div class="members_title">Party Requests</div>
-
-            <div class="members_section">
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">Accept</button>
-                        <button class="button_accent">Deny</button>
+            <template v-if="isLeader">
+                <div class="members_title">Party Requests</div>
+                <div class="members_section">
+                    <div v-for="member in members"
+                        class="members_member d-flex align-items-center justify-content-between">
+                        <template v-if="member.status === 'pending'">
+                            <span class="members_name">
+                                @{{ member.userId }}
+                            </span>
+                            <div>
+                                <button class="button_accent">Accept</button>
+                                <button class="button_accent">Deny</button>
+                            </div>
+                        </template>
                     </div>
                 </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">Accept</button>
-                        <button class="button_accent">Deny</button>
-                    </div>
-                </div>
-
-            </div>
-
-            <button class="button_accent">Accept Everyone</button>
-
+                <button class="button_accent">Accept Everyone</button>
+            </template>
 
             <div class="members_title">Party Members</div>
-
             <div class="members_section">
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">See User</button>
-                        <button class="button_accent">Kick</button>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">See User</button>
-                        <button class="button_accent">Kick</button>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">See User</button>
-                        <button class="button_accent">Kick</button>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">See User</button>
-                        <button class="button_accent">Kick</button>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">See User</button>
-                        <button class="button_accent">Kick</button>
-                    </div>
-                </div>
-
-                <div class="members_member d-flex align-items-center justify-content-between">
-                    <span class="members_name">
-                        @alllexlelfef
-                    </span>
-                    <div>
-                        <button class="button_accent">See User</button>
-                        <button class="button_accent">Kick</button>
-                    </div>
+                <div v-for="member in members" class="members_member d-flex align-items-center justify-content-between">
+                    <template v-if="member.status === 'accepted'">
+                        <span class="members_name">
+                            @{{ member.userId }}
+                        </span>
+                        <div>
+                            <button class="button_accent">See User</button>
+                            <button v-if="isLeader" class="button_accent">Kick</button>
+                        </div>
+                    </template>
                 </div>
             </div>
-
-            <div class="members_title">Discord Server URL</div>
-            <div class="members_member d-flex align-items-center justify-content-between">
-                <span class="members_name">
-                    https://discord.com/invite/ID
-                </span>
-                <div>
-                    <button class="button_accent">Navigate</button>
+            <template v-if="isMember">
+                <div class="members_title">Discord Server URL</div>
+                <div class="members_member d-flex align-items-center justify-content-between">
+                    <span class="members_name">
+                        https://discord.com/invite/ID
+                    </span>
+                    <div>
+                        <button class="button_accent">Navigate</button>
+                    </div>
                 </div>
-            </div>
+            </template>
         </Container>
     </Popup>
 </template>

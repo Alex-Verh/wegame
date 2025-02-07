@@ -24,7 +24,7 @@ export type Application = typeof tables.applications.$inferSelect & {
 export type Party = typeof tables.parties.$inferSelect & {
   game: Game;
   platform: Platform;
-  members: { userId: number }[];
+  members: { userId: number; status: "pending" | "accepted" }[];
 };
 export type User = Omit<typeof tables.users.$inferSelect, "password"> & {
   platforms: { platform: Platform; link: string }[];

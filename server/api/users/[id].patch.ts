@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
       .object({
         nickname: z.string(),
         email: z.string().email(),
-        age: z.coerce.number(),
+        age: z.number(),
         profilePic: z.string(),
         languages: z.record(z.coerce.number(), z.boolean()),
         platforms: z.record(z.coerce.number(), z.string().nullable()),
@@ -26,7 +26,8 @@ export default defineEventHandler(async (event) => {
   const { secretKey } = useRuntimeConfig();
 
   const db = useDB();
-  const result: any = {};
+
+  let languages: { languageId: number }[] = [];
   if (updatedUser.languages) {
     const langsToInsert = [];
     for (const languageId in updatedUser.languages) {
@@ -44,7 +45,7 @@ export default defineEventHandler(async (event) => {
     }
     if (langsToInsert.length)
       await db.insert(tables.userLanguages).values(langsToInsert);
-    result.languages = await db.query.userLanguages.findMany({
+    languages = await db.query.userLanguages.findMany({
       where: eq(tables.userLanguages.userId, id),
       columns: {
         userId: false,
@@ -52,6 +53,8 @@ export default defineEventHandler(async (event) => {
     });
     delete updatedUser.languages;
   }
+
+  let platforms: { platformId: number; link: string }[] = [];
   if (updatedUser.platforms) {
     const platformsToInsert = [];
     for (const platformId in updatedUser.platforms) {
@@ -82,7 +85,7 @@ export default defineEventHandler(async (event) => {
           ],
           set: { link: sql`excluded.link` },
         });
-    result.platforms = await db.query.userPlatforms.findMany({
+    platforms = await db.query.userPlatforms.findMany({
       where: eq(tables.userPlatforms.userId, id),
       columns: {
         userId: false,
@@ -106,14 +109,17 @@ export default defineEventHandler(async (event) => {
     delete updatedUser.email;
   }
 
-  if (Object.keys(updatedUser).length) {
-    const [userFields] = await db
-      .update(tables.users)
-      .set(updatedUser)
-      .where(eq(tables.users.id, id))
-      .returning();
-    Object.assign(result, userFields);
-  }
+  const [userFields] = updatedUser
+    ? await db
+        .update(tables.users)
+        .set(updatedUser)
+        .where(eq(tables.users.id, id))
+        .returning()
+    : [{}];
 
-  return result;
+  return {
+    ...userFields,
+    languages,
+    platforms,
+  };
 });

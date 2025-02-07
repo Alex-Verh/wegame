@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const { data: parties } = await useFetch('/api/parties')
+const { data: parties } = useQuery({
+    key: () => ["parties"],
+    query: () => useRequestFetch()("/api/parties") as Promise<Party[]>,
+})
 </script>
 
 <template>

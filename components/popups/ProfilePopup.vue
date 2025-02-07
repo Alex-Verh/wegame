@@ -5,7 +5,7 @@ import UserDetailsPopup from './UserDetailsPopup.vue';
 import UserLinksPopup from './UserLinksPopup.vue';
 
 const { user } = defineProps<{
-    user: DetailedUser
+    user: User
 }>()
 
 const { user: sessionUser } = useUserSession()
