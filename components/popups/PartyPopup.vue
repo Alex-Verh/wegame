@@ -110,7 +110,7 @@ const membersPopup = usePopup("partyMembers")
 <template>
     <Popup>
         <PartyMembersPopup v-if="party?.members" :modalId="membersPopup.modalId" :members="party.members"
-            @close="membersPopup.close" />
+            :leaderId="party.leaderId" @close="membersPopup.close" />
         <Container>
             <div class="party_title">Create Party</div>
 

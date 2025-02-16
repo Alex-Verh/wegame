@@ -1,21 +1,30 @@
-import { exists } from "drizzle-orm";
+import { exists, gte, lte } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
-  const { leaderId, memberId, gameId, platformId, searchQuery, limit, offset } =
-    await getValidatedQuery(
-      event,
-      z
-        .object({
-          leaderId: z.coerce.number(),
-          memberId: z.coerce.number(),
-          gameId: z.coerce.number(),
-          platformId: z.coerce.number(),
-          searchQuery: z.string(),
-          limit: z.coerce.number().default(16),
-          offset: z.coerce.number().default(0),
-        })
-        .partial().parse
-    );
+  const {
+    leaderId,
+    memberId,
+    gameId,
+    platformId,
+    searchQuery,
+    age,
+    limit,
+    offset,
+  } = await getValidatedQuery(
+    event,
+    z
+      .object({
+        leaderId: z.coerce.number(),
+        memberId: z.coerce.number(),
+        gameId: z.coerce.number(),
+        platformId: z.coerce.number(),
+        searchQuery: z.string(),
+        age: z.coerce.number(),
+        limit: z.coerce.number().default(16),
+        offset: z.coerce.number().default(0),
+      })
+      .partial().parse
+  );
   const db = useDB();
   const query = {
     with: {
@@ -47,6 +56,9 @@ export default defineEventHandler(async (event) => {
             setweight(to_tsvector('english', ${tables.parties.title}), 'A') ||
             setweight(to_tsvector('english', ${tables.parties.description}), 'B')
             ) @@ websearch_to_tsquery('english', ${searchQuery})`
+        : undefined,
+      age
+        ? and(lte(tables.parties.minAge, age), gte(tables.parties.maxAge, age))
         : undefined
     ),
     limit,

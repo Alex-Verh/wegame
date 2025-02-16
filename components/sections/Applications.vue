@@ -3,8 +3,8 @@
 const title = ref("")
 const gameId = ref(0)
 const platformId = ref(0)
-const languageId = ref(0) // TODO
-const age = ref(0) // TODO
+const languageId = ref(0) // TODO (from user)
+const age = ref(0) // TODO (from user)
 const ranking = ref("")
 
 

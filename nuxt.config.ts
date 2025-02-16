@@ -2,13 +2,14 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   modules: [
+    "@vue-final-modal/nuxt",
     "usebootstrap",
     "nuxt-auth-utils",
     "nuxt-nodemailer",
     "@scalar/nuxt",
     "@pinia/colada-nuxt",
     "@pinia/nuxt",
-    "@vue-final-modal/nuxt",
+    "@nuxtjs/i18n",
   ],
   runtimeConfig: {
     databaseUrl: "",

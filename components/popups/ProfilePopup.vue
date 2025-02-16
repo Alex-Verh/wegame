@@ -77,7 +77,7 @@ const editParty = (party: Party) => {
 <template>
     <Popup :style="{ zIndex: 800 }" class="profile">
         <UserDetailsPopup :modalId="userDetailsPopup.modalId" @close="userDetailsPopup.close" :user="user" />
-        <userLinksPopup :modalId="userLinksPopup.modalId" @close="userLinksPopup.close" :user="user" />
+        <UserLinksPopup :modalId="userLinksPopup.modalId" @close="userLinksPopup.close" :user="user" />
         <Container>
             <Row class="g-5">
                 <Col col="3">

@@ -24,6 +24,7 @@ const { user } = useUserSession()
 
 const userCanJoin = computed(() => !members.find((member) => member.userId === user.value?.id) && leaderId !== user.value?.id)
 
+const queryCache = useQueryCache()
 const { mutate: joinParty } = useMutation({
     mutation: (userId: number) => {
         return $fetch(`/api/parties/${id}`, {
