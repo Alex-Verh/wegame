@@ -21,22 +21,22 @@ const { data: languages } = useLanguages()
             </Col>
             <Col col="4">
             <select v-model="platformId" class="search_filter accent">
-                <option disabled :value="0">Filter by platform</option>
-                <option v-for="platform in platforms" :key="platform.id" :value="platform.id">{{ platform.title }}
+                <option disabled :value="0" class="search_result">Filter by platform</option>
+                <option v-for="platform in platforms" class="search_result" :key="platform.id" :value="platform.id">{{ platform.title }}
                 </option>
             </select>
             </Col>
             <Col col="4">
             <select v-model="languageId" class="search_filter accent">
-                <option disabled :value="0">Filter by language</option>
-                <option v-for="language in languages" :key="language.id" :value="language.id">{{ language.title }}
+                <option disabled :value="0" class="search_result">Filter by language</option>
+                <option v-for="language in languages" class="search_result" :key="language.id" :value="language.id">{{ language.title }}
                 </option>
             </select>
             </Col>
             <Col col="4">
             <select v-model="gameId" class="search_filter accent">
-                <option disabled :value="0">Filter by game</option>
-                <option v-for="game in games" :key="game.id" :value="game.id">{{ game.title }}</option>
+                <option disabled :value="0" class="search_result">Filter by game</option>
+                <option v-for="game in games" class="search_result" :key="game.id" :value="game.id">{{ game.title }}</option>
             </select>
             </Col>
             <Col col="3">
@@ -81,7 +81,16 @@ const { data: languages } = useLanguages()
 }
 
 .search_filter {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("~/assets/icons/expand.svg") !important;
+    background-repeat: no-repeat !important;
+    background-position: calc(100% - 12px) center !important;
     background: transparent;
+}
+
+.search_result {
+    background-color: #201F30;
 }
 
 .search_field {

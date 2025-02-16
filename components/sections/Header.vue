@@ -2,6 +2,8 @@
 defineProps<{
     text: string, image: string, showStatistics: boolean
 }>()
+
+// TODO FETCH STATS
 </script>
 
 <template>
