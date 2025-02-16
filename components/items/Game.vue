@@ -4,7 +4,7 @@ defineProps<{ id: number; title: string; image: string; isSelected?: boolean }>(
 </script>
 
 <template>
-  <div class="game" :class="{ game_selected: isSelected }">
+  <div class="game" :class="{ game_selected: isSelected }" @click="useToast(title)">
     <img :src="image" alt="GameName" class="game_image">
     <div class="game_title">{{ title }}</div>
     <img class="game_mark" src="~/assets/icons/mark.svg" alt="Selected" />

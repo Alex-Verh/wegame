@@ -81,7 +81,11 @@ const editParty = (party: Party) => {
         <Container>
             <Row class="g-5">
                 <Col col="3">
-                <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username">
+                <div class="profile_img">
+                    <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username" />
+                    <input type="file" accept="image/*" style="display: none;">
+                    <img v-if="sessionUser?.id === user.id" src="~/assets/icons/upload.svg" class="profile_upload" alt="Upload" />
+                </div>
                 <p class="profile_username accent">{{ user.nickname }}</p>
                 <template v-if="sessionUser?.id === user.id">
                     <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Contact</button>
@@ -96,20 +100,21 @@ const editParty = (party: Party) => {
                     <Container>
                         <div class="profile_subtitle">Games</div>
                         <Row class="g-3">
-                            <Col col="3">
-                            <Game v-for="game in userGames" :key="game.id" v-bind="game" class="profile_game" />
-                            </Col>
+                            <template v-for="game in userGames">
+                                <Col col="3">
+                                <Game :key="game.id" v-bind="game" class="profile_game" />
+                                </Col>
+                            </template>
                         </Row>
 
                         <div class="profile_subtitle">Applications - <span @click="applicationPopup.open"
                                 class="profile_createapp">Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="application in userApplications" :key="application.id"
-                                @click="editApplication(application)"
+                            <div v-for="application in userApplications" :key="application.id" @click="editApplication(application)"
                                 class="profile_box d-inline-flex align-items-center">
-                                {{ application.text }}
-                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Edit" />
+                                <div>{{ application.text }}</div>
+                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg" class="profile_edit" alt="Edit" />
                             </div>
                         </div>
 
@@ -119,9 +124,10 @@ const editParty = (party: Party) => {
                         <div class="profile_section d-flex flex-row">
                             <div v-for="party in userParties" :key="party.id" @click="editParty(party)"
                                 class="profile_box">
+                                <img v-if="sessionUser?.id === party.leaderId" src="~/assets/icons/leader.svg" class="profile_party_leader" alt="Leader" />
                                 <div class="profile_party_title accent">{{ party.title }}</div>
-                                <img src="~/assets/icons/trash.svg" class="profile_box_trash" alt="Delete">
                                 <div>{{ party.description }}</div>
+                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg" class="profile_edit" alt="Edit" />
                             </div>
                         </div>
                     </Container>
@@ -136,6 +142,40 @@ const editParty = (party: Party) => {
 .profile_picture {
     width: 100%;
     border: 1px solid #FE9F00;
+}
+
+.profile_img {
+    flex-shrink: 0;
+    cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
+    position: relative;
+    background-color: #000000;
+}
+
+.profile_img:hover .profile_picture {
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.profile_img:hover .profile_upload {
+    opacity: 1 !important;
+}
+
+.profile_upload {
+    width: 35px;
+    top: 45%;
+}
+
+.profile_edit {
+    top: 40%;
+    width: 35px;
+}
+
+.profile_edit, .profile_upload {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    transition: opacity 0.1s ease;
+    opacity: 0;
 }
 
 .profile_subtitle {
@@ -176,27 +216,22 @@ const editParty = (party: Party) => {
     width: 300px;
     margin-inline-end: 25px;
     height: 100%;
-    padding: 10px 25px;
     flex-shrink: 0;
+    padding: 10px 25px;
     cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
     position: relative;
 }
 
+.profile_box:hover *:not(.profile_edit){
+    opacity: 0.3;
+    transition: all 0.3s ease;
+}
+
 .profile_box:hover {
-    background-color: #b100007e;
-    transition: opacity 0.3s ease;
+    background-color: #201f3085;
 }
 
-.profile_box_trash {
-    position: absolute;
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.profile_box:hover .profile_box_trash {
+.profile_box:hover .profile_edit {
     opacity: 1;
 }
 
@@ -208,6 +243,12 @@ const editParty = (party: Party) => {
     font-weight: 600;
     text-align: center;
     margin-bottom: 5px;
+}
+
+.profile_party_leader {
+    position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
 /* Scroll */
