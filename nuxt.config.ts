@@ -46,5 +46,13 @@ export default defineNuxtConfig({
       openAPI: true,
     },
   },
+  i18n: {
+    locales: [
+      { code: 'en', iso: 'en-US', file: 'en.ts' },
+      { code: 'ru', iso: 'ru-RU', file: 'ru.ts' }
+    ],
+    lazy: true,
+    defaultLocale: 'en'
+  },
   css: ["~/assets/styles/base.css"],
 });

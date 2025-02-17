@@ -19,7 +19,7 @@ const { data: applications, isLoading } = useQuery({
     <section class="section" id="applications">
         <div class="section_title">Applications - Find One</div>
         <SearchBar v-model:title="title" v-model:game="gameId" v-model:platform="platformId"
-            v-model:language="languageId" v-model:age="age" v-model:ranking="ranking" />
+            v-model:language="languageId" v-model:age="age" v-model:ranking="ranking" :isAppSearch="true" />
         <div class="applications">
             <Application v-for="application in applications" :key="application.id" v-bind="application" />
             <div v-if="isLoading">Loading</div>
