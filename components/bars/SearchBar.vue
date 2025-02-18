@@ -49,7 +49,7 @@ const { data: languages } = useLanguages()
                 <input v-model.lazy="age" type="number" name="find_by_age" :placeholder="$t('filterAge')" class="search_field" />
                 </Col>
                 <Col col="5">
-                <input v-model.lazy="ranking" type="text" name="find_by_ranking" :placeholder="$t('findRanking')"
+                <input v-model.lazy="ranking" type="text" name="find_by_ranking" :placeholder="$t('findRank')"
                     class="search_field" />
                 </Col>
             </template>

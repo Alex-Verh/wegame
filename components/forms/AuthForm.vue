@@ -74,7 +74,8 @@ const onSubmit = async (event: Event) => {
             <section>
                 <form action="" class="form" @submit.prevent="onSubmit">
                     <div class="form_title">
-                        <span class='form_name accent'>{{ type }}</span> to enhance gaming experience
+                        <span class='form_name accent'>{{ type }}</span> {{ type == $t('signup') ? $t('signupHeader') : $t('signinHeader') }}
+
                     </div>
                     <div class="form_fields">
                         <div v-for="(field, name) in fields" :key="name" class="form_field">
@@ -84,14 +85,14 @@ const onSubmit = async (event: Event) => {
                     </div>
                     <div class="form_buttons d-flex justify-content-between">
                         <button :disabled="loading" type="submit" class="button_accent form_button">
-                            {{ loading ? 'Loading...' : type }}
+                            {{ loading ? $t('loading') + '...' : type }}
                         </button>
                         <NuxtLink external to="/api/auth/google" class="button_accent form_button">
                             {{ $t('googleAccount') }} 
                         </NuxtLink>
                     </div>
-                    <NuxtLink :to="typeSwitchLink" class="form_switch">{{ $t('switchTo') }} {{ typeSwitchText }}
-                    </NuxtLink>
+                    <NuxtLinkLocale :to="typeSwitchLink" class="form_switch">{{ $t('switchTo') }} {{ typeSwitchText }}
+                    </NuxtLinkLocale>
                     <div>{{ error }}</div>
                 </form>
             </section>

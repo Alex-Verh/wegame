@@ -3,11 +3,14 @@ import ApplicationPopup from '../popups/ApplicationPopup.vue'
 
 const { loggedIn, clear } = useUserSession()
 
-const { setLocale } = useI18n()
+const { locale, setLocale } = useI18n();
 
 const { data: userData } = useCurrentUser()
 
 const profilePopup = usePopup("myProfile")
+
+const router = useRouter();
+const localePath = useLocalePath();
 
 const appPopup = useModal({
     component: ApplicationPopup,
@@ -20,7 +23,7 @@ const appPopup = useModal({
 
 const logout = async () => {
     await clear();
-    navigateTo("/sign-in");
+    router.push(localePath('sign-in'));
 }
 </script>
 
@@ -32,22 +35,23 @@ const logout = async () => {
                 <Col col="3">
                 <div class="logo d-flex align-items-center justify-content-center">
                     <img src="/images/logo.png" alt="Logo" class="logo_icon">
-                    <NuxtLink to="/" class="logo_text">
+                    <NuxtLinkLocale to="/" class="logo_text">
                         WE<span class="accent">GAME</span>
-                    </NuxtLink>
+                    </NuxtLinkLocale>
                 </div>
                 </Col>
                 <Col col="7">
                 <div class="links">
                     <div class="links_row_accent d-flex justify-content-left">
-                        <NuxtLink to="/" class="link">{{ $t('terms') }}</NuxtLink>
-                        <NuxtLink to="/" class="link">{{ $t('support') }}</NuxtLink>
-                        <NuxtLink to="/" class="link">{{ $t('faq') }}</NuxtLink>
+                        <NuxtLinkLocale to="/" class="link">{{ $t('terms') }}</NuxtLinkLocale>
+                        <NuxtLinkLocale to="/" class="link">{{ $t('support') }}</NuxtLinkLocale>
+                        <NuxtLinkLocale to="/" class="link">{{ $t('faq') }}</NuxtLinkLocale>
                         <div class="language_dropdown d-flex justify-center align-items-center">
                             <label for="language_select">
                             <img src="~/assets/icons/language.svg" alt="Language" class="language_icon">
                             </label>
-                            <select name="language_select" id="language_select" class="language_select" @change="setLocale($event.target?.value)">
+                            <select name="language_select" id="language_select" class="language_select" v-model="locale" 
+                            @change="setLocale($event.target?.value)">
                                 <option class="language_option" value="en">
                                     English (US)
                                 </option>
@@ -61,26 +65,26 @@ const logout = async () => {
                         </div>
                     </div>
                     <div class="links_row d-flex justify-content-around">
-                        <NuxtLink to="/#applications" class="link d-flex align-items-center">
+                        <NuxtLinkLocale to="/#applications" class="link d-flex align-items-center">
                             <img src="~/assets/icons/clock.svg" alt="" class="link_icon">
-                            {{ $t('searchPlayers') }}</NuxtLink>
+                            {{ $t('searchPlayers') }}</NuxtLinkLocale>
                         <button @click="appPopup.open" class="link d-flex align-items-center">
                             <img src="~/assets/icons/application.svg" alt="" class="link_icon">
                             {{ $t('application') }}</button>
-                        <NuxtLink to="/parties" class="link d-flex align-items-center">
+                        <NuxtLinkLocale to="parties" class="link d-flex align-items-center">
                             <img src="~/assets/icons/party.svg" alt="" class="link_icon">
                             {{ $t('party') }}
-                        </NuxtLink>
+                        </NuxtLinkLocale>
                     </div>
                 </div>
                 </Col>
                 <Col col="2">
                 <div class="buttons">
-                    <NuxtLink v-if="!loggedIn" class="button" to="/sign-up">{{ $t('register') }}
-                    </NuxtLink>
+                    <NuxtLinkLocale v-if="!loggedIn" class="button" to="sign-up">{{ $t('register') }}
+                    </NuxtLinkLocale>
                     <button v-else @click="logout" class="button">{{ $t('logout') }}</button>
-                    <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">{{ $t('account') }}
-                    </NuxtLink>
+                    <NuxtLinkLocale v-if="!loggedIn" class="button_accent" to="sign-in">{{ $t('account') }}
+                    </NuxtLinkLocale>
                     <button v-else @click="profilePopup.open" class="button_accent">{{ $t('view') }}</button>
                 </div>
                 </Col>

@@ -46,7 +46,7 @@ const { mutate: updatePlatformLink } = useMutation({
 <template>
     <Popup :width="500" class="links">
         <Container>
-            <div class="links_title">User Links</div>
+            <div class="links_title">{{ $t('userLinks') }}</div>
             <template v-for="platform in platforms">
                 <label :for="`platform_${platform.id}_url`" class="links_subtitle">{{ platform.title }} Profile</label>
                 <input :readonly="sessionUser?.id !== user.id" :value="userLinks[platform.id]"

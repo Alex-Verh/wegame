@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-    <AuthForm :type="$t('signin')" submitUrl="/api/auth/sign-in" :typeSwitchText="$t('signup')" typeSwitchLink="/sign-up" :fields="{
+    <AuthForm :type="$t('signin')" submitUrl="/api/auth/sign-in" :typeSwitchText="$t('signup')" typeSwitchLink="sign-up" :fields="{
         email: {
             type: 'email',
             label: $t('email'),

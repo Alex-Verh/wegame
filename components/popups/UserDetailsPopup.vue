@@ -5,6 +5,8 @@ const { user } = defineProps<{
 
 const emit = defineEmits()
 
+const router = useRouter();
+const localePath = useLocalePath();
 
 const userLanguages = computed<{ [id: number]: boolean }>(() =>
     user.languages ? user.languages.reduce((acc, curr) => ({ ...acc, [curr.id]: true }), {}) : {}
@@ -109,7 +111,7 @@ const logout = async () => {
     await clear();
     loading.value = false;
     emit("close");
-    navigateTo("/sign-in");
+    router.push(localePath('sign-in'));
 }
 
 </script>
@@ -123,8 +125,8 @@ const logout = async () => {
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
                     <input v-model="langSearch" class="languages_input" type="text" name="language_search"
-                        id="language_search" placeholder="Search language" />
-                    <div class="button_accent">Search</div>
+                        id="language_search" :placeholder="$t('searchLanguage')" />
+                    <div class="button_accent">{{ $t('search') }}</div>
                 </div>
 
                 <Row class="g-1">
@@ -141,22 +143,22 @@ const logout = async () => {
                 <div class="languages_field d-flex align-items-center justify-content-between">
                     <input @keyup.enter="updateAge(userAge)" v-model="userAge" class="languages_input" type="text"
                         name="user_age" id="user_age" placeholder="Enter your age number" />
-                    <div @click="updateAge(userAge)" class="button_accent">Enter</div>
+                    <div @click="updateAge(userAge)" class="button_accent">{{ $t('enter') }}</div>
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
                     <input @keyup.enter="updateEmail(userEmail)" v-model="userEmail" class="languages_input"
                         type="email" name="user_email" id="user_email" placeholder="New email address" />
-                    <div @click="updateEmail(userEmail)" class="button_accent">Change</div>
+                    <div @click="updateEmail(userEmail)" class="button_accent">{{ $t('change') }}</div>
                 </div>
 
                 <div class="languages_field d-flex align-items-center justify-content-between">
                     <input @keyup.enter="updatePassword(userPassword)" v-model="userPassword" class="languages_input"
                         type="password" name="user_password" id="user_password" placeholder="New user password" />
-                    <div @click="updatePassword(userPassword)" class="button_accent">Change</div>
+                    <div @click="updatePassword(userPassword)" class="button_accent">{{ $t('change') }}</div>
                 </div>
 
-                <button @click="logout" class="button_accent button_pop">{{ loading ? 'Loading...' : 'Logout'
+                <button @click="logout" class="button_accent button_pop">{{ loading ? $t('loading') + '...' : $t('logout')
                     }}</button>
             </div>
         </Container>

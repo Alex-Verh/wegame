@@ -13,7 +13,7 @@ const isLeader = computed(() => leaderId === user.value?.id)
     <Popup :width="700" class="members">
         <Container>
             <template v-if="isLeader">
-                <div class="members_title">Party Requests</div>
+                <div class="members_title">{{ $t('partyRequests') }}</div>
                 <div class="members_section">
                     <div v-for="member in members"
                         class="members_member d-flex align-items-center justify-content-between">
@@ -22,8 +22,8 @@ const isLeader = computed(() => leaderId === user.value?.id)
                                 @{{ member.userId }}
                             </span>
                             <div>
-                                <button class="button_accent">Accept</button>
-                                <button class="button_accent">Deny</button>
+                                <button class="button_accent">{{ $t('accept') }}</button>
+                                <button class="button_accent">{{ $t('deny') }}</button>
                             </div>
                         </template>
                     </div>
@@ -31,7 +31,7 @@ const isLeader = computed(() => leaderId === user.value?.id)
                 <button class="button_accent">Accept Everyone</button>
             </template>
 
-            <div class="members_title">Party Members</div>
+            <div class="members_title">{{ $t('partyMembers') }}</div>
             <div class="members_section">
                 <div v-for="member in members" class="members_member d-flex align-items-center justify-content-between">
                     <template v-if="member.status === 'accepted'">
@@ -40,19 +40,19 @@ const isLeader = computed(() => leaderId === user.value?.id)
                         </span>
                         <div>
                             <button class="button_accent">See User</button>
-                            <button v-if="isLeader" class="button_accent">Kick</button>
+                            <button v-if="isLeader" class="button_accent">{{ $t('kick') }}</button>
                         </div>
                     </template>
                 </div>
             </div>
             <template v-if="isMember">
-                <div class="members_title">Discord Server URL</div>
+                <div class="members_title">{{ $t('discordUrl') }}</div>
                 <div class="members_member d-flex align-items-center justify-content-between">
                     <span class="members_name">
                         https://discord.com/invite/ID
                     </span>
                     <div>
-                        <button class="button_accent">Navigate</button>
+                        <button class="button_accent">{{ $t('navigate') }}</button>
                     </div>
                 </div>
             </template>

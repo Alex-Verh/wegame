@@ -112,31 +112,31 @@ const membersPopup = usePopup("partyMembers")
         <PartyMembersPopup v-if="party?.members" :modalId="membersPopup.modalId" :members="party.members"
             :leaderId="party.leaderId" @close="membersPopup.close" />
         <Container>
-            <div class="party_title">Create Party</div>
+            <div class="party_title">{{ $t('createParty') }}</div>
 
             <div class="party_body">
-                <label for="party_name" class="party_subtitle">Party Name</label>
+                <label for="party_name" class="party_subtitle">{{ $t('partyName') }}</label>
                 <input v-model="partyTitle" type="text" name="party_name" id="party_name" class="party_field"
                     placeholder="Some cool name.." />
 
-                <label for="party_description" class="party_subtitle">Party Description</label>
+                <label for="party_description" class="party_subtitle">{{ $t('partyDescription') }}</label>
                 <textarea v-model="partyDescription" name="party_description" id="party_description"
                     class="party_field party_textarea" placeholder="We will be playing on Faceit.."></textarea>
 
                 <Row>
                     <Col col="6">
-                    <label for="party_age" class="party_subtitle">Select age range</label>
+                    <label for="party_age" class="party_subtitle">{{ $t('ageRange') }}</label>
                     <div class="d-flex align-items-center party_numbers">
                         <input v-model="partyMinAge" type="number" min="0" max="99" name="party_minage"
                             id="party_minage" class="party_field party_minifield" placeholder="10">
                         <span> - </span>
                         <input v-model="partyMaxAge" type="number" min="0" max="99" name="party_maxage"
                             id="party_maxage" class="party_field party_minifield" placeholder="99">
-                        <span>years old</span>
+                        <span>{{ $t('yearsOld') }}</span>
                     </div>
                     </Col>
                     <Col col="6">
-                    <label for="party_members" class="party_subtitle">Max. number of members</label>
+                    <label for="party_members" class="party_subtitle">{{ $t('nrMembers') }}</label>
                     <div class="d-flex align-items-center party_numbers">
                         <input v-model="partyMemberNr" type="number" min="2" max="30" name="party_members"
                             id="party_members" class="party_field party_minifield" placeholder="5">
@@ -145,7 +145,7 @@ const membersPopup = usePopup("partyMembers")
                     </Col>
                 </Row>
 
-                <label for="party_platforms" class="party_subtitle">Select Game Platform</label>
+                <label for="party_platforms" class="party_subtitle">{{ $t('gamePlatform') }}</label>
                 <div class="party_platforms">
                     <template v-for="platform in platforms" :key="platform.id">
                         <input v-model="partyPlatform" type="radio" :id="`${platform.title}+${platform.id}`"
@@ -155,7 +155,7 @@ const membersPopup = usePopup("partyMembers")
                     </template>
                 </div>
 
-                <label for="party_search" class="party_subtitle">Select your party game</label>
+                <label for="party_search" class="party_subtitle">{{ $t('selectGame') }}</label>
                 <input v-model="gameSearchQ" type="text" name="party_search" id="party_search" class="party_field"
                     placeholder="Searching.." />
                 <div class="pop_section d-flex flex-row">
@@ -172,13 +172,13 @@ const membersPopup = usePopup("partyMembers")
                     <template v-if="party">
                         <button
                             @click="updateParty({ title: partyTitle, description: partyDescription, gameId: partyGame, platformId: partyPlatform, minAge: partyMinAge, maxAge: partyMaxAge, membersLimit: partyMemberNr, id: party.id })"
-                            class="button_accent">Save Changes</button>
-                        <button @click="membersPopup.open" class="button_accent">See Members</button>
-                        <button @click="deleteParty(party.id)" class="button_accent">Delete party</button>
+                            class="button_accent">{{ $t('saveChanges') }}</button>
+                        <button @click="membersPopup.open" class="button_accent">{{ $t('seeMembers') }}</button>
+                        <button @click="deleteParty(party.id)" class="button_accent">{{ $t('deleteParty') }}</button>
                     </template>
                     <button v-else
                         @click="createParty({ title: partyTitle, description: partyDescription, gameId: partyGame, platformId: partyPlatform, minAge: partyMinAge, maxAge: partyMaxAge, membersLimit: partyMemberNr })"
-                        class="button_accent">Save Changes</button>
+                        class="button_accent">{{ $t('saveChanges') }}</button>
                 </div>
 
             </div>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { setLocale } = useI18n();
+
 </script>
 
 <template>
@@ -9,10 +11,10 @@
                     <div>
                         <div class="link_column_header">Website Links</div>
                         <div class="links">
-                            <NuxtLink to="/" class="link">Home Page</NuxtLink>
-                            <NuxtLink to="/parties" class="link">Parties & Lobbies</NuxtLink>
-                            <NuxtLink to="/sign-up" class="link">Registration</NuxtLink>
-                            <NuxtLink to="/" class="link">Support & FAQ</NuxtLink>
+                            <NuxtLinkLocale to="/" class="link">Home Page</NuxtLinkLocale>
+                            <NuxtLinkLocale to="parties" class="link">Parties & Lobbies</NuxtLinkLocale>
+                            <NuxtLinkLocale to="sign-up" class="link">Registration</NuxtLinkLocale>
+                            <NuxtLinkLocale to="/" class="link">Support & FAQ</NuxtLinkLocale>
                         </div>
                     </div>
                 </Col>
@@ -39,8 +41,9 @@
                     <div>
                         <div class="link_column_header">Language</div>
                         <div class="links">
-                            <button class="link">Русский</button>
-                            <button class="link">English</button>
+                            <button class="link" @click="setLocale('ru')">Русский</button>
+                            <button class="link" @click="setLocale('en')">English</button>
+                            <button class="link" @click="setLocale('ro')">Română</button>
                         </div>
                     </div>
                 </Col>
@@ -61,9 +64,9 @@
                     <Col col="3">
                         <div class="logo d-flex align-items-center justify-content-center">
                             <img src="/images/logo.png" alt="Logo" class="logo_icon">
-                            <NuxtLink to="/" class="logo_text">
+                            <NuxtLinkLocale to="/" class="logo_text">
                                 WE<span class="accent">GAME</span>
-                            </NuxtLink>
+                            </NuxtLinkLocale>
                         </div>
                     </Col>
                 </Row>

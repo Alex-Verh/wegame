@@ -88,17 +88,17 @@ const editParty = (party: Party) => {
                 </div>
                 <p class="profile_username accent">{{ user.nickname }}</p>
                 <template v-if="sessionUser?.id === user.id">
-                    <button @click="userLinksPopup.open" class="button_accent button_pop">Edit Contact</button>
-                    <button @click="userDetailsPopup.open" class="button_accent button_pop">Settings</button>
+                    <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('editContact') }}</button>
+                    <button @click="userDetailsPopup.open" class="button_accent button_pop">{{ $t('settings') }}</button>
                 </template>
                 <template v-else>
-                    <button @click="userLinksPopup.open" class="button_accent button_pop">See Contact</button>
+                    <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('seeContacts') }}</button>
                 </template>
                 </Col>
                 <Col col="9">
                 <div class="profile_games">
                     <Container>
-                        <div class="profile_subtitle">Games</div>
+                        <div class="profile_subtitle">{{ $t('games') }}</div>
                         <Row class="g-3">
                             <template v-for="game in userGames">
                                 <Col col="3">
@@ -107,9 +107,8 @@ const editParty = (party: Party) => {
                             </template>
                         </Row>
 
-                        <div class="profile_subtitle">Applications - <span @click="applicationPopup.open"
-                                class="profile_createapp">Create
-                                New</span></div>
+                        <div class="profile_subtitle">{{ $t('applications') }} - <span @click="applicationPopup.open"
+                                class="profile_createapp">{{ $t('createNew') }}</span></div>
                         <div class="profile_section d-flex flex-row">
                             <div v-for="application in userApplications" :key="application.id" @click="editApplication(application)"
                                 class="profile_box d-inline-flex align-items-center">
@@ -118,9 +117,8 @@ const editParty = (party: Party) => {
                             </div>
                         </div>
 
-                        <div class="profile_subtitle">Parties - <span @click="partyPopup.open"
-                                class="profile_createapp">Create
-                                New</span></div>
+                        <div class="profile_subtitle">{{ $t('parties') }} - <span @click="partyPopup.open"
+                                class="profile_createapp">{{ $t('createNew') }}</span></div>
                         <div class="profile_section d-flex flex-row">
                             <div v-for="party in userParties" :key="party.id" @click="editParty(party)"
                                 class="profile_box">
@@ -182,6 +180,7 @@ const editParty = (party: Party) => {
     font-size: 24px;
     margin-bottom: 20px;
     margin-top: 10px;
+    text-transform: capitalize;
 }
 
 .profile_createapp {

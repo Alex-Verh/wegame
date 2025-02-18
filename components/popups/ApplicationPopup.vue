@@ -102,19 +102,19 @@ const { mutate: deleteApplication } = useMutation({
 <template>
     <Popup>
         <Container>
-            <div class="application_title">Create Application</div>
+            <div class="application_title">{{ $t('createApplication') }}</div>
 
             <div class="application_body">
 
-                <label for="application_description" class="application_subtitle">Write an application message</label>
+                <label for="application_description" class="application_subtitle">{{ $t('applicationMessage') }}</label>
                 <textarea v-model="appText" name="application_description" id="application_description"
                     class="application_field application_textarea" placeholder="I am looking for a friend.."></textarea>
 
-                <label for="application_rank" class="application_subtitle">Describe your game rank</label>
+                <label for="application_rank" class="application_subtitle">{{ $t('gameRank') }}</label>
                 <input v-model="appRank" type="text" name="application_rank" id="application_rank"
                     class="application_field" placeholder="Silver III" />
 
-                <label for="application_platforms" class="application_subtitle">Select Game Platform</label>
+                <label for="application_platforms" class="application_subtitle">{{ $t('gamePlatform') }}</label>
                 <div class="application_platforms">
                     <template v-for="platform in platforms" :key="platform.id">
                         <input v-model="appPlatform" type="radio" :id="`${platform.title}+${platform.id}`"
@@ -124,9 +124,9 @@ const { mutate: deleteApplication } = useMutation({
                     </template>
                 </div>
 
-                <label for="games_search" class="application_subtitle">Search your application game</label>
+                <label for="games_search" class="application_subtitle">{{ $t('selectGame') }}</label>
                 <input v-model="gameSearchQ" type="text" name="games_search" id="games_search" class="application_field"
-                    placeholder="Searching.." />
+                    :placeholder="$t('search') + '...'" />
                 <div class="pop_section d-flex flex-row">
                     <template v-for="game in games" :key="game.id">
                         <input v-model="appGame" type="radio" :id="`${game.title}+${game.id}`" name="application_game"
@@ -141,13 +141,12 @@ const { mutate: deleteApplication } = useMutation({
                     <template v-if="application">
                         <button
                             @click="updateApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform, id: application.id })"
-                            class="button_accent">Save Changes</button>
-                        <button @click="deleteApplication(application.id)" class="button_accent">Delete
-                            application</button>
+                            class="button_accent">{{ $t('saveChanges') }}</button>
+                        <button @click="deleteApplication(application.id)" class="button_accent">{{ $t('deleteApplication') }}</button>
                     </template>
                     <button v-else
                         @click="createApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform })"
-                        class="button_accent">Save Changes</button>
+                        class="button_accent">{{ $t('saveChanges') }}</button>
                 </div>
 
             </div>
