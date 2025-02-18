@@ -1,6 +1,6 @@
 export default defineOAuthGoogleEventHandler({
   config: {
-    scope: ["email"],
+    scope: ["email", "profile"],
   },
   onSuccess: async (event, { user }) => {
     if (!user.email) {

@@ -10,6 +10,8 @@ const { user } = defineProps<{
 
 const { user: sessionUser } = useUserSession()
 
+const { handleFileInput: onPicInput, files: profilePic } = useFileStorage()
+
 const { data: userGames } = useQuery({
     key: () => ["users", user.id, "games"],
     query: () => useRequestFetch()(`/api/games`, { query: { userId: user.id } }) as Promise<Game[]>
@@ -24,6 +26,24 @@ const { data: userParties } = useQuery({
     query: () => useRequestFetch()(`/api/parties`, { query: { leaderId: user.id } }) as Promise<Party[]>,
 })
 
+const queryCache = useQueryCache()
+const { mutate: updatePic } = useMutation({
+    mutation: (file: typeof profilePic.value) => {
+        return $fetch(`/api/users/${user.id}`, {
+            method: "PATCH",
+            body: {
+                profilePic: file
+            }
+        })
+    },
+    onSuccess: async () => {
+        await queryCache.invalidateQueries({ key: ['users', user.id], exact: true })
+        useToast("Profile picture updated")
+    },
+    onError: (err) => {
+        useToast(err.message)
+    }
+})
 
 const applicationPopup = useModal({
     component: ApplicationPopup,
@@ -83,8 +103,9 @@ const editParty = (party: Party) => {
                 <Col col="3">
                 <div class="profile_img">
                     <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username" />
-                    <input type="file" accept="image/*" style="display: none;">
-                    <img v-if="sessionUser?.id === user.id" src="~/assets/icons/upload.svg" class="profile_upload" alt="Upload" />
+                    <input type="file" @input="onPicInput" accept="image/*" style="" />
+                    <img v-if="sessionUser?.id === user.id" @click="updatePic(profilePic)"
+                        src="~/assets/icons/upload.svg" class="profile_upload" alt="Upload" />
                 </div>
                 <p class="profile_username accent">{{ user.nickname }}</p>
                 <template v-if="sessionUser?.id === user.id">
@@ -107,27 +128,31 @@ const editParty = (party: Party) => {
                             </template>
                         </Row>
 
-                        <div class="profile_subtitle">Applications - <span @click="applicationPopup.open"
-                                class="profile_createapp">Create
+                        <div class="profile_subtitle">Applications <span @click="applicationPopup.open"
+                                v-if="sessionUser?.id === user.id" class="profile_createapp">- Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="application in userApplications" :key="application.id" @click="editApplication(application)"
+                            <div v-for="application in userApplications" :key="application.id"
+                                @click="editApplication(application)"
                                 class="profile_box d-inline-flex align-items-center">
                                 <div>{{ application.text }}</div>
-                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg" class="profile_edit" alt="Edit" />
+                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg"
+                                    class="profile_edit" alt="Edit" />
                             </div>
                         </div>
 
-                        <div class="profile_subtitle">Parties - <span @click="partyPopup.open"
-                                class="profile_createapp">Create
+                        <div class="profile_subtitle">Parties <span @click="partyPopup.open"
+                                v-if="sessionUser?.id === user.id" class="profile_createapp">- Create
                                 New</span></div>
                         <div class="profile_section d-flex flex-row">
                             <div v-for="party in userParties" :key="party.id" @click="editParty(party)"
                                 class="profile_box">
-                                <img v-if="sessionUser?.id === party.leaderId" src="~/assets/icons/leader.svg" class="profile_party_leader" alt="Leader" />
+                                <img v-if="sessionUser?.id === party.leaderId" src="~/assets/icons/leader.svg"
+                                    class="profile_party_leader" alt="Leader" />
                                 <div class="profile_party_title accent">{{ party.title }}</div>
                                 <div>{{ party.description }}</div>
-                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg" class="profile_edit" alt="Edit" />
+                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg"
+                                    class="profile_edit" alt="Edit" />
                             </div>
                         </div>
                     </Container>
@@ -170,7 +195,8 @@ const editParty = (party: Party) => {
     width: 35px;
 }
 
-.profile_edit, .profile_upload {
+.profile_edit,
+.profile_upload {
     position: absolute;
     transform: translateX(-50%);
     left: 50%;
@@ -222,7 +248,7 @@ const editParty = (party: Party) => {
     position: relative;
 }
 
-.profile_box:hover *:not(.profile_edit){
+.profile_box:hover *:not(.profile_edit) {
     opacity: 0.3;
     transition: all 0.3s ease;
 }

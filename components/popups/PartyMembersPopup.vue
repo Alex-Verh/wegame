@@ -1,11 +1,43 @@
 <script setup lang="ts">
-const { members, leaderId } = defineProps<{ members: { userId: number, status: "accepted" | "pending" }[], leaderId: number }>()
+const { members, leaderId, partyId } = defineProps<{ members: { userId: number, status: "accepted" | "pending" }[], leaderId: number, partyId: number }>()
 defineEmits()
 const { user } = useUserSession()
 
 
 const isMember = computed(() => members.find((member) => member.userId === user.value?.id))
 const isLeader = computed(() => leaderId === user.value?.id)
+
+
+const { mutate: acceptMember } = useMutation({
+    mutation: (userId: number) => {
+        return $fetch(`/api/parties/${partyId}`, {
+            method: "PATCH",
+            body: { members: { [userId]: "accepted" } }
+        })
+    },
+    onSuccess: async () => {
+
+        useToast('Member accepted')
+    },
+    onError: (err) => {
+        useToast(err.message)
+    }
+})
+
+const { mutate: denyMember } = useMutation({
+    mutation: (userId: number) => {
+        return $fetch(`/api/parties/${partyId}`, {
+            method: "PATCH",
+            body: { members: { [userId]: "denied" } }
+        })
+    },
+    onSuccess: async () => {
+        useToast('member denied')
+    },
+    onError: (err) => {
+        useToast(err.message)
+    }
+})
 
 </script>
 
@@ -22,8 +54,8 @@ const isLeader = computed(() => leaderId === user.value?.id)
                                 @{{ member.userId }}
                             </span>
                             <div>
-                                <button class="button_accent">Accept</button>
-                                <button class="button_accent">Deny</button>
+                                <button @click="acceptMember(member.userId)" class="button_accent">Accept</button>
+                                <button @click="denyMember(member.userId)" class="button_accent">Deny</button>
                             </div>
                         </template>
                     </div>
@@ -40,7 +72,8 @@ const isLeader = computed(() => leaderId === user.value?.id)
                         </span>
                         <div>
                             <button class="button_accent">See User</button>
-                            <button v-if="isLeader" class="button_accent">Kick</button>
+                            <button v-if="isLeader" @click="denyMember(member.userId)"
+                                class="button_accent">Kick</button>
                         </div>
                     </template>
                 </div>

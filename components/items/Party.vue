@@ -23,6 +23,7 @@ const { id, members, leaderId } = defineProps<{
 const { user } = useUserSession()
 
 const userCanJoin = computed(() => !members.find((member) => member.userId === user.value?.id) && leaderId !== user.value?.id)
+const memberCount = computed(() => members.filter((member) => member.status === 'accepted').length)
 
 const queryCache = useQueryCache()
 const { mutate: joinParty } = useMutation({
@@ -47,7 +48,7 @@ const membersPopup = usePopup("partyMembers")
 <template>
     <div class="party">
         <PartyMembersPopup v-if="members" :modalId="membersPopup.modalId" :members="members" :leaderId="leaderId"
-            @close="membersPopup.close" />
+            :partyId="id" @close="membersPopup.close" />
         <div class="party_main">
             <Row>
                 <Col col="10">
@@ -56,15 +57,17 @@ const membersPopup = usePopup("partyMembers")
                 </Col>
                 <Col col="2">
                 <img :src="game.icon" :alt="game.title" class="party_icon">
-                <button :disabled="!userCanJoin || !user" @click="joinParty(user!.id)"
-                    class="button_accent">{{ $t('join') }} </button>
+                <button :disabled="!userCanJoin || !user" @click="joinParty(user!.id)" class="button_accent">{{
+                    $t('join') }} </button>
                 </Col>
             </Row>
         </div>
         <div class="party_bottom d-flex justify-content-between">
             <div class="party_platform">{{ platform.title }}</div>
             <div class="party_players" @click="membersPopup.open">{{ $t('seePlayers') }}</div>
-            <div class="party_players_amount">{{ members?.length }} {{ $t('out') }} {{ membersLimit }} {{ $t('people') }}</div>
+            <div class="party_players_amount">{{ memberCount }} {{
+                $t('out') }} {{ membersLimit }} {{ $t('people')
+                }}</div>
         </div>
     </div>
 </template>

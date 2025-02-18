@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
         membersLimit: z.number(),
         members: z.record(
           z.coerce.number(),
-          z.enum(["accepted", "pending"]).nullable()
+          z.enum(["accepted", "pending", "denied"]).nullable()
         ),
       })
       .partial().parse
@@ -25,28 +25,60 @@ export default defineEventHandler(async (event) => {
 
   const db = useDB();
 
-  let members: { partyId: number; status: "pending" | "accepted" }[] = [];
+  let members: {
+    partyId: number;
+    status: "pending" | "accepted";
+  }[] = [];
   if (updatedParty.members) {
-    const membersToInsert = [];
+    const membersToInsert: {
+      userId: number;
+      partyId: number;
+      status: "pending" | "accepted";
+    }[] = [];
+    const leaderId = await db.query.parties.findFirst({
+      where: eq(tables.parties.id, id),
+      columns: { leaderId: true },
+    });
     for (const memberId in updatedParty.members) {
-      if (updatedParty.members[memberId])
-        membersToInsert.push({
-          userId: Number(memberId),
-          partyId: id,
-          status: updatedParty.members[memberId],
-        });
-      else
-        await db
-          .delete(tables.partyMembers)
-          .where(
-            and(
-              eq(tables.partyMembers.userId, Number(memberId)),
-              eq(tables.partyMembers.partyId, id)
-            )
-          );
+      switch (updatedParty.members[memberId]) {
+        case "pending":
+          membersToInsert.push({
+            userId: Number(memberId),
+            partyId: id,
+            status: "pending",
+          });
+          break;
+        case "accepted":
+          if (leaderId?.leaderId === user.id) {
+            membersToInsert.push({
+              userId: Number(memberId),
+              partyId: id,
+              status: "accepted",
+            });
+          }
+          break;
+        case "denied":
+          if (leaderId?.leaderId === user.id) {
+            await db
+              .delete(tables.partyMembers)
+              .where(
+                and(
+                  eq(tables.partyMembers.userId, Number(memberId)),
+                  eq(tables.partyMembers.partyId, id)
+                )
+              );
+          }
+          break;
+      }
     }
     if (membersToInsert.length)
-      await db.insert(tables.partyMembers).values(membersToInsert);
+      await db
+        .insert(tables.partyMembers)
+        .values(membersToInsert)
+        .onConflictDoUpdate({
+          target: [tables.partyMembers.userId, tables.partyMembers.partyId],
+          set: { status: sql`excluded.request_status` },
+        });
 
     members = await db.query.partyMembers.findMany({
       where: eq(tables.partyMembers.partyId, id),
@@ -57,15 +89,25 @@ export default defineEventHandler(async (event) => {
     delete updatedParty.members;
   }
 
-  const [party] = updatedParty
-    ? await db
-        .update(tables.parties)
-        .set(updatedParty)
-        .where(
-          and(eq(tables.parties.id, id), eq(tables.parties.leaderId, user.id))
+  if (Object.keys(updatedParty).length > 0) {
+    const result = await db
+      .update(tables.parties)
+      .set(updatedParty)
+      .where(
+        and(
+          eq(tables.parties.id, id),
+          user.isSuperuser ? undefined : eq(tables.parties.leaderId, user.id)
         )
-        .returning()
-    : [{}];
+      )
+      .returning();
+    if (result.length !== 1) {
+      throw forbiddenError;
+    }
+    return { ...result[0], members };
+  }
 
-  return { ...party, members };
+  return {
+    ...(await db.query.parties.findFirst({ where: eq(tables.parties.id, id) })),
+    members,
+  };
 });

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event);
+  const { maxFileSize, allowedFileTypes } = useRuntimeConfig();
   const { id } = await getValidatedRouterParams(
     event,
     z.object({ id: z.coerce.number() }).parse
@@ -12,7 +13,16 @@ export default defineEventHandler(async (event) => {
         nickname: z.string(),
         email: z.string().email(),
         age: z.number(),
-        profilePic: z.string(),
+        profilePic: z
+          .any()
+          .refine(
+            (files) => files?.[0]?.size <= maxFileSize,
+            `Max image size is 5MB.`
+          )
+          .refine(
+            (files) => allowedFileTypes.includes(files?.[0]?.type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported."
+          ),
         languages: z.record(z.coerce.number(), z.boolean()),
         platforms: z.record(z.coerce.number(), z.string().nullable()),
       })
@@ -107,6 +117,14 @@ export default defineEventHandler(async (event) => {
       to: updatedUser.email,
     });
     delete updatedUser.email;
+  }
+  if (updatedUser.profilePic) {
+    const filename = await storeFileLocally(
+      updatedUser.profilePic[0],
+      10,
+      "/profile_pics"
+    );
+    updatedUser.profilePic = "/profile_pics/" + filename;
   }
 
   const [userFields] = updatedUser
