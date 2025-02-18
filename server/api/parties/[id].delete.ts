@@ -6,9 +6,18 @@ export default defineEventHandler(async (event) => {
   );
 
   const db = useDB();
-  const [party] = await db
+  const result = await db
     .delete(tables.parties)
-    .where(and(eq(tables.parties.id, id), eq(tables.parties.leaderId, user.id)))
+    .where(
+      and(
+        eq(tables.parties.id, id),
+        user.isSuperuser ? undefined : eq(tables.parties.leaderId, user.id)
+      )
+    )
     .returning();
-  return party;
+  if (result.length !== 1) {
+    throw deletionError;
+  }
+
+  return result[0];
 });

@@ -17,19 +17,24 @@ export default defineEventHandler(async (event) => {
   );
 
   const db = useDB();
-  const [application] = await db
+
+  if (!updatedApplication) {
+    throw validationError;
+  }
+
+  const result = await db
     .update(tables.applications)
     .set(updatedApplication)
     .where(
       and(
         eq(tables.applications.id, id),
-        eq(tables.applications.authorId, user.id)
+        user.isSuperuser ? undefined : eq(tables.applications.authorId, user.id)
       )
     )
     .returning();
 
-  if (!application) {
+  if (result.length !== 1) {
     throw forbiddenError;
   }
-  return application;
+  return result[0];
 });

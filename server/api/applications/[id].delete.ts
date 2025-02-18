@@ -6,14 +6,18 @@ export default defineEventHandler(async (event) => {
   );
 
   const db = useDB();
-  const [application] = await db
+  const result = await db
     .delete(tables.applications)
     .where(
       and(
         eq(tables.applications.id, id),
-        eq(tables.applications.authorId, user.id)
+        user.isSuperuser ? undefined : eq(tables.applications.authorId, user.id)
       )
     )
     .returning();
-  return application;
+  if (result.length !== 1) {
+    throw deletionError;
+  }
+
+  return result[0];
 });

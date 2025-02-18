@@ -6,7 +6,7 @@ const { application } = defineProps<{
 
 const emit = defineEmits()
 
-const { loggedIn } = useUserSession()
+const { loggedIn, user } = useUserSession()
 
 const { data: platforms } = usePlatforms()
 
@@ -102,8 +102,7 @@ const { mutate: deleteApplication } = useMutation({
 <template>
     <Popup>
         <Container>
-            <div class="application_title">{{ $t('createApplication') }}</div>
-
+            <div class="application_title">{{ application && application.authorId === user?.id ? "Update Application" : $t('createApplication') }}</div>
             <div class="application_body">
 
                 <label for="application_description" class="application_subtitle">{{ $t('applicationMessage') }}</label>
@@ -138,7 +137,7 @@ const { mutate: deleteApplication } = useMutation({
                 </div>
 
                 <div class="application_buttons d-flex justify-content-center">
-                    <template v-if="application">
+                    <template v-if="application && application.authorId === user?.id">
                         <button
                             @click="updateApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform, id: application.id })"
                             class="button_accent">{{ $t('saveChanges') }}</button>

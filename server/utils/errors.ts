@@ -22,3 +22,13 @@ export const forbiddenError = createError({
   statusCode: 403,
   message: "Forbidden",
 });
+
+export const deletionError = createError({
+  statusCode: 400,
+  message: "Counld not delete",
+});
+
+export const validationError = createError({
+  statusCode: 400,
+  message: "Validation error",
+});

@@ -44,7 +44,8 @@ export default defineEventHandler(async (event) => {
               .where(
                 and(
                   eq(tables.partyMembers.partyId, tables.parties.id),
-                  eq(tables.partyMembers.userId, memberId)
+                  eq(tables.partyMembers.userId, memberId),
+                  eq(tables.partyMembers.status, "accepted")
                 )
               )
           )
