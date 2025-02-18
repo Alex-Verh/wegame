@@ -21,54 +21,54 @@ const { data: languages } = useLanguages()
     <div class="search_bar">
         <Row class="g-3">
             <Col col="4">
-            <input v-model.lazy="title" type="text" name="find_by_title" placeholder="Find by title"
+            <input v-model.lazy="title" type="text" name="find_by_title" :placeholder="$t('findName')"
                 class="search_field" />
             </Col>
             <template v-if="isAppSearch">
                 <Col col="4">
                 <select v-model="platformId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">Filter by platform</option>
+                    <option disabled :value="0" class="search_result">{{ $t('filterPlatform') }}</option>
                     <option v-for="platform in platforms" class="search_result" :key="platform.id" :value="platform.id">{{ platform.title }}
                     </option>
                 </select>
                 </Col>
                 <Col col="4">
                 <select v-model="languageId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">Filter by language</option>
+                    <option disabled :value="0" class="search_result">{{ $t('filterLanguage') }}</option>
                     <option v-for="language in languages" class="search_result" :key="language.id" :value="language.id">{{ language.title }}
                     </option>
                 </select>
                 </Col>
                 <Col col="4">
                 <select v-model="gameId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">Filter by game</option>
+                    <option disabled :value="0" class="search_result">{{ $t('filterGame') }}</option>
                     <option v-for="game in games" class="search_result" :key="game.id" :value="game.id">{{ game.title }}</option>
                 </select>
                 </Col>
                 <Col col="3">
-                <input v-model.lazy="age" type="number" name="find_by_age" placeholder="Find by age" class="search_field" />
+                <input v-model.lazy="age" type="number" name="find_by_age" :placeholder="$t('filterAge')" class="search_field" />
                 </Col>
                 <Col col="5">
-                <input v-model.lazy="ranking" type="text" name="find_by_ranking" placeholder="Find by ranking"
+                <input v-model.lazy="ranking" type="text" name="find_by_ranking" :placeholder="$t('findRanking')"
                     class="search_field" />
                 </Col>
             </template>
             <template v-else="isAppSearch">
                 <Col col="3">
                 <select v-model="platformId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">Filter by platform</option>
+                    <option disabled :value="0" class="search_result">{{ $t('filterPlatform') }}</option>
                     <option v-for="platform in platforms" class="search_result" :key="platform.id" :value="platform.id">{{ platform.title }}
                     </option>
                 </select>
                 </Col>
                 <Col col="3">
                 <select v-model="gameId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">Filter by game</option>
+                    <option disabled :value="0" class="search_result">{{ $t('filterGame') }}</option>
                     <option v-for="game in games" class="search_result" :key="game.id" :value="game.id">{{ game.title }}</option>
                 </select>
                 </Col>
                 <Col col="2">
-                <input v-model.lazy="memberLimit" type="number" name="find_by_memberlimit" placeholder="Find by lobby size" class="search_field" />
+                <input v-model.lazy="memberLimit" type="number" name="find_by_memberlimit" :placeholder="$t('filterPeopleNr')" class="search_field" />
                 </Col>
             </template>
         </Row>
@@ -118,6 +118,11 @@ const { data: languages } = useLanguages()
     background-color: #201F30;
 }
 
+.search_result:checked {
+    background-color: #FE9F00 !important;
+    color: #201F30 !important;
+}
+
 .search_field {
     background: transparent;
     /* Remove background */
@@ -135,8 +140,8 @@ const { data: languages } = useLanguages()
     /* Ensure the color is fully opaque */
 }
 
-.search_field:focus {
-    outline: none;
+.search_field:focus, .search_filter:focus {
+    outline: none !important;
     /* Remove default outline */
     box-shadow: 0 0 5px #fea100a5;
     /* Optional: add a shadow */

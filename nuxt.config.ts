@@ -49,6 +49,7 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       { code: 'en', iso: 'en-US', file: 'en.ts' },
+      { code: 'ro', iso: 'ro-RO', file: 'ro.ts' },
       { code: 'ru', iso: 'ru-RU', file: 'ru.ts' }
     ],
     lazy: true,

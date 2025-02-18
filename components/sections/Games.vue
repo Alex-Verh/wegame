@@ -6,7 +6,7 @@ const { data: games } = await useFetch('/api/games', { query: { popular: true } 
 <template>
     <section class="section">
         <div class="section_title">
-            Popular Games - Select One
+            {{ $t('gameHeader') }}
         </div>
         <div class="games">
             <Row class="g-5">

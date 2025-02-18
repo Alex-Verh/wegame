@@ -87,10 +87,10 @@ const onSubmit = async (event: Event) => {
                             {{ loading ? 'Loading...' : type }}
                         </button>
                         <NuxtLink external to="/api/auth/google" class="button_accent form_button">
-                            Google Account
+                            {{ $t('googleAccount') }} 
                         </NuxtLink>
                     </div>
-                    <NuxtLink :to="typeSwitchLink" class="form_switch">Switch to {{ typeSwitchText }}
+                    <NuxtLink :to="typeSwitchLink" class="form_switch">{{ $t('switchTo') }} {{ typeSwitchText }}
                     </NuxtLink>
                     <div>{{ error }}</div>
                 </form>

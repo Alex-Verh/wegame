@@ -15,7 +15,7 @@ const { data: parties } = useQuery({
 
 <template>
     <section class="section">
-        <div class="section_title">Parties - Find your brothers from another mother</div>
+        <div class="section_title">{{ $t('partyHeader') }}</div>
         <SearchBar v-model:title="title" v-model:game="gameId" v-model:platform="platformId"
             v-model:language="languageId" v-model:age="age" v-model:ranking="ranking" :isAppSearch="false"/>
         <div class="parties">

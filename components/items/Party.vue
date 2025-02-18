@@ -57,14 +57,14 @@ const membersPopup = usePopup("partyMembers")
                 <Col col="2">
                 <img :src="game.icon" :alt="game.title" class="party_icon">
                 <button :disabled="!userCanJoin || !user" @click="joinParty(user!.id)"
-                    class="button_accent">Join</button>
+                    class="button_accent">{{ $t('join') }} </button>
                 </Col>
             </Row>
         </div>
         <div class="party_bottom d-flex justify-content-between">
             <div class="party_platform">{{ platform.title }}</div>
-            <div class="party_players" @click="membersPopup.open">See players</div>
-            <div class="party_players_amount">{{ members?.length }} out {{ membersLimit }} people</div>
+            <div class="party_players" @click="membersPopup.open">{{ $t('seePlayers') }}</div>
+            <div class="party_players_amount">{{ members?.length }} {{ $t('out') }} {{ membersLimit }} {{ $t('people') }}</div>
         </div>
     </div>
 </template>

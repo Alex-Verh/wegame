@@ -3,6 +3,8 @@ import ApplicationPopup from '../popups/ApplicationPopup.vue'
 
 const { loggedIn, clear } = useUserSession()
 
+const { setLocale } = useI18n()
+
 const { data: userData } = useCurrentUser()
 
 const profilePopup = usePopup("myProfile")
@@ -38,33 +40,48 @@ const logout = async () => {
                 <Col col="7">
                 <div class="links">
                     <div class="links_row_accent d-flex justify-content-left">
-                        <NuxtLink to="/" class="link">Terms and Conditions</NuxtLink>
-                        <NuxtLink to="/" class="link">Support</NuxtLink>
-                        <NuxtLink to="/" class="link">FAQ</NuxtLink>
-                        <div class="language_dropdown">
-                            <!-- <img src="" alt="" class="language_icon"> -->
-                            <div class="language_text">English (US)</div>
-                            <!-- <img src="" alt="" class="language_icon"> -->
+                        <NuxtLink to="/" class="link">{{ $t('terms') }}</NuxtLink>
+                        <NuxtLink to="/" class="link">{{ $t('support') }}</NuxtLink>
+                        <NuxtLink to="/" class="link">{{ $t('faq') }}</NuxtLink>
+                        <div class="language_dropdown d-flex justify-center align-items-center">
+                            <label for="language_select">
+                            <img src="~/assets/icons/language.svg" alt="Language" class="language_icon">
+                            </label>
+                            <select name="language_select" id="language_select" class="language_select" @change="setLocale($event.target?.value)">
+                                <option class="language_option" value="en">
+                                    English (US)
+                                </option>
+                                <option class="language_option" value="ru">
+                                    Русский (РУ)
+                                </option>
+                                <option class="language_option" value="ro">
+                                    Română (RO)
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="links_row d-flex justify-content-around">
-                        <NuxtLink to="/#applications" class="link"><img src="" alt="" class="link_icon">Find Friend
-                            Quickly</NuxtLink>
-                        <button @click="appPopup.open" class="link"><img src="" alt="" class="link_icon">Create Your
-                            Application</button>
-                        <NuxtLink to="/parties" class="link"><img src="" alt="" class="link_icon">Join A Party
+                        <NuxtLink to="/#applications" class="link d-flex align-items-center">
+                            <img src="~/assets/icons/clock.svg" alt="" class="link_icon">
+                            {{ $t('searchPlayers') }}</NuxtLink>
+                        <button @click="appPopup.open" class="link d-flex align-items-center">
+                            <img src="~/assets/icons/application.svg" alt="" class="link_icon">
+                            {{ $t('application') }}</button>
+                        <NuxtLink to="/parties" class="link d-flex align-items-center">
+                            <img src="~/assets/icons/party.svg" alt="" class="link_icon">
+                            {{ $t('party') }}
                         </NuxtLink>
                     </div>
                 </div>
                 </Col>
                 <Col col="2">
                 <div class="buttons">
-                    <NuxtLink v-if="!loggedIn" class="button" to="/sign-up">Register
+                    <NuxtLink v-if="!loggedIn" class="button" to="/sign-up">{{ $t('register') }}
                     </NuxtLink>
-                    <button v-else @click="logout" class="button">Logout</button>
-                    <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">Enter Account
+                    <button v-else @click="logout" class="button">{{ $t('logout') }}</button>
+                    <NuxtLink v-if="!loggedIn" class="button_accent" to="/sign-in">{{ $t('account') }}
                     </NuxtLink>
-                    <button v-else @click="profilePopup.open" class="button_accent">View Profile</button>
+                    <button v-else @click="profilePopup.open" class="button_accent">{{ $t('view') }}</button>
                 </div>
                 </Col>
             </Row>
@@ -112,8 +129,29 @@ const logout = async () => {
     color: #FE9F00;
 }
 
+.link_icon {
+    margin-inline-end: 7px;
+}
+
 .language_dropdown {
     margin-left: auto;
     margin-right: 0;
+}
+
+.language_select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    padding: 0 8px;
+    outline: none !important;
+    cursor: url('~/assets/icons/cursor-pointer.svg'), pointer !important;
+}
+
+.language_option {
+    background: #14131E;
+    border: none;
+    color: inherit;
 }
 </style>

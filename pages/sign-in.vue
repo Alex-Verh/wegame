@@ -5,15 +5,15 @@ definePageMeta({
 </script>
 
 <template>
-    <AuthForm type="Sign In" submitUrl="/api/auth/sign-in" typeSwitchText="Sign Up" typeSwitchLink="/sign-up" :fields="{
+    <AuthForm :type="$t('signin')" submitUrl="/api/auth/sign-in" :typeSwitchText="$t('signup')" typeSwitchLink="/sign-up" :fields="{
         email: {
             type: 'email',
-            label: 'Email',
+            label: $t('email'),
             validator: (value: String) => value.includes('@')
         },
         password: {
             type: 'password',
-            label: 'Password',
+            label: $t('password'),
             validator: (value: String) => !!value
         },
     }" />
