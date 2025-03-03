@@ -8,7 +8,10 @@ const { user } = defineProps<{
     user: User
 }>()
 
+defineEmits()
+
 const { user: sessionUser } = useUserSession()
+const isOwnProfile = computed(() => user.id === sessionUser.value?.id)
 
 const { handleFileInput: onPicInput, files: profilePic } = useFileStorage()
 
@@ -21,10 +24,16 @@ const { data: userApplications } = useQuery({
     key: () => ["users", user.id, "applications"],
     query: () => useRequestFetch()(`/api/applications`, { query: { authorId: user.id } }) as Promise<Application[]>,
 })
-const { data: userParties } = useQuery({
-    key: () => ["users", user.id, "parties"],
+const { data: userOwnParties } = useQuery({
+    key: () => ["users", user.id, "parties", "own"],
     query: () => useRequestFetch()(`/api/parties`, { query: { leaderId: user.id } }) as Promise<Party[]>,
 })
+const { data: userMemberParties } = useQuery({
+    key: () => ["users", user.id, "parties", "member"],
+    query: () => useRequestFetch()(`/api/parties`, { query: { memberId: user.id } }) as Promise<Party[]>,
+})
+
+const userParties = computed(() => [...(userOwnParties.value || []), ...(userMemberParties.value || [])])
 
 const queryCache = useQueryCache()
 const { mutate: updatePic } = useMutation({
@@ -98,22 +107,26 @@ const editParty = (party: Party) => {
     <Popup :style="{ zIndex: 800 }" class="profile">
         <UserDetailsPopup :modalId="userDetailsPopup.modalId" @close="userDetailsPopup.close" :user="user" />
         <UserLinksPopup :modalId="userLinksPopup.modalId" @close="userLinksPopup.close" :user="user" />
+        <ApplicationPopup :modalId="applicationPopup.modalId" @close="applicationPopup.close" />
         <Container>
             <Row class="g-5">
                 <Col col="3">
                 <div class="profile_img">
                     <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username" />
                     <input type="file" @input="onPicInput" accept="image/*" style="" />
-                    <img v-if="sessionUser?.id === user.id" @click="updatePic(profilePic)"
-                        src="~/assets/icons/upload.svg" class="profile_upload" alt="Upload" />
+                    <img v-if="isOwnProfile" @click="updatePic(profilePic)" src="~/assets/icons/upload.svg"
+                        class="profile_upload" alt="Upload" />
                 </div>
                 <p class="profile_username accent">{{ user.nickname }}</p>
-                <template v-if="sessionUser?.id === user.id">
-                    <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('editContact') }}</button>
-                    <button @click="userDetailsPopup.open" class="button_accent button_pop">{{ $t('settings') }}</button>
+                <template v-if="isOwnProfile">
+                    <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('editContact')
+                        }}</button>
+                    <button @click="userDetailsPopup.open" class="button_accent button_pop">{{ $t('settings')
+                        }}</button>
                 </template>
                 <template v-else>
-                    <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('seeContacts') }}</button>
+                    <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('seeContacts')
+                        }}</button>
                 </template>
                 </Col>
                 <Col col="9">
@@ -129,28 +142,30 @@ const editParty = (party: Party) => {
                         </Row>
 
                         <div class="profile_subtitle">{{ $t('applications') }} <span @click="applicationPopup.open"
-                                v-if="sessionUser?.id === user.id" class="profile_createapp">- {{ $t('createNew') }}</span></div>
+                                v-if="isOwnProfile" class="profile_createapp">- {{ $t('createNew')
+                                }}</span></div>
                         <div class="profile_section d-flex flex-row">
                             <div v-for="application in userApplications" :key="application.id"
-                                @click="editApplication(application)"
+                                @click="isOwnProfile && editApplication(application)"
                                 class="profile_box d-inline-flex align-items-center">
                                 <div>{{ application.text }}</div>
-                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg"
-                                    class="profile_edit" alt="Edit" />
+                                <img v-if="isOwnProfile" src="~/assets/icons/edit.svg" class="profile_edit"
+                                    alt="Edit" />
                             </div>
                         </div>
 
                         <div class="profile_subtitle">{{ $t('parties') }} <span @click="partyPopup.open"
-                                v-if="sessionUser?.id === user.id" class="profile_createapp">- {{ $t('createNew') }}</span></div>
+                                v-if="isOwnProfile" class="profile_createapp">- {{ $t('createNew')
+                                }}</span></div>
                         <div class="profile_section d-flex flex-row">
-                            <div v-for="party in userParties" :key="party.id" @click="editParty(party)"
+                            <div v-for="party in userParties" :key="party.id" @click="isOwnProfile && editParty(party)"
                                 class="profile_box">
                                 <img v-if="sessionUser?.id === party.leaderId" src="~/assets/icons/leader.svg"
                                     class="profile_party_leader" alt="Leader" />
                                 <div class="profile_party_title accent">{{ party.title }}</div>
                                 <div>{{ party.description }}</div>
-                                <img v-if="sessionUser?.id === user.id" src="~/assets/icons/edit.svg"
-                                    class="profile_edit" alt="Edit" />
+                                <img v-if="isOwnProfile" src="~/assets/icons/edit.svg" class="profile_edit"
+                                    alt="Edit" />
                             </div>
                         </div>
                     </Container>

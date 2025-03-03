@@ -7,10 +7,11 @@ const emit = defineEmits()
 const { data: platforms } = usePlatforms()
 const { searchQuery: gameSearchQ, games } = useGameSearch()
 
-const { loggedIn } = useUserSession()
+const { loggedIn, user } = useUserSession()
 
 const partyTitle = ref(party?.title || "")
 const partyDescription = ref(party?.description || "")
+const partyDiscordLink = ref(party?.discordLink || "")
 const partyGame = ref(party?.gameId || 0)
 const partyPlatform = ref(party?.platformId || 0)
 const partyMinAge = ref(party?.minAge || 0)
@@ -26,7 +27,8 @@ interface PartyCreate {
     platformId: number,
     minAge: number,
     maxAge: number,
-    membersLimit: number
+    membersLimit: number,
+    discordLink: string
 }
 interface PartyUpdate extends PartyCreate {
     id: number
@@ -47,7 +49,7 @@ const { mutate: createParty } = useMutation({
     },
 
     onSuccess: async (party) => {
-        await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties"] })
+        await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties", "own"] })
         partyTitle.value = ""
         partyDescription.value = ""
         partyGame.value = 0
@@ -78,7 +80,7 @@ const { mutate: updateParty } = useMutation({
     },
 
     onSuccess: async (party) => {
-        await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties"] })
+        await queryCache.invalidateQueries({ key: ['users', party.leaderId, "parties", "own"] })
         useToast(`Party "${party.title}" updated.`)
         emit('close')
     },
@@ -109,10 +111,12 @@ const membersPopup = usePopup("partyMembers")
 
 <template>
     <Popup>
-        <PartyMembersPopup v-if="party?.members" :modalId="membersPopup.modalId" :members="party.members"
-            :leaderId="party.leaderId" @close="membersPopup.close" />
+        <PartyMembersPopup v-if="party" :modalId="membersPopup.modalId" :members="party.members"
+            :leaderId="party.leaderId" :partyId="party.id" @close="membersPopup.close" />
         <Container>
-            <div class="party_title">{{ $t('createParty') }}</div>
+            <div class="party_title">{{
+                party && party.leaderId === user?.id ? $t('editParty') :
+                    $t('createParty') }}</div>
 
             <div class="party_body">
                 <label for="party_name" class="party_subtitle">{{ $t('partyName') }}</label>
@@ -144,6 +148,10 @@ const membersPopup = usePopup("partyMembers")
                     </div>
                     </Col>
                 </Row>
+
+                <label for="party_discord_link" class="party_subtitle">{{ $t('partyDiscord') }}</label>
+                <input v-model="partyDiscordLink" type="text" name="party_discord_link" id="party_discord_link"
+                    class="party_field" placeholder="Your discord server url.." />
 
                 <label for="party_platforms" class="party_subtitle">{{ $t('gamePlatform') }}</label>
                 <div class="party_platforms">
@@ -177,7 +185,7 @@ const membersPopup = usePopup("partyMembers")
                         <button @click="deleteParty(party.id)" class="button_accent">{{ $t('deleteParty') }}</button>
                     </template>
                     <button v-else
-                        @click="createParty({ title: partyTitle, description: partyDescription, gameId: partyGame, platformId: partyPlatform, minAge: partyMinAge, maxAge: partyMaxAge, membersLimit: partyMemberNr })"
+                        @click="createParty({ title: partyTitle, description: partyDescription, gameId: partyGame, platformId: partyPlatform, minAge: partyMinAge, maxAge: partyMaxAge, membersLimit: partyMemberNr, discordLink: partyDiscordLink })"
                         class="button_accent">{{ $t('saveChanges') }}</button>
                 </div>
 

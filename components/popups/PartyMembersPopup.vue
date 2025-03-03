@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { members, leaderId, partyId } = defineProps<{ members: { userId: number, status: "accepted" | "pending" }[], leaderId: number, partyId: number }>()
+import ProfilePopup from './ProfilePopup.vue';
+
+const { members, leaderId, partyId } = defineProps<{ members: Party["members"], leaderId: number, partyId: number }>()
 defineEmits()
 const { user } = useUserSession()
 
@@ -7,7 +9,7 @@ const { user } = useUserSession()
 const isMember = computed(() => members.find((member) => member.userId === user.value?.id))
 const isLeader = computed(() => leaderId === user.value?.id)
 
-
+const queryCache = useQueryCache()
 const { mutate: acceptMember } = useMutation({
     mutation: (userId: number) => {
         return $fetch(`/api/parties/${partyId}`, {
@@ -16,9 +18,11 @@ const { mutate: acceptMember } = useMutation({
         })
     },
     onSuccess: async () => {
-
+        if (user.value?.id)
+            await queryCache.invalidateQueries({ key: ['users', user.value.id, "parties", "own"] })
         useToast('Member accepted')
     },
+
     onError: (err) => {
         useToast(err.message)
     }
@@ -32,12 +36,29 @@ const { mutate: denyMember } = useMutation({
         })
     },
     onSuccess: async () => {
+        if (user.value?.id)
+            await queryCache.invalidateQueries({ key: ['users', user.value.id, "parties", "own"] })
         useToast('member denied')
     },
     onError: (err) => {
         useToast(err.message)
     }
 })
+
+const memberPopup = useModal({
+    component: ProfilePopup,
+    attrs: {
+        onClose: () => {
+            memberPopup.close()
+        }
+    }
+})
+
+const seeMember = (member: User) => {
+    memberPopup.patchOptions({ attrs: { user: member } })
+    memberPopup.open()
+}
+
 
 </script>
 
@@ -51,11 +72,13 @@ const { mutate: denyMember } = useMutation({
                         class="members_member d-flex align-items-center justify-content-between">
                         <template v-if="member.status === 'pending'">
                             <span class="members_name">
-                                @{{ member.userId }}
+                                {{ member.user.nickname }}
                             </span>
                             <div>
-                                <button @click="acceptMember(member.userId)" class="button_accent">{{ $t('accept') }}</button>
-                                <button @click="denyMember(member.userId)" class="button_accent">{{ $t('deny') }}</button>
+                                <button @click="acceptMember(member.userId)" class="button_accent">{{ $t('accept')
+                                    }}</button>
+                                <button @click="denyMember(member.userId)" class="button_accent">{{ $t('deny')
+                                    }}</button>
                             </div>
                         </template>
                     </div>
@@ -68,12 +91,12 @@ const { mutate: denyMember } = useMutation({
                 <div v-for="member in members" class="members_member d-flex align-items-center justify-content-between">
                     <template v-if="member.status === 'accepted'">
                         <span class="members_name">
-                            @{{ member.userId }}
+                            {{ member.user.nickname }}
                         </span>
                         <div>
-                            <button class="button_accent">See User</button>
-                            <button v-if="isLeader" @click="denyMember(member.userId)"
-                                class="button_accent">{{ $t('kick') }}</button>
+                            <button @click="seeMember(member.user)" class="button_accent">See User</button>
+                            <button v-if="isLeader" @click="denyMember(member.userId)" class="button_accent">{{
+                                $t('kick') }}</button>
                         </div>
                     </template>
                 </div>

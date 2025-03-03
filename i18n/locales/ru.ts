@@ -1,4 +1,4 @@
-export default defineI18nLocale(async locale => {
+export default defineI18nLocale(async (locale) => {
   return {
     language: "Русский (РУ)",
     terms: "Условия и положения",
@@ -9,8 +9,10 @@ export default defineI18nLocale(async locale => {
     party: "Присоединиться к группе",
     register: "Зарегистрироваться",
     account: "Войти в аккаунт",
-    homeHeader:  "Найди новых <span class=\"accent\">друзей</span> и создавай <span class=\"accent\">команду</span> легко прямо сейчас.",
-    partyHeader: "Давайте найдём для вас лучший <span class=\"accent\">лобби</span> прямо сейчас!",
+    homeHeader:
+      'Найди новых <span class="accent">друзей</span> и создавай <span class="accent">команду</span> легко прямо сейчас.',
+    partyHeader:
+      'Давайте найдём для вас лучший <span class="accent">лобби</span> прямо сейчас!',
     parties: "группы",
     applications: "заявки",
     games: "игры",
@@ -41,6 +43,7 @@ export default defineI18nLocale(async locale => {
     editApplication: "Редактировать заявку",
     partyName: "Название группы",
     partyDescription: "Описание группы",
+    partyDiscord: "Ссылка на сервер Discord",
     ageRange: "Выберите возрастной диапазон",
     nrMembers: "Макс. количество участников",
     discordUrl: "Ссылка на сервер Discord",
@@ -77,5 +80,5 @@ export default defineI18nLocale(async locale => {
     logout: "Выход",
     view: "Профиль",
     loading: "Загрузка",
-  }
-})
+  };
+});

@@ -106,6 +106,7 @@ export const parties = pgTable(
     minAge: integer("min_range").default(0).notNull(),
     maxAge: integer("max_range").default(100).notNull(),
     membersLimit: integer("members_limit").default(100).notNull(),
+    discordLink: varchar("discord_link"),
     platformId: integer("platform_id")
       .references(() => platforms.id)
       .notNull(),

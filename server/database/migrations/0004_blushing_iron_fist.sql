@@ -1,0 +1,1 @@
+ALTER TABLE "parties" ADD COLUMN "discord_link" varchar;

@@ -1,5 +1,5 @@
-export default defineI18nLocale(async locale => {
-    return {
+export default defineI18nLocale(async (locale) => {
+  return {
     language: "Română (RO)",
     terms: "Termeni și condiții",
     support: "Suport",
@@ -9,8 +9,10 @@ export default defineI18nLocale(async locale => {
     party: "Alătură-te unui grup",
     register: "Înregistrează-te acum",
     account: "Intră în cont",
-    homeHeader: "Găsește noi <span class=\"accent\">prieteni</span> și creează <span class=\"accent\">lobby-uri</span> de joc ușor și rapid acum.",
-    partyHeader: "Hai să găsim cel mai bun <span class=\"accent\">lobby</span> pentru tine, chiar acum!",
+    homeHeader:
+      'Găsește noi <span class="accent">prieteni</span> și creează <span class="accent">lobby-uri</span> de joc ușor și rapid acum.',
+    partyHeader:
+      'Hai să găsim cel mai bun <span class="accent">lobby</span> pentru tine, chiar acum!',
     parties: "grupuri",
     applications: "aplicații",
     games: "jocuri",
@@ -41,6 +43,7 @@ export default defineI18nLocale(async locale => {
     editApplication: "Editează aplicația",
     partyName: "Numele grupului",
     partyDescription: "Descrierea grupului",
+    partyDiscord: "URL server Discord",
     ageRange: "Selectează intervalul de vârstă",
     nrMembers: "Nr. max. de membri",
     discordUrl: "URL server Discord",
@@ -77,5 +80,5 @@ export default defineI18nLocale(async locale => {
     logout: "Ieşire",
     view: "Profil",
     loading: "Încărcare",
-    }
-})
+  };
+});

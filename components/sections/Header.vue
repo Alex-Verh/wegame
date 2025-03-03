@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-    text: string, image: string, showStatistics: boolean
+    text: string, image: string, stats?: { parties: number, games: number, players: number }
 }>()
 
 // TODO FETCH STATS
@@ -18,23 +18,23 @@ defineProps<{
             <img :src="image" alt="Friends" class="header_image">
             </Col>
         </Row>
-        <div class="statistics" v-if="showStatistics">
+        <div class="statistics" v-if="stats">
             <Row>
                 <Col col="4" class="d-flex align-items-center justify-content-center">
                 <div class="statistics_item">
-                    <div class="item_value">551</div>
+                    <div class="item_value">{{ stats.parties }}</div>
                     <div class="item_text">{{ $t('parties') }}</div>
                 </div>
                 </Col>
                 <Col col="4" class="d-flex align-items-center justify-content-center">
                 <div class="statistics_item">
-                    <div class="item_value">132</div>
+                    <div class="item_value">{{ stats.games }}</div>
                     <div class="item_text">{{ $t('games') }}</div>
                 </div>
                 </Col>
                 <Col col="4" class="d-flex align-items-center justify-content-center">
                 <div class="statistics_item">
-                    <div class="item_value">1232</div>
+                    <div class="item_value">{{ stats.players }}</div>
                     <div class="item_text">{{ $t('players') }}</div>
                 </div>
                 </Col>

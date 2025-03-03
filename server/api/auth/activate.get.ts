@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
   const { secretKey } = useRuntimeConfig();
 
   const { userId } = jwt.verify(token, secretKey) as { userId: number };
+
   const db = useDB();
   const [user] = await db
     .update(tables.users)

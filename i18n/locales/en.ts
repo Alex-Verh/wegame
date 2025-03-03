@@ -1,6 +1,6 @@
-export default defineI18nLocale(async locale => {
+export default defineI18nLocale(async (locale) => {
   return {
-    language: 'English (US)',
+    language: "English (US)",
     terms: "Terms and Conditions",
     support: "Support",
     faq: "FAQ",
@@ -9,8 +9,10 @@ export default defineI18nLocale(async locale => {
     party: "Join A Party",
     register: "Register Now",
     account: "Enter Account",
-    homeHeader: "Find new <span class=\"accent\">friends</span> and make game <span class=\"accent\">parties</span> easily and fast now.",
-    partyHeader: "Let\’s find an extra quality <span class=\"accent\">lobby</span> for you, right now!",
+    homeHeader:
+      'Find new <span class="accent">friends</span> and make game <span class="accent">parties</span> easily and fast now.',
+    partyHeader:
+      'Let’s find an extra quality <span class="accent">lobby</span> for you, right now!',
     parties: "parties",
     applications: "applications",
     games: "games",
@@ -41,6 +43,7 @@ export default defineI18nLocale(async locale => {
     editApplication: "Edit Application",
     partyName: "Party Name",
     partyDescription: "Party Description",
+    partyDiscord: "Discord Server URL",
     ageRange: "Select age range",
     nrMembers: "Max. number of members",
     discordUrl: "Discord Server URL",
@@ -77,5 +80,5 @@ export default defineI18nLocale(async locale => {
     logout: "Logout",
     view: "View Profile",
     loading: "Loading",
-  }
-})
+  };
+});

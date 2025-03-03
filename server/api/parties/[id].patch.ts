@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
         minAge: z.number(),
         maxAge: z.number(),
         membersLimit: z.number(),
+        discordLink: z.string(),
         members: z.record(
           z.coerce.number(),
           z.enum(["accepted", "pending", "denied"]).nullable()

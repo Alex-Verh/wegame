@@ -102,7 +102,8 @@ const { mutate: deleteApplication } = useMutation({
 <template>
     <Popup>
         <Container>
-            <div class="application_title">{{ application && application.authorId === user?.id ? "Update Application" : $t('createApplication') }}</div>
+            <div class="application_title">{{ application && application.authorId === user?.id ? $t('editApplication') :
+                $t('createApplication') }}</div>
             <div class="application_body">
 
                 <label for="application_description" class="application_subtitle">{{ $t('applicationMessage') }}</label>
@@ -119,7 +120,7 @@ const { mutate: deleteApplication } = useMutation({
                         <input v-model="appPlatform" type="radio" :id="`${platform.title}+${platform.id}`"
                             name="application_platform" :value="platform.id" />
                         <label :for="`${platform.title}+${platform.id}`" class="application_platform">{{ platform.title
-                            }}</label>
+                        }}</label>
                     </template>
                 </div>
 
@@ -141,7 +142,8 @@ const { mutate: deleteApplication } = useMutation({
                         <button
                             @click="updateApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform, id: application.id })"
                             class="button_accent">{{ $t('saveChanges') }}</button>
-                        <button @click="deleteApplication(application.id)" class="button_accent">{{ $t('deleteApplication') }}</button>
+                        <button @click="deleteApplication(application.id)" class="button_accent">{{
+                            $t('deleteApplication') }}</button>
                     </template>
                     <button v-else
                         @click="createApplication({ text: appText, ranking: appRank, gameId: appGame, platformId: appPlatform })"

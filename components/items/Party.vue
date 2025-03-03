@@ -15,6 +15,7 @@ const { id, members, leaderId } = defineProps<{
     platform: Platform;
     members: {
         userId: number;
+        user: User;
         status: "pending" | "accepted";
     }[]
 }>()
@@ -34,6 +35,7 @@ const { mutate: joinParty } = useMutation({
         })
     },
     onSuccess: async () => {
+        await queryCache.invalidateQueries({ key: ['users', user.value?.id, "parties", "member"] })
         useToast('Join request sent')
     },
     onError: (err) => {

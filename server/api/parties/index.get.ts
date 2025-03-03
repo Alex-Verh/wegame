@@ -32,6 +32,9 @@ export default defineEventHandler(async (event) => {
       platform: true,
       members: {
         columns: { partyId: false },
+        with: {
+          user: { columns: { password: false } },
+        },
       },
     },
     where: and(
