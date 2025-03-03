@@ -112,21 +112,21 @@ const editParty = (party: Party) => {
             <Row class="g-5">
                 <Col col="3">
                 <div class="profile_img">
-                    <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username" />
-                    <input type="file" @input="onPicInput" accept="image/*" style="" />
+                    <img class="profile_picture" :src="user.profilePic as string" alt="" />
+                    <input type="file" @input="onPicInput" accept="image/*" style="display:none;" />
                     <img v-if="isOwnProfile" @click="updatePic(profilePic)" src="~/assets/icons/upload.svg"
                         class="profile_upload" alt="Upload" />
                 </div>
                 <p class="profile_username accent">{{ user.nickname }}</p>
                 <template v-if="isOwnProfile">
                     <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('editContact')
-                        }}</button>
+                    }}</button>
                     <button @click="userDetailsPopup.open" class="button_accent button_pop">{{ $t('settings')
-                        }}</button>
+                    }}</button>
                 </template>
                 <template v-else>
                     <button @click="userLinksPopup.open" class="button_accent button_pop">{{ $t('seeContacts')
-                        }}</button>
+                    }}</button>
                 </template>
                 </Col>
                 <Col col="9">
@@ -179,11 +179,14 @@ const editParty = (party: Party) => {
 <style scoped>
 .profile_picture {
     width: 100%;
-    border: 1px solid #FE9F00;
+
 }
 
 .profile_img {
     flex-shrink: 0;
+    border: 1px solid #FE9F00;
+    width: 190px;
+    height: 190px;
     cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
     position: relative;
     background-color: #000000;
