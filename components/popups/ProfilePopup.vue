@@ -102,8 +102,8 @@ const editParty = (party: Party) => {
             <Row class="g-5">
                 <Col col="3">
                 <div class="profile_img">
-                    <img class="profile_picture" :src="user.profilePic as string" alt="Profile Username" />
-                    <input type="file" @input="onPicInput" accept="image/*" style="" />
+                    <img class="profile_picture" :src="user.profilePic as string" alt="" />
+                    <input type="file" @input="onPicInput" accept="image/*" style="display:none;" />
                     <img v-if="sessionUser?.id === user.id" @click="updatePic(profilePic)"
                         src="~/assets/icons/upload.svg" class="profile_upload" alt="Upload" />
                 </div>
@@ -164,11 +164,14 @@ const editParty = (party: Party) => {
 <style scoped>
 .profile_picture {
     width: 100%;
-    border: 1px solid #FE9F00;
+
 }
 
 .profile_img {
     flex-shrink: 0;
+    border: 1px solid #FE9F00;
+    width: 190px;
+    height: 190px;
     cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
     position: relative;
     background-color: #000000;

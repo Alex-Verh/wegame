@@ -69,7 +69,7 @@ export default defineNuxtConfig({
     customRoutes: 'config',
     pages: {
       "sign-up": {
-        en: '/sign-up', 
+        en: '/sign-up',   
         ru: '/регистрация',
         ro: '/inregistrare'
       },

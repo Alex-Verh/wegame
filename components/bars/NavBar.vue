@@ -5,6 +5,8 @@ const { loggedIn, clear } = useUserSession()
 
 const { locale, setLocale } = useI18n();
 
+const selectedLanguage = ref(locale.value || 'en'); 
+
 const { data: userData } = useCurrentUser()
 
 const profilePopup = usePopup("myProfile")
@@ -50,7 +52,7 @@ const logout = async () => {
                             <label for="language_select">
                             <img src="~/assets/icons/language.svg" alt="Language" class="language_icon">
                             </label>
-                            <select name="language_select" id="language_select" class="language_select" v-model="locale" 
+                            <select name="language_select" id="language_select" class="language_select" v-model="selectedLanguage"
                             @change="setLocale($event.target?.value)">
                                 <option class="language_option" value="en">
                                     English (US)
