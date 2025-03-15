@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const stats = useFetch('/api/stats')
+const { data: stats } = useQuery({ key: ['stats'], query: () => useRequestFetch()('/api/stats') })
 
 </script>
 

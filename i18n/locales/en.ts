@@ -25,7 +25,7 @@ export default defineI18nLocale(async (locale) => {
     filterPlatform: "Filter by platform",
     filterLanguage: "Filter by language",
     findRank: "Find by ranking",
-    yearOld: "years old",
+    yearsOld: "years old",
     seePlayers: "See players",
     out: "out",
     people: "people",

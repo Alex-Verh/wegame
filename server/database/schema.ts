@@ -57,7 +57,7 @@ export const applications = pgTable(
   {
     id: serial().primaryKey(),
     authorId: integer("author_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     gameId: integer("game_id")
       .references(() => games.id)
@@ -96,7 +96,7 @@ export const parties = pgTable(
   {
     id: serial().primaryKey(),
     leaderId: integer("leader_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     gameId: integer("game_id")
       .references(() => games.id)
@@ -142,10 +142,10 @@ export const partyMembers = pgTable(
   "party_members",
   {
     userId: integer("user_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     partyId: integer("party_id")
-      .references(() => parties.id)
+      .references(() => parties.id, { onDelete: "cascade" })
       .notNull(),
     status: requestStatusEnum("request_status").default("pending").notNull(),
   },
@@ -169,7 +169,7 @@ export const userLanguages = pgTable(
   "user_languages",
   {
     userId: integer("user_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     languageId: integer("language_id")
       .references(() => languages.id)
@@ -195,7 +195,7 @@ export const userPlatforms = pgTable(
   "user_platforms",
   {
     userId: integer("user_id")
-      .references(() => users.id)
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     platformId: integer("platform_id")
       .references(() => platforms.id)
