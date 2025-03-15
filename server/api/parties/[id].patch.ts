@@ -43,11 +43,13 @@ export default defineEventHandler(async (event) => {
     for (const memberId in updatedParty.members) {
       switch (updatedParty.members[memberId]) {
         case "pending":
-          membersToInsert.push({
-            userId: Number(memberId),
-            partyId: id,
-            status: "pending",
-          });
+          if (leaderId?.leaderId !== user.id) {
+            membersToInsert.push({
+              userId: Number(memberId),
+              partyId: id,
+              status: "pending",
+            });
+          }
           break;
         case "accepted":
           if (leaderId?.leaderId === user.id) {

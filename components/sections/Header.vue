@@ -2,8 +2,6 @@
 defineProps<{
     text: string, image: string, stats?: { parties: number, games: number, players: number }
 }>()
-
-// TODO FETCH STATS
 </script>
 
 <template>

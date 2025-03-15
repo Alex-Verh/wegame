@@ -8,7 +8,7 @@ const platformId = defineModel<number>("platform")
 const languageId = defineModel<number>("language")
 const gameId = defineModel<number>("game")
 const age = defineModel<number>("age")
-const memberLimit = defineModel<number>("memberlimit")
+const membersLimit = defineModel<number>("members")
 const ranking = defineModel<string>("ranking")
 
 const { data: games } = useGames()
@@ -27,26 +27,30 @@ const { data: languages } = useLanguages()
             <template v-if="isAppSearch">
                 <Col col="4">
                 <select v-model="platformId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">{{ $t('filterPlatform') }}</option>
-                    <option v-for="platform in platforms" class="search_result" :key="platform.id" :value="platform.id">{{ platform.title }}
+                    <option :value="0" class="search_result">{{ $t('filterPlatform') }}</option>
+                    <option v-for="platform in platforms" class="search_result" :key="platform.id" :value="platform.id">
+                        {{ platform.title }}
                     </option>
                 </select>
                 </Col>
                 <Col col="4">
                 <select v-model="languageId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">{{ $t('filterLanguage') }}</option>
-                    <option v-for="language in languages" class="search_result" :key="language.id" :value="language.id">{{ language.title }}
+                    <option :value="0" class="search_result">{{ $t('filterLanguage') }}</option>
+                    <option v-for="language in languages" class="search_result" :key="language.id" :value="language.id">
+                        {{ language.title }}
                     </option>
                 </select>
                 </Col>
                 <Col col="4">
                 <select v-model="gameId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">{{ $t('filterGame') }}</option>
-                    <option v-for="game in games" class="search_result" :key="game.id" :value="game.id">{{ game.title }}</option>
+                    <option :value="0" class="search_result">{{ $t('filterGame') }}</option>
+                    <option v-for="game in games" class="search_result" :key="game.id" :value="game.id">{{ game.title }}
+                    </option>
                 </select>
                 </Col>
                 <Col col="3">
-                <input v-model.lazy="age" type="number" name="find_by_age" :placeholder="$t('filterAge')" class="search_field" />
+                <input v-model.lazy="age" type="number" name="find_by_age" :placeholder="$t('filterAge')"
+                    class="search_field" />
                 </Col>
                 <Col col="5">
                 <input v-model.lazy="ranking" type="text" name="find_by_ranking" :placeholder="$t('findRank')"
@@ -56,19 +60,22 @@ const { data: languages } = useLanguages()
             <template v-else="isAppSearch">
                 <Col col="3">
                 <select v-model="platformId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">{{ $t('filterPlatform') }}</option>
-                    <option v-for="platform in platforms" class="search_result" :key="platform.id" :value="platform.id">{{ platform.title }}
+                    <option :value="0" class="search_result">{{ $t('filterPlatform') }}</option>
+                    <option v-for="platform in platforms" class="search_result" :key="platform.id" :value="platform.id">
+                        {{ platform.title }}
                     </option>
                 </select>
                 </Col>
                 <Col col="3">
                 <select v-model="gameId" class="search_filter accent">
-                    <option disabled :value="0" class="search_result">{{ $t('filterGame') }}</option>
-                    <option v-for="game in games" class="search_result" :key="game.id" :value="game.id">{{ game.title }}</option>
+                    <option :value="0" class="search_result">{{ $t('filterGame') }}</option>
+                    <option v-for="game in games" class="search_result" :key="game.id" :value="game.id">{{ game.title }}
+                    </option>
                 </select>
                 </Col>
                 <Col col="2">
-                <input v-model.lazy="memberLimit" type="number" name="find_by_memberlimit" :placeholder="$t('filterPeopleNr')" class="search_field" />
+                <input v-model.lazy="membersLimit" type="number" name="find_by_memberslimit"
+                    :placeholder="$t('filterPeopleNr')" class="search_field" />
                 </Col>
             </template>
         </Row>
@@ -140,7 +147,8 @@ const { data: languages } = useLanguages()
     /* Ensure the color is fully opaque */
 }
 
-.search_field:focus, .search_filter:focus {
+.search_field:focus,
+.search_filter:focus {
     outline: none !important;
     /* Remove default outline */
     box-shadow: 0 0 5px #fea100a5;

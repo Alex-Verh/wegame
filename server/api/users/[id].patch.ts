@@ -127,7 +127,7 @@ export default defineEventHandler(async (event) => {
     updatedUser.profilePic = "/profile_pics/" + filename;
   }
 
-  const [userFields] = updatedUser
+  const [userFields] = Object.keys(updatedUser).length
     ? await db
         .update(tables.users)
         .set(updatedUser)

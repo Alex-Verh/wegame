@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
     platformId,
     searchQuery,
     age,
+    membersLimit,
     limit,
     offset,
   } = await getValidatedQuery(
@@ -20,6 +21,7 @@ export default defineEventHandler(async (event) => {
         platformId: z.coerce.number(),
         searchQuery: z.string(),
         age: z.coerce.number(),
+        membersLimit: z.coerce.number(),
         limit: z.coerce.number().default(16),
         offset: z.coerce.number().default(0),
       })
@@ -63,7 +65,8 @@ export default defineEventHandler(async (event) => {
         : undefined,
       age
         ? and(lte(tables.parties.minAge, age), gte(tables.parties.maxAge, age))
-        : undefined
+        : undefined,
+      membersLimit ? eq(tables.parties.membersLimit, membersLimit) : undefined
     ),
     limit,
     offset,

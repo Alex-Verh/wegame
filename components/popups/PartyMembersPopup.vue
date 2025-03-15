@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ProfilePopup from './ProfilePopup.vue';
 
 const { members, leaderId, partyId } = defineProps<{ members: Party["members"], leaderId: number, partyId: number }>()
 defineEmits()
@@ -45,25 +44,26 @@ const { mutate: denyMember } = useMutation({
     }
 })
 
-const memberPopup = useModal({
-    component: ProfilePopup,
-    attrs: {
-        onClose: () => {
-            memberPopup.close()
-        }
-    }
-})
+const memberPopup = usePopup("memberProfile")
 
-const seeMember = (member: User) => {
-    memberPopup.patchOptions({ attrs: { user: member } })
-    memberPopup.open()
+const currentMember = ref<User>()
+
+const seeMember = (user: User) => {
+    currentMember.value = user
 }
 
-
+watchEffect(() => {
+    if (currentMember.value)
+        memberPopup.open()
+    else
+        memberPopup.close()
+})
 </script>
 
 <template>
     <Popup :width="700" class="members">
+        <ProfilePopup v-if="currentMember" :modalId="memberPopup.modalId" :user="currentMember"
+            @close="currentMember = null" />
         <Container>
             <template v-if="isLeader">
                 <div class="members_title">{{ $t('partyRequests') }}</div>

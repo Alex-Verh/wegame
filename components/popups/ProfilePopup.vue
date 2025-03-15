@@ -8,12 +8,15 @@ const { user } = defineProps<{
     user: User
 }>()
 
-defineEmits()
+defineEmits();
+
 
 const { user: sessionUser } = useUserSession()
 const isOwnProfile = computed(() => user.id === sessionUser.value?.id)
 
 const { handleFileInput: onPicInput, files: profilePic } = useFileStorage()
+const picInput = useTemplateRef<HTMLInputElement>("picInput")
+
 
 const { data: userGames } = useQuery({
     key: () => ["users", user.id, "games"],
@@ -54,6 +57,11 @@ const { mutate: updatePic } = useMutation({
     }
 })
 
+watchEffect(() => {
+    if (profilePic.value.length > 0)
+        updatePic(profilePic.value)
+})
+
 const applicationPopup = useModal({
     component: ApplicationPopup,
     attrs: {
@@ -73,33 +81,20 @@ const partyPopup = useModal({
 const userDetailsPopup = usePopup("myUserDetails")
 const userLinksPopup = usePopup("myUserLinks")
 
-const applicationEditPopup = useModal({
-    component: ApplicationPopup,
-    attrs: {
-        onClose: () => {
-            applicationEditPopup.close()
-        }
-    }
-})
-
+const applicationEditPopup = usePopup("applicationEdit")
+const currentEditApp = ref<Application | null>(null)
 const editApplication = (application: Application) => {
-    applicationEditPopup.patchOptions({ attrs: { application } })
+    currentEditApp.value = application
     applicationEditPopup.open()
 }
 
-const partyEditPopup = useModal({
-    component: PartyPopup,
-    attrs: {
-        onClose: () => {
-            partyEditPopup.close()
-        }
-    }
-})
-
+const partyEditPopup = usePopup("partyEdit")
+const currentEditParty = ref<Party | null>(null)
 const editParty = (party: Party) => {
-    partyEditPopup.patchOptions({ attrs: { party } })
+    currentEditParty.value = party
     partyEditPopup.open()
 }
+
 
 </script>
 
@@ -107,14 +102,16 @@ const editParty = (party: Party) => {
     <Popup :style="{ zIndex: 800 }" class="profile">
         <UserDetailsPopup :modalId="userDetailsPopup.modalId" @close="userDetailsPopup.close" :user="user" />
         <UserLinksPopup :modalId="userLinksPopup.modalId" @close="userLinksPopup.close" :user="user" />
-        <ApplicationPopup :modalId="applicationPopup.modalId" @close="applicationPopup.close" />
+        <ApplicationPopup :application="currentEditApp" :modalId="applicationEditPopup.modalId"
+            @close="applicationEditPopup.close" />
+        <PartyPopup :party="currentEditParty" :modalId="partyEditPopup.modalId" @close="partyEditPopup.close" />
         <Container>
             <Row class="g-5">
                 <Col col="3">
                 <div class="profile_img">
                     <img class="profile_picture" :src="user.profilePic as string" alt="" />
-                    <input type="file" @input="onPicInput" accept="image/*" style="display:none;" />
-                    <img v-if="isOwnProfile" @click="updatePic(profilePic)" src="~/assets/icons/upload.svg"
+                    <input type="file" @input="onPicInput" ref="picInput" accept="image/*" style="display: none;" />
+                    <img v-if="isOwnProfile" @click="picInput?.click()" src="~/assets/icons/upload.svg"
                         class="profile_upload" alt="Upload" />
                 </div>
                 <p class="profile_username accent">{{ user.nickname }}</p>
