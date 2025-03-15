@@ -1,24 +1,27 @@
 <script setup lang="ts">
-import { VueFinalModal } from 'vue-final-modal';
-
-const { width = 1000 } = defineProps<{
-  width?: number,
-}>()
+import { VueFinalModal } from "vue-final-modal";
 
 const emit = defineEmits<{ close: [] }>();
 
-
+const { class: cls } = defineProps<{ class: string }>();
 </script>
 
 <template>
-  <VueFinalModal clickToClose escToClose class="popup_overlay" contentClass="popup"
-    :contentStyle="{ width: width + 'px' }">
-    <img class="popup_close" src="~/assets/icons/close.svg" alt="Close Popup" @click.self="emit('close')" />
+  <VueFinalModal
+    clickToClose
+    escToClose
+    class="popup_overlay"
+    :contentClass="['popup', cls]"
+  >
+    <img
+      class="popup_close"
+      src="~/assets/icons/close.svg"
+      alt="Close Popup"
+      @click.self="emit('close')"
+    />
     <slot></slot>
   </VueFinalModal>
 </template>
-
-
 
 <style>
 .popup_overlay {
@@ -35,12 +38,25 @@ const emit = defineEmits<{ close: [] }>();
 }
 
 .popup {
-  background: #0E0D18;
-  border: 1px solid #FE9F00;
+  background: #0e0d18;
+  border: 1px solid #fe9f00;
   color: #fff;
   padding: 25px 35px;
   position: relative;
   z-index: 1000;
+  width: 1000px;
+
+  @media screen and (max-width: 1000px) {
+    width: 800px;
+  }
+
+  @media screen and (max-width: 860px) {
+    padding: 15px 20px;
+  }
+
+  @media screen and (max-width: 580px) {
+    width: 400px;
+  }
 }
 
 .popup_close {
@@ -49,6 +65,10 @@ const emit = defineEmits<{ close: [] }>();
   right: 10px;
   width: 15px;
   height: 15px;
-  cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
+  cursor: url("~/assets/icons/cursor-pointer.svg"), pointer;
+}
+
+.user-links {
+  width: 500px !important;
 }
 </style>

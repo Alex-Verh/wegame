@@ -1,11 +1,19 @@
 <script setup lang="ts">
-
-defineProps<{ id: number; title: string; image: string; isSelected?: boolean }>();
+defineProps<{
+  id: number;
+  title: string;
+  image: string;
+  isSelected?: boolean;
+}>();
 </script>
 
 <template>
-  <div class="game" :class="{ game_selected: isSelected }" @click="useToast(title)">
-    <img :src="image" alt="GameName" class="game_image">
+  <div
+    class="game"
+    :class="{ game_selected: isSelected }"
+    @click="useToast(title)"
+  >
+    <img :src="image" alt="GameName" class="game_image" />
     <div class="game_title">{{ title }}</div>
     <img class="game_mark" src="~/assets/icons/mark.svg" alt="Selected" />
   </div>
@@ -17,15 +25,31 @@ defineProps<{ id: number; title: string; image: string; isSelected?: boolean }>(
   /* Position for the content */
   overflow: hidden;
   /* Hide overflow to ensure neat appearance */
-  border: 1px solid #FE9F00;
-  cursor: url('~/assets/icons/cursor-pointer.svg'), pointer;
+  border: 1px solid #fe9f00;
+  cursor: url("~/assets/icons/cursor-pointer.svg"), pointer;
   font-size: 18px;
   min-width: 398px;
   aspect-ratio: 16 / 9;
+
+  @media screen and (max-width: 1400px) {
+    min-width: 298px;
+  }
+
+  @media screen and (max-width: 990px) {
+    min-width: 200px;
+  }
+
+  @media screen and (max-width: 770px) {
+    min-width: 150px;
+  }
+
+  @media screen and (max-width: 440px) {
+    min-width: 100px;
+  }
 }
 
 .game_selected {
-  background-color: #14FF00;
+  background-color: #14ff00;
 }
 
 .game:hover {
@@ -66,6 +90,18 @@ defineProps<{ id: number; title: string; image: string; isSelected?: boolean }>(
   transition: opacity 0.3s ease;
   /* Smooth transition for opacity */
   color: #fff;
+
+  @media screen and (max-width: 990px) {
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 770px) {
+    font-size: 12px;
+  }
+
+  @media screen and (max-width: 440px) {
+    font-size: 10px;
+  }
 }
 
 .game_mark {
