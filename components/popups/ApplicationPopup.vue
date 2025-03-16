@@ -50,12 +50,12 @@ const { mutate: createApplication } = useMutation({
     appRank.value = "";
     appGame.value = 0;
     appPlatform.value = 0;
-    useToast(`Application "${application.text}" created.`);
+    useToast(`Application "${application.text}" created.`, "success");
     emit("close");
   },
 
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -76,11 +76,11 @@ const { mutate: updateApplication } = useMutation({
     await queryCache.invalidateQueries({
       key: ["users", application.authorId, "applications"],
     });
-    useToast(`Application "${application.text}" updated.`);
+    useToast(`Application "${application.text}" updated.`, "success");
     emit("close");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -96,11 +96,11 @@ const { mutate: deleteApplication } = useMutation({
     await queryCache.invalidateQueries({
       key: ["users", application.authorId, "applications"],
     });
-    useToast(`Application "${application?.text}" deleted.`);
+    useToast(`Application "${application?.text}" deleted.`, "success");
     emit("close");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 </script>

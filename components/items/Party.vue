@@ -46,7 +46,7 @@ const { mutate: joinParty } = useMutation({
     useToast("Join request sent");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 

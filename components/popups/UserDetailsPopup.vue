@@ -53,14 +53,17 @@ const { mutate: toggleLanguage } = useMutation({
       key: ["users", user.id],
       exact: true,
     });
+
+    useToast("Language changed successfully!", "success");
   },
 
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 const { mutate: updateAge } = useMutation({
   mutation: (age: number) => {
+    age = Number(age);
     return $fetch(`/api/users/${user.id}`, {
       method: "PATCH",
       body: {
@@ -73,10 +76,10 @@ const { mutate: updateAge } = useMutation({
       key: ["users", user.id],
       exact: true,
     });
-    useToast("Age updated");
+    useToast("Age updated successfully!", "success");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -94,10 +97,10 @@ const { mutate: updateEmail } = useMutation({
       key: ["users", user.id],
       exact: true,
     });
-    useToast("Email confirmation link sent");
+    useToast("Email confirmation link sent", "success");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -116,10 +119,10 @@ const { mutate: updatePassword } = useMutation({
       key: ["users", user.id],
       exact: true,
     });
-    useToast("Password updated");
+    useToast("Password updated successfully.", "success");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -168,13 +171,14 @@ const logout = async () => {
           </Col>
         </Row>
 
-        <div class="button_accent">Save Languages (todo)</div>
+        <div class="languages_title">Indicate Personal Data</div>
 
         <div
           class="languages_field d-flex align-items-center justify-content-between"
         >
           <input
             @keyup.enter="updateAge(userAge)"
+            @input="userAge = Number($event.target?.value)"
             v-model="userAge"
             class="languages_input"
             type="text"
@@ -233,7 +237,7 @@ const logout = async () => {
 .languages_title {
   text-align: center;
   font-size: 28px;
-  margin-bottom: 30px;
+  margin: 30px 0;
 
   @media screen and (max-width: 580px) {
     font-size: 16px;

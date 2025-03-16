@@ -25,11 +25,11 @@ const { mutate: acceptMember } = useMutation({
       await queryCache.invalidateQueries({
         key: ["users", user.value.id, "parties", "own"],
       });
-    useToast("Member accepted");
+    useToast("Member accepted", "success");
   },
 
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -45,10 +45,10 @@ const { mutate: denyMember } = useMutation({
       await queryCache.invalidateQueries({
         key: ["users", user.value.id, "parties", "own"],
       });
-    useToast("member denied");
+    useToast("Member request denied.", "success");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -83,7 +83,7 @@ watchEffect(() => {
             class="members_member d-flex align-items-center justify-content-between"
           >
             <template v-if="member.status === 'pending'">
-              <span class="members_name">
+              <span class="members_name" @click="seeMember(member.user)">
                 {{ member.user.nickname }}
               </span>
               <div>
@@ -103,7 +103,6 @@ watchEffect(() => {
             </template>
           </div>
         </div>
-        <button class="button_accent">Accept Everyone</button>
       </template>
 
       <div class="members_title">{{ $t("partyMembers") }}</div>
@@ -181,6 +180,7 @@ watchEffect(() => {
 .members_name {
   font-size: 26px;
   color: #fe9f00;
+  cursor: url("~/assets/icons/cursor-pointer.svg"), pointer;
 
   @media screen and (max-width: 800px) {
     font-size: 18px;

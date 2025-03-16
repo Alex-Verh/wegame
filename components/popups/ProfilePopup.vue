@@ -66,10 +66,10 @@ const { mutate: updatePic } = useMutation({
       key: ["users", user.id],
       exact: true,
     });
-    useToast("Profile picture updated");
+    useToast("Profile picture updated.", "success");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 

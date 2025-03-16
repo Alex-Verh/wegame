@@ -44,10 +44,10 @@ const { mutate: updatePlatformLink } = useMutation({
       key: ["users", user.id],
       exact: true,
     });
-    useToast("Links updated");
+    useToast("Links updated.", "success");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 </script>

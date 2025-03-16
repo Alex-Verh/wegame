@@ -59,12 +59,12 @@ const { mutate: createParty } = useMutation({
     partyMinAge.value = 0;
     partyMaxAge.value = 100;
     partyMemberNr.value = 5;
-    useToast(`Party "${party.title}" created.`);
+    useToast(`Party "${party.title}" created.`, "success");
     emit("close");
   },
 
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 const { mutate: updateParty } = useMutation({
@@ -85,11 +85,11 @@ const { mutate: updateParty } = useMutation({
     await queryCache.invalidateQueries({
       key: ["users", party.leaderId, "parties", "own"],
     });
-    useToast(`Party "${party.title}" updated.`);
+    useToast(`Party "${party.title}" updated.`, "success");
     emit("close");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 
@@ -105,11 +105,11 @@ const { mutate: deleteParty } = useMutation({
     await queryCache.invalidateQueries({
       key: ["users", party.leaderId, "parties"],
     });
-    useToast(`Party "${party.title}" deleted.`);
+    useToast(`Party "${party.title}" deleted.`, "success");
     emit("close");
   },
   onError: (err) => {
-    useToast(err.message);
+    useToast(err.message, "danger");
   },
 });
 const membersPopup = usePopup("partyMembers");
