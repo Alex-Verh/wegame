@@ -106,14 +106,6 @@ const membersPopup = usePopup("partyMembers");
   @media screen and (max-width: 800px) {
     padding: 7px 10px;
   }
-
-  @media screen and (max-width: 768px) {
-    font-size: 10px;
-  }
-
-  @media screen and (max-width: 560px) {
-    font-size: 8px;
-  }
 }
 
 .party_name {
@@ -136,19 +128,6 @@ const membersPopup = usePopup("partyMembers");
 
 .party_button {
   width: 100%;
-
-  @media screen and (max-width: 1000px) {
-    font-size: 10px;
-  }
-
-  @media screen and (max-width: 768px) {
-    font-size: 4px;
-  }
-
-  @media screen and (max-width: 560px) {
-    padding: 5px;
-    height: 16px;
-  }
 }
 
 .party_bottom {

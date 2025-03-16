@@ -237,6 +237,11 @@ const { mutate: deleteApplication } = useMutation({
   overflow-y: scroll;
   height: 500px;
   padding: 0 30px;
+
+  @media screen and (max-width: 410px) {
+    padding: 0 15px;
+    height: 300px;
+  }
 }
 
 .application_body::-webkit-scrollbar {
@@ -250,6 +255,10 @@ const { mutate: deleteApplication } = useMutation({
   @media screen and (max-width: 800px) {
     font-size: 20px;
   }
+
+  @media screen and (max-width: 410px) {
+    font-size: 14px;
+  }
 }
 
 .application_subtitle {
@@ -259,6 +268,10 @@ const { mutate: deleteApplication } = useMutation({
 
   @media screen and (max-width: 800px) {
     font-size: 14px;
+  }
+
+  @media screen and (max-width: 410px) {
+    font-size: 12px;
   }
 }
 
@@ -272,6 +285,10 @@ const { mutate: deleteApplication } = useMutation({
 
   @media screen and (max-width: 800px) {
     font-size: 12px;
+  }
+
+  @media screen and (max-width: 410px) {
+    font-size: 10px;
   }
 }
 
@@ -287,6 +304,10 @@ const { mutate: deleteApplication } = useMutation({
 
   @media screen and (max-width: 580px) {
     font-size: 10px;
+  }
+
+  @media screen and (max-width: 410px) {
+    font-size: 6px;
   }
 }
 
@@ -310,6 +331,9 @@ const { mutate: deleteApplication } = useMutation({
   overflow-y: hidden;
   @media screen and (max-width: 800px) {
     height: 90px;
+  }
+  @media screen and (max-width: 410px) {
+    height: 60px;
   }
 }
 

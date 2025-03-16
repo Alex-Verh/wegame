@@ -57,6 +57,11 @@ const { class: cls } = defineProps<{ class: string }>();
   @media screen and (max-width: 580px) {
     width: 400px;
   }
+
+  @media screen and (max-width: 410px) {
+    padding: 7px 10px;
+    width: 250px;
+  }
 }
 
 .popup_close {
@@ -66,9 +71,18 @@ const { class: cls } = defineProps<{ class: string }>();
   width: 15px;
   height: 15px;
   cursor: url("~/assets/icons/cursor-pointer.svg"), pointer;
+
+  @media screen and (max-width: 500px) {
+    width: 8px;
+    height: 8px;
+  }
 }
 
 .user-links {
   width: 500px !important;
+}
+
+.members {
+  width: 700px !important;
 }
 </style>

@@ -63,6 +63,7 @@ const { mutate: updatePlatformLink } = useMutation({
         <input
           :readonly="sessionUser?.id !== user.id"
           :value="userLinks[platform.id]"
+          :placeholder="platform.urlPattern"
           @change="
             updatePlatformLink({
               platformId: platform.id,
@@ -84,12 +85,19 @@ const { mutate: updatePlatformLink } = useMutation({
 .links_title {
   text-align: center;
   font-size: 28px;
+
+  @media screen and (max-width: 500px) {
+    font-size: 14px;
+  }
 }
 
 .links_subtitle {
   font-size: 18px;
   margin: 15px 0;
   display: block;
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
 }
 
 .links_field {
@@ -101,10 +109,8 @@ const { mutate: updatePlatformLink } = useMutation({
   outline: none;
   font-size: 16px;
   padding: 10px;
-}
-
-.links .button_accent {
-  width: 175px;
-  margin: 15px auto;
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }
 }
 </style>

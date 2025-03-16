@@ -29,7 +29,7 @@ export default defineI18nLocale(async (locale) => {
     seePlayers: "Посмотреть игроков",
     out: "из",
     people: "человек",
-    join: "Присоединиться",
+    join: "Войти",
     loadMore: "Загрузить ещё",
     createNew: "Создать новую",
     gameHeader: "Популярные игры - Выберите одну",

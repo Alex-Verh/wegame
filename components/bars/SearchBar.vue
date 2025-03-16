@@ -19,7 +19,7 @@ const { data: languages } = useLanguages();
 <template>
   <div class="search_bar">
     <Row class="g-3">
-      <Col col="4">
+      <Col col="12" class="col-sm-4">
         <input
           v-model.lazy="title"
           type="text"
@@ -29,7 +29,7 @@ const { data: languages } = useLanguages();
         />
       </Col>
       <template v-if="isAppSearch">
-        <Col col="4">
+        <Col col="12" class="col-sm-4">
           <select v-model="platformId" class="search_filter accent">
             <option :value="0" class="search_result">
               {{ $t("filterPlatform") }}
@@ -44,7 +44,7 @@ const { data: languages } = useLanguages();
             </option>
           </select>
         </Col>
-        <Col col="4">
+        <Col col="12" class="col-sm-4">
           <select v-model="languageId" class="search_filter accent">
             <option :value="0" class="search_result">
               {{ $t("filterLanguage") }}
@@ -59,7 +59,7 @@ const { data: languages } = useLanguages();
             </option>
           </select>
         </Col>
-        <Col col="4">
+        <Col col="12" class="col-sm-4">
           <select v-model="gameId" class="search_filter accent">
             <option :value="0" class="search_result">
               {{ $t("filterGame") }}
@@ -74,7 +74,7 @@ const { data: languages } = useLanguages();
             </option>
           </select>
         </Col>
-        <Col col="3">
+        <Col col="12" class="col-sm-3">
           <input
             v-model.lazy="age"
             type="number"
@@ -83,7 +83,7 @@ const { data: languages } = useLanguages();
             class="search_field"
           />
         </Col>
-        <Col col="5">
+        <Col col="12" class="col-sm-5">
           <input
             v-model.lazy="ranking"
             type="text"
@@ -94,7 +94,7 @@ const { data: languages } = useLanguages();
         </Col>
       </template>
       <template v-else="isAppSearch">
-        <Col col="3">
+        <Col col="12" class="col-sm-3">
           <select v-model="platformId" class="search_filter accent">
             <option :value="0" class="search_result">
               {{ $t("filterPlatform") }}
@@ -109,7 +109,7 @@ const { data: languages } = useLanguages();
             </option>
           </select>
         </Col>
-        <Col col="3">
+        <Col col="12" class="col-sm-3">
           <select v-model="gameId" class="search_filter accent">
             <option :value="0" class="search_result">
               {{ $t("filterGame") }}
@@ -124,7 +124,7 @@ const { data: languages } = useLanguages();
             </option>
           </select>
         </Col>
-        <Col col="2">
+        <Col col="12" class="col-sm-2">
           <input
             v-model.lazy="membersLimit"
             type="number"

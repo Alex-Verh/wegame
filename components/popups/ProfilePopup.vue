@@ -135,7 +135,7 @@ const editParty = (party: Party) => {
     />
     <Container>
       <Row class="g-5">
-        <Col col="3">
+        <Col col="12" class="col-sm-3">
           <div class="profile_img">
             <img
               class="profile_picture"
@@ -181,7 +181,7 @@ const editParty = (party: Party) => {
             </button>
           </template>
         </Col>
-        <Col col="9">
+        <Col col="12" class="col-sm-9">
           <div class="profile_games">
             <Container>
               <div class="profile_subtitle">{{ $t("games") }}</div>
@@ -266,6 +266,17 @@ const editParty = (party: Party) => {
   width: 100%;
   height: auto;
   aspect-ratio: 1;
+
+  @media screen and (max-width: 575px) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.g-5 {
+  @media screen and (max-width: 575px) {
+    --bs-gutter-y: 0.5em !important;
+  }
 }
 
 .profile_img {
@@ -285,6 +296,11 @@ const editParty = (party: Party) => {
   @media screen and (max-width: 768px) {
     width: 100px;
     height: 100px;
+  }
+
+  @media screen and (max-width: 575px) {
+    width: 150px;
+    height: 150px;
   }
 }
 
@@ -322,8 +338,13 @@ const editParty = (party: Party) => {
   margin-top: 10px;
   text-transform: capitalize;
 
-  @media screen and (max-width: 1000px) {
-    font-size: 16px;
+  @media screen and (max-width: 800px) {
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 410px) {
+    font-size: 12px;
+    margin-bottom: 5px;
   }
 }
 
@@ -331,6 +352,14 @@ const editParty = (party: Party) => {
   text-decoration: underline;
   font-size: 16px;
   cursor: url("~/assets/icons/cursor-pointer.svg"), pointer;
+
+  @media screen and (max-width: 800px) {
+    font-size: 12px;
+  }
+
+  @media screen and (max-width: 410px) {
+    font-size: 10px;
+  }
 }
 
 .profile_game {
@@ -345,6 +374,14 @@ const editParty = (party: Party) => {
   @media screen and (max-width: 1000px) {
     font-size: 16px;
   }
+
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
+
+  @media screen and (max-width: 575px) {
+    font-size: 24px;
+  }
 }
 
 .button_pop {
@@ -356,6 +393,14 @@ const editParty = (party: Party) => {
   height: 130px;
   overflow-x: auto;
   overflow-y: hidden;
+  @media screen and (max-width: 1000px) {
+    height: 100px;
+  }
+
+  @media screen and (max-width: 410px) {
+    height: 60px;
+    font-size: 10px;
+  }
 }
 
 .profile_box {
@@ -370,6 +415,9 @@ const editParty = (party: Party) => {
 
   @media screen and (max-width: 1000px) {
     width: 250px;
+  }
+  @media screen and (max-width: 410px) {
+    width: 150px;
   }
 }
 

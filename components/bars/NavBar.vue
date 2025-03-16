@@ -49,7 +49,9 @@ const logout = async () => {
         </Col>
         <Col col="7">
           <div class="links">
-            <div class="links_row_accent d-flex justify-content-left">
+            <div
+              class="links_row_accent d-flex align-items-center justify-content-left"
+            >
               <NuxtLinkLocale to="/" class="link"
                 ><span class="link_help">{{ $t("terms") }}</span>
               </NuxtLinkLocale>
@@ -90,7 +92,9 @@ const logout = async () => {
                 </select>
               </div>
             </div>
-            <div class="links_row d-flex justify-content-around">
+            <div
+              class="links_row d-flex align-items-center justify-content-around"
+            >
               <NuxtLinkLocale
                 to="/#applications"
                 class="link d-flex align-items-center"
@@ -158,17 +162,36 @@ const logout = async () => {
   }
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.buttons .button,
+.buttons .button_accent {
+  flex: 1; /* Each box will take equal height */
+  padding: none !important;
+}
+
 .navigation .col-2,
 .navigation .col-7 {
   padding: 0 !important;
 }
 
-.links_row,
-.links_row_accent {
-  padding: 20px;
+.links {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.links .links_row,
+.links .links_row_accent {
+  flex: 1;
+  padding-inline: 20px;
 
   @media screen and (max-width: 900px) {
-    padding: 10px;
+    padding-inline: 10px;
   }
 }
 
@@ -194,13 +217,15 @@ const logout = async () => {
   color: #fe9f00;
 }
 
-.link_text {
+.link_text,
+.language_select {
   @media screen and (max-width: 600px) {
     font-size: 8px;
   }
 }
 
-.link_icon {
+.link_icon,
+.language_icon {
   margin-inline-end: 7px;
   @media screen and (max-width: 900px) {
     height: 10px;
